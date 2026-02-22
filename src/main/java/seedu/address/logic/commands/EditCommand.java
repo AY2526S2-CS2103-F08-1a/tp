@@ -244,8 +244,8 @@ public class EditCommand extends Command {
         @Override
         public String toString() {
             return new ToStringBuilder(this).add("name", name).add("phone", phone)
-                    .add("email", email).add("address", address).add("tags", tags)
-                    .add("remark", remark).toString();
+                    .add("email", email).add("address", address).add("remark", remark)
+                    .add("tags", tags).toString();
         }
     }
 }
