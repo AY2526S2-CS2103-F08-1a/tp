@@ -11,15 +11,15 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 ## Project team
 
-### John Doe
+### Tan Jian Ron
 
-<img src="images/johndoe.png" width="200px">
+<img src="images/jianrontan.png" width="200px">
 
-[[homepage](http://www.comp.nus.edu.sg/~damithch)]
-[[github](https://github.com/johndoe)]
+[[github](https://github.com/jianrontan)]
 [[portfolio](team/johndoe.md)]
 
-* Role: Project Advisor
+* Role: Testing Lead
+* Responsibilities: model component
 
 ### Jane Doe
 
