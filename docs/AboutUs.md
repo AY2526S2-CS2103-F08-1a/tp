@@ -1,6 +1,6 @@
 ---
   layout: default.md
-  title: "About Us"
+    title: "About Us"
 ---
 
 # About Us
@@ -21,34 +21,34 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 * Role: Team Lead
 * Responsibilities: Project coordination, Parser component
 
-### Jane Doe
+### Eric Law
 
-<img src="images/johndoe.png" width="200px">
+<img src="images/prickloll.png" width="200px">
 
-[[github](http://github.com/johndoe)]
+[[github](http://github.com/prickloll)]
 [[portfolio](team/johndoe.md)]
 
-* Role: Team Lead
-* Responsibilities: UI
+* Role: Documentation Lead
+* Responsibilities: Command
 
-### Johnny Doe
+### Yeo Jian Ming
 
-<img src="images/johndoe.png" width="200px">
+<img src="images/b2-4ac.png" width="200px">
 
-[[github](http://github.com/johndoe)] [[portfolio](team/johndoe.md)]
+[[github](http://github.com/b2-4ac)] [[portfolio](team/johndoe.md)]
 
-* Role: Developer
-* Responsibilities: Data
+* Role: Code Quality Assurance
+* Responsibilities: Storage
 
-### Jean Doe
+### Tan Jian Ron
 
-<img src="images/johndoe.png" width="200px">
+<img src="images/jianrontan.png" width="200px">
 
-[[github](http://github.com/johndoe)]
+[[github](https://github.com/jianrontan)]
 [[portfolio](team/johndoe.md)]
 
-* Role: Developer
-* Responsibilities: Dev Ops + Threading
+* Role: Testing Lead
+* Responsibilities: model component
 
 ### James Doe
 
@@ -59,3 +59,4 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 * Role: Developer
 * Responsibilities: UI
+
