@@ -31,14 +31,14 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 * Role: Team Lead
 * Responsibilities: UI
 
-### Johnny Doe
+### Yeo Jian Ming
 
-<img src="images/johndoe.png" width="200px">
+<img src="images/b2-4ac.png" width="200px">
 
-[[github](http://github.com/johndoe)] [[portfolio](team/johndoe.md)]
+[[github](http://github.com/b2-4ac)] [[portfolio](team/johndoe.md)]
 
-* Role: Developer
-* Responsibilities: Data
+* Role: Code Quality Assurance
+* Responsibilities: Storage
 
 ### Jean Doe
 
