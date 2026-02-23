@@ -1,6 +1,6 @@
 ---
   layout: default.md
-  title: "About Us"
+    title: "About Us"
 ---
 
 # About Us
@@ -21,15 +21,15 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 * Role: Testing Lead
 * Responsibilities: model component
 
-### Jane Doe
+### Eric Law
 
-<img src="images/johndoe.png" width="200px">
+<img src="images/prickloll.png" width="200px">
 
-[[github](http://github.com/johndoe)]
+[[github](http://github.com/prickloll)]
 [[portfolio](team/johndoe.md)]
 
-* Role: Team Lead
-* Responsibilities: UI
+* Role: Documentation Lead
+* Responsibilities: Command
 
 ### Yeo Jian Ming
 
@@ -59,3 +59,4 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 * Role: Developer
 * Responsibilities: UI
+
