@@ -272,15 +272,15 @@ _{Explain here how the data archiving feature will be implemented}_
 
 ### Product scope
 
-**Target user profile**:
+**Target user profile**: Freelance Personal Fitness Trainers
 
-* has a need to manage a significant number of contacts
-* prefer desktop apps over other types
-* can type fast
-* prefers typing to mouse interactions
-* is reasonably comfortable using CLI apps
+* Fully freelance, not affiliated with any single gym which means he/she manages his/her own client base independently
+* Handles a diverse client base of 10-25 clients, with varying fitness goals, dietary requirements, workout plans and gym location
+* Prefers laptop apps for work and keyboard-driven workflows over Graphical User Interface (GUI) navigation
+* Currently, has client information spread out across different applications, which makes it time-consuming to retrieve and update client information, and needs a *centralised* *application* to help with this
+* Needs to pull up/update a specific client’s full information before/after a session
 
-**Value proposition**: manage contacts faster than a typical mouse/GUI driven app
+**Value proposition**: PowerRoster helps freelance personal fitness trainers manage diverse client needs by linking their workout histories, dietary restrictions and preferred locations directly to their contact profiles. This allows for a *centralised* *application* for trainers to efficiently access any information needed about a client via an easy-to-use application optimised for text commands.
 
 
 ### User stories
@@ -302,43 +302,71 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 (For all use cases below, the **System** is the `AddressBook` and the **Actor** is the `user`, unless specified otherwise)
 
-**Use case: Delete a person**
+**Use case: UC03 \- Delete a client**  
+**Preconditions: Trainer has launched PowerRoster. At least one client exists in the *roster*.**   
+**Guarantees: The client and all associated data are permanently removed if the deletion is confirmed.**
 
 **MSS**
 
-1.  User requests to list persons
-2.  AddressBook shows a list of persons
-3.  User requests to delete a specific person in the list
-4.  AddressBook deletes the person
+1. Trainer requests to delete a specific client.
+2. PowerRoster locates the client.
+3. PowerRoster removes the client and all associated data from the *roster*.
+4. PowerRoster confirms the successful deletion to the Trainer.
 
-    Use case ends.
+   Use case ends.
 
 **Extensions**
 
-* 2a. The list is empty.
+* 2a. PowerRoster cannot find a client matching the given identifier.
+    * 2a1. PowerRoster informs the Trainer that no matching contact was found and no deletion was carried out.  
+      
+      Use case ends.
 
-  Use case ends.
+**Use case: UC04 \- View Help and Command Guide**  
+**Actor: New user**  
+**Preconditions: User has launched PowerRoster.**  
+**Guarantees: The list of available commands and their usage is displayed.**
 
-* 3a. The given index is invalid.
+**MSS:**
 
-    * 3a1. AddressBook shows an error message.
+1. User requests to view the help guide.
+2. PowerRoster displays the list of all available commands with their syntax and descriptions.
 
-      Use case resumes at step 2.
+   Use case ends.
 
-*{More to be added}*
+**Use case: UC05 \- Search for a Client by Name**  
+**Preconditions: Trainer has launched PowerRoster.**  
+**Guarantees: All clients whose names match the search query are displayed.**  
+**MSS:**
+
+1. Trainer requests to search for a client by name and provides the name to search for.
+2. PowerRoster retrieves and displays all clients whose names match the search query.
+
+   Use case ends.
+
+**Extensions:**
+
+* 2a. No clients match the search query.
+    * 2a1. PowerRoster informs the Trainer that no matching clients were found.
+      
+      Use case ends.
 
 ### Non-Functional Requirements
 
 1.  Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
-2.  Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
-3.  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
-
-*{More to be added}*
+6.  A user with above-average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
+7.  Should provide a helpful error message every time an invalid command is entered.
+8.  Should ensure basic data validation for all data entries to prevent logical impossibilities (e.g., negative *session rate*)
+9.  The application is not required to carry out any Internet communication for any of its functionality.
 
 ### Glossary
 
 * **Mainstream OS**: Windows, Linux, Unix, MacOS
-* **Private contact detail**: A contact detail that is not meant to be shared with others
+* **Workout Programme:** A structured plan of exercises assigned to a client to follow over a period of time (e.g. Push, Pull and Legs).
+* **Active Client**: A client currently receiving training sessions from the Trainer.
+* **Session Rate:** The fee charged by the Trainer per training session for a specific client.
+* **Health emergency:** An unexpected medical situation that occurs during a training session that requires medical attention.
+* **Workload:** The total number of active clients managed and trained by a Trainer currently.
 
 --------------------------------------------------------------------------------------------------------------------
 
