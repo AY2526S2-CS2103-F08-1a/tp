@@ -3,6 +3,7 @@
   "pages": [
     {
       "src": "AboutUs.md",
+      "title": "About Us",
       "headings": {
         "about-us": "About Us",
         "project-team": "Project team",
@@ -130,7 +131,7 @@
       "src": "index.md",
       "title": "",
       "headings": {
-        "addressbook-level-3": "AddressBook Level-3"
+        "powerroster": "PowerRoster"
       },
       "headingKeywords": {}
     },
