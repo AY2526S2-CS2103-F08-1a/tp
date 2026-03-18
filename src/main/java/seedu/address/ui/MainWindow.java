@@ -24,6 +24,8 @@ import seedu.address.logic.parser.exceptions.ParseException;
 public class MainWindow extends UiPart<Stage> {
 
     private static final String FXML = "MainWindow.fxml";
+    private static final Boolean IS_COMMAND_BOOLEAN = true;
+    private static final Boolean IS_NOT_COMMAND_BOOLEAN = false;
 
     private final Logger logger = LogsCenter.getLogger(getClass());
 
@@ -78,6 +80,7 @@ public class MainWindow extends UiPart<Stage> {
 
     /**
      * Sets the accelerator of a MenuItem.
+     *
      * @param keyCombination the KeyCombination value of the accelerator
      */
     private void setAccelerator(MenuItem menuItem, KeyCombination keyCombination) {
@@ -172,11 +175,13 @@ public class MainWindow extends UiPart<Stage> {
      *
      * @see seedu.address.logic.Logic#execute(String)
      */
-    private CommandResult executeCommand(String commandText) throws CommandException, ParseException {
+    private CommandResult executeCommand(String commandText)
+            throws CommandException, ParseException {
         try {
             CommandResult commandResult = logic.execute(commandText);
+            resultDisplay.setFeedbackToUser(commandText, IS_COMMAND_BOOLEAN);
             logger.info("Result: " + commandResult.getFeedbackToUser());
-            resultDisplay.setFeedbackToUser(commandResult.getFeedbackToUser());
+            resultDisplay.setFeedbackToUser(commandResult.getFeedbackToUser(), IS_NOT_COMMAND_BOOLEAN);
 
             if (commandResult.isShowHelp()) {
                 handleHelp();
@@ -189,7 +194,7 @@ public class MainWindow extends UiPart<Stage> {
             return commandResult;
         } catch (CommandException | ParseException e) {
             logger.info("An error occurred while executing command: " + commandText);
-            resultDisplay.setFeedbackToUser(e.getMessage());
+            resultDisplay.setFeedbackToUser(e.getMessage(), IS_NOT_COMMAND_BOOLEAN);
             throw e;
         }
     }
