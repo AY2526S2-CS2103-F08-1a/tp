@@ -8,6 +8,8 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_GENDER_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_GENDER_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_LOCATION_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_LOCATION_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_AMY;
@@ -34,6 +36,7 @@ public class TypicalPersons {
             .withAddress("123, Jurong West Ave 6, #08-111")
             .withEmail("alice@example.com")
             .withPhone("94351253")
+            .withLocation("Jurong West ActiveSG Gym")
             .withTags("friends")
             .build();
     public static final Person BENSON = new PersonBuilder()
@@ -43,6 +46,7 @@ public class TypicalPersons {
             .withAddress("311, Clementi Ave 2, #02-25")
             .withEmail("johnd@example.com")
             .withPhone("98765432")
+            .withLocation("Clementi ActiveSG Gym")
             .withTags("owesMoney", "friends")
             .build();
     public static final Person CARL = new PersonBuilder()
@@ -50,6 +54,7 @@ public class TypicalPersons {
             .withGender("M")
             .withDateOfBirth("22/07/2001")
             .withPhone("95352563")
+            .withLocation("Anytime Fitness Tampines East")
             .withEmail("heinz@example.com")
             .withAddress("wall street")
             .build();
@@ -60,6 +65,7 @@ public class TypicalPersons {
             .withPhone("87652533")
             .withEmail("cornelia@example.com")
             .withAddress("10th street")
+            .withLocation("Anytime Fitness Marine Parade")
             .withTags("friends")
             .build();
     public static final Person ELLE = new PersonBuilder()
@@ -69,6 +75,7 @@ public class TypicalPersons {
             .withPhone("9482224")
             .withEmail("werner@example.com")
             .withAddress("michegan ave")
+            .withLocation("Anytime Fitness Buona Vista")
             .build();
     public static final Person FIONA = new PersonBuilder()
             .withName("Fiona Kunz")
@@ -77,6 +84,7 @@ public class TypicalPersons {
             .withPhone("9482427")
             .withEmail("lydia@example.com")
             .withAddress("little tokyo")
+            .withLocation("Anytime Fitness Taman Jurong")
             .build();
     public static final Person GEORGE = new PersonBuilder()
             .withName("George Best")
@@ -85,6 +93,7 @@ public class TypicalPersons {
             .withPhone("9482442")
             .withEmail("anna@example.com")
             .withAddress("4th street")
+            .withLocation("Anytime Fitness Lower Peirce")
             .build();
 
     // Manually added
@@ -95,6 +104,7 @@ public class TypicalPersons {
             .withPhone("8482424")
             .withEmail("stefan@example.com")
             .withAddress("little india")
+            .withLocation("Heartbeat @ Bedok ActiveSG Gym")
             .build();
     public static final Person IDA = new PersonBuilder()
             .withName("Ida Mueller")
@@ -103,6 +113,7 @@ public class TypicalPersons {
             .withPhone("8482131")
             .withEmail("hans@example.com")
             .withAddress("chicago ave")
+            .withLocation("Jurong Lake Gardens ActiveSG Gym")
             .build();
 
     // Manually added - Person's details found in {@code CommandTestUtil}
@@ -113,6 +124,7 @@ public class TypicalPersons {
             .withPhone(VALID_PHONE_AMY)
             .withEmail(VALID_EMAIL_AMY)
             .withAddress(VALID_ADDRESS_AMY)
+            .withLocation(VALID_LOCATION_AMY)
             .withTags(VALID_TAG_FRIEND)
             .build();
     public static final Person BOB = new PersonBuilder()
@@ -122,6 +134,7 @@ public class TypicalPersons {
             .withPhone(VALID_PHONE_BOB)
             .withEmail(VALID_EMAIL_BOB)
             .withAddress(VALID_ADDRESS_BOB)
+            .withLocation(VALID_LOCATION_BOB)
             .withTags(VALID_TAG_HUSBAND, VALID_TAG_FRIEND)
             .build();
 

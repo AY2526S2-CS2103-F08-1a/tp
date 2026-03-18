@@ -13,9 +13,12 @@ import static seedu.address.logic.commands.CommandTestUtil.INVALID_ADDRESS_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_DOB_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_EMAIL_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_GENDER_DESC;
+import static seedu.address.logic.commands.CommandTestUtil.INVALID_LOCATION_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_NAME_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_PHONE_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_TAG_DESC;
+import static seedu.address.logic.commands.CommandTestUtil.LOCATION_DESC_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.LOCATION_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
@@ -28,6 +31,7 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_DOB_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_GENDER_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_LOCATION_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
@@ -36,6 +40,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_DOB;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_GENDER;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_LOCATION;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
@@ -51,6 +56,7 @@ import seedu.address.model.person.Address;
 import seedu.address.model.person.DateOfBirth;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Gender;
+import seedu.address.model.person.Location;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
@@ -73,6 +79,7 @@ public class AddCommandParserTest {
             + PHONE_DESC_BOB
             + EMAIL_DESC_BOB
             + ADDRESS_DESC_BOB
+            + LOCATION_DESC_BOB
             + TAG_DESC_FRIEND,
             new AddCommand(expectedPerson));
 
@@ -87,6 +94,7 @@ public class AddCommandParserTest {
                 + PHONE_DESC_BOB
                 + EMAIL_DESC_BOB
                 + ADDRESS_DESC_BOB
+                + LOCATION_DESC_BOB
                 + TAG_DESC_HUSBAND
                 + TAG_DESC_FRIEND,
                 new AddCommand(expectedPersonMultipleTags));
@@ -100,6 +108,7 @@ public class AddCommandParserTest {
                 + PHONE_DESC_BOB
                 + EMAIL_DESC_BOB
                 + ADDRESS_DESC_BOB
+                + LOCATION_DESC_BOB
                 + TAG_DESC_FRIEND;
 
         // multiple names
@@ -126,6 +135,10 @@ public class AddCommandParserTest {
         assertParseFailure(parser, ADDRESS_DESC_AMY + validExpectedPersonString,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_ADDRESS));
 
+        // multiple locations
+        assertParseFailure(parser, LOCATION_DESC_AMY + validExpectedPersonString,
+                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_LOCATION));
+
         // multiple fields repeated
         assertParseFailure(parser,
                 validExpectedPersonString
@@ -133,12 +146,14 @@ public class AddCommandParserTest {
                 + EMAIL_DESC_AMY
                 + NAME_DESC_AMY
                 + ADDRESS_DESC_AMY
+                + LOCATION_DESC_AMY
                 + validExpectedPersonString,
                 Messages.getErrorMessageForDuplicatePrefixes(
                         PREFIX_NAME,
                         PREFIX_GENDER,
                         PREFIX_DOB,
                         PREFIX_ADDRESS,
+                        PREFIX_LOCATION,
                         PREFIX_EMAIL,
                         PREFIX_PHONE));
 
@@ -168,6 +183,10 @@ public class AddCommandParserTest {
         assertParseFailure(parser, INVALID_ADDRESS_DESC + validExpectedPersonString,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_ADDRESS));
 
+        // invalid location
+        assertParseFailure(parser, INVALID_LOCATION_DESC + validExpectedPersonString,
+                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_LOCATION));
+
         // valid value followed by invalid value
 
         // invalid name
@@ -193,6 +212,10 @@ public class AddCommandParserTest {
         // invalid address
         assertParseFailure(parser, validExpectedPersonString + INVALID_ADDRESS_DESC,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_ADDRESS));
+
+        // invalid location
+        assertParseFailure(parser, validExpectedPersonString + INVALID_LOCATION_DESC,
+                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_LOCATION));
     }
 
     @Test
@@ -205,7 +228,8 @@ public class AddCommandParserTest {
                 + DOB_DESC_AMY
                 + PHONE_DESC_AMY
                 + EMAIL_DESC_AMY
-                + ADDRESS_DESC_AMY,
+                + ADDRESS_DESC_AMY
+                + LOCATION_DESC_AMY,
                 new AddCommand(expectedPerson));
     }
 
@@ -220,7 +244,8 @@ public class AddCommandParserTest {
                 + DOB_DESC_BOB
                 + PHONE_DESC_BOB
                 + EMAIL_DESC_BOB
-                + ADDRESS_DESC_BOB,
+                + ADDRESS_DESC_BOB
+                + LOCATION_DESC_BOB,
                 expectedMessage);
 
         // missing gender prefix
@@ -230,7 +255,8 @@ public class AddCommandParserTest {
                 + DOB_DESC_BOB
                 + PHONE_DESC_BOB
                 + EMAIL_DESC_BOB
-                + ADDRESS_DESC_BOB,
+                + ADDRESS_DESC_BOB
+                + LOCATION_DESC_BOB,
                 expectedMessage);
 
         // missing dob prefix
@@ -240,7 +266,8 @@ public class AddCommandParserTest {
                 + VALID_DOB_BOB
                 + PHONE_DESC_BOB
                 + EMAIL_DESC_BOB
-                + ADDRESS_DESC_BOB,
+                + ADDRESS_DESC_BOB
+                + LOCATION_DESC_BOB,
                 expectedMessage);
 
         // missing phone prefix
@@ -250,7 +277,8 @@ public class AddCommandParserTest {
                 + DOB_DESC_BOB
                 + VALID_PHONE_BOB
                 + EMAIL_DESC_BOB
-                + ADDRESS_DESC_BOB,
+                + ADDRESS_DESC_BOB
+                + LOCATION_DESC_BOB,
                 expectedMessage);
 
         // missing email prefix
@@ -260,7 +288,8 @@ public class AddCommandParserTest {
                 + DOB_DESC_BOB
                 + PHONE_DESC_BOB
                 + VALID_EMAIL_BOB
-                + ADDRESS_DESC_BOB,
+                + ADDRESS_DESC_BOB
+                + LOCATION_DESC_BOB,
                 expectedMessage);
 
         // missing address prefix
@@ -270,7 +299,19 @@ public class AddCommandParserTest {
                 + DOB_DESC_BOB
                 + PHONE_DESC_BOB
                 + EMAIL_DESC_BOB
-                + VALID_ADDRESS_BOB,
+                + VALID_ADDRESS_BOB
+                + LOCATION_DESC_BOB,
+                expectedMessage);
+
+        // missing location prefix
+        assertParseFailure(parser,
+                NAME_DESC_BOB
+                + GENDER_DESC_BOB
+                + DOB_DESC_BOB
+                + PHONE_DESC_BOB
+                + EMAIL_DESC_BOB
+                + ADDRESS_DESC_BOB
+                + VALID_LOCATION_BOB,
                 expectedMessage);
 
         // all prefixes missing
@@ -280,7 +321,8 @@ public class AddCommandParserTest {
                 + VALID_DOB_BOB
                 + VALID_PHONE_BOB
                 + VALID_EMAIL_BOB
-                + VALID_ADDRESS_BOB,
+                + VALID_ADDRESS_BOB
+                + VALID_LOCATION_BOB,
                 expectedMessage);
     }
 
@@ -294,6 +336,7 @@ public class AddCommandParserTest {
                 + PHONE_DESC_BOB
                 + EMAIL_DESC_BOB
                 + ADDRESS_DESC_BOB
+                + LOCATION_DESC_BOB
                 + TAG_DESC_HUSBAND
                 + TAG_DESC_FRIEND,
                 Name.MESSAGE_CONSTRAINTS);
@@ -306,6 +349,7 @@ public class AddCommandParserTest {
                 + PHONE_DESC_BOB
                 + EMAIL_DESC_BOB
                 + ADDRESS_DESC_BOB
+                + LOCATION_DESC_BOB
                 + TAG_DESC_HUSBAND
                 + TAG_DESC_FRIEND,
                 Gender.MESSAGE_CONSTRAINTS);
@@ -318,6 +362,7 @@ public class AddCommandParserTest {
                 + PHONE_DESC_BOB
                 + EMAIL_DESC_BOB
                 + ADDRESS_DESC_BOB
+                + LOCATION_DESC_BOB
                 + TAG_DESC_HUSBAND
                 + TAG_DESC_FRIEND,
                 DateOfBirth.MESSAGE_CONSTRAINTS);
@@ -330,6 +375,7 @@ public class AddCommandParserTest {
                 + INVALID_PHONE_DESC
                 + EMAIL_DESC_BOB
                 + ADDRESS_DESC_BOB
+                + LOCATION_DESC_BOB
                 + TAG_DESC_HUSBAND
                 + TAG_DESC_FRIEND,
                 Phone.MESSAGE_CONSTRAINTS);
@@ -342,6 +388,7 @@ public class AddCommandParserTest {
                 + PHONE_DESC_BOB
                 + INVALID_EMAIL_DESC
                 + ADDRESS_DESC_BOB
+                + LOCATION_DESC_BOB
                 + TAG_DESC_HUSBAND
                 + TAG_DESC_FRIEND,
                 Email.MESSAGE_CONSTRAINTS);
@@ -354,9 +401,23 @@ public class AddCommandParserTest {
                 + PHONE_DESC_BOB
                 + EMAIL_DESC_BOB
                 + INVALID_ADDRESS_DESC
+                + LOCATION_DESC_BOB
                 + TAG_DESC_HUSBAND
                 + TAG_DESC_FRIEND,
                 Address.MESSAGE_CONSTRAINTS);
+
+        // invalid location
+        assertParseFailure(parser,
+                NAME_DESC_BOB
+                + GENDER_DESC_BOB
+                + DOB_DESC_BOB
+                + PHONE_DESC_BOB
+                + EMAIL_DESC_BOB
+                + ADDRESS_DESC_BOB
+                + INVALID_LOCATION_DESC
+                + TAG_DESC_HUSBAND
+                + TAG_DESC_FRIEND,
+                Location.MESSAGE_CONSTRAINTS);
 
         // invalid tag
         assertParseFailure(parser,
@@ -366,6 +427,7 @@ public class AddCommandParserTest {
                 + PHONE_DESC_BOB
                 + EMAIL_DESC_BOB
                 + ADDRESS_DESC_BOB
+                + LOCATION_DESC_BOB
                 + INVALID_TAG_DESC
                 + VALID_TAG_FRIEND,
                 Tag.MESSAGE_CONSTRAINTS);
@@ -377,7 +439,8 @@ public class AddCommandParserTest {
                 + DOB_DESC_BOB
                 + PHONE_DESC_BOB
                 + EMAIL_DESC_BOB
-                + INVALID_ADDRESS_DESC,
+                + INVALID_ADDRESS_DESC
+                + LOCATION_DESC_BOB,
                 Name.MESSAGE_CONSTRAINTS);
 
         // non-empty preamble
@@ -389,6 +452,7 @@ public class AddCommandParserTest {
                 + PHONE_DESC_BOB
                 + EMAIL_DESC_BOB
                 + ADDRESS_DESC_BOB
+                + LOCATION_DESC_BOB
                 + TAG_DESC_HUSBAND
                 + TAG_DESC_FRIEND,
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
