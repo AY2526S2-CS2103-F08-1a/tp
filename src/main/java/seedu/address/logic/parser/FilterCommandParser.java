@@ -24,10 +24,6 @@ public class FilterCommandParser implements Parser<FilterCommand> {
     public FilterCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_LOCATION);
 
-        if (argMultimap.getAllValues(PREFIX_LOCATION).isEmpty()) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FilterCommand.MESSAGE_USAGE));
-        }
-
         List<String> locationKeywords = argMultimap.getAllValues(PREFIX_LOCATION).stream()
                 .map(String::trim)
                 .filter(value -> !value.isEmpty())

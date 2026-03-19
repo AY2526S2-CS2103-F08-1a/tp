@@ -53,5 +53,11 @@ public class FilterCommandParserTest {
                         Arrays.asList(testMultiLocationArray)));
         assertParseSuccess(parser, " l/Anytime Fitness Jurong l/Clementi",
                 expectedMultiplePhrasesFilterCommand);
+
+        // mixed-case phrases should be accepted as it is by parser
+        FilterCommand expectedMixedCaseFilterCommand =
+                new FilterCommand(new LocationContainsKeywordsPredicate(
+                        Arrays.asList("aNyTiMe FiTnEsS jUrOnG", "cLeMeNtI")));
+        assertParseSuccess(parser, " l/aNyTiMe FiTnEsS jUrOnG l/cLeMeNtI", expectedMixedCaseFilterCommand);
     }
 }

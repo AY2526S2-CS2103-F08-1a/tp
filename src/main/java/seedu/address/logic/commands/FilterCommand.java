@@ -19,7 +19,7 @@ public class FilterCommand extends Command {
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Filter all persons whose location contain any of "
             + "the specified keywords (case-insensitive) and displays them as a list with index numbers.\n"
             + "Parameters: "
-            + PREFIX_LOCATION + "KEYWORD [MORE_KEYWORDS]... [" + PREFIX_LOCATION + "KEYWORD]...\n"
+            + PREFIX_LOCATION + "KEYWORD [" + PREFIX_LOCATION + "KEYWORD]...\n"
             + "Example: " + COMMAND_WORD + " " + PREFIX_LOCATION
             + "Anytime Fitness Buona " + PREFIX_LOCATION + "Clementi ActiveSG";
 
