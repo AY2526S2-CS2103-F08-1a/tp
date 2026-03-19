@@ -378,13 +378,16 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
     * 2d1. PowerRoster validates the gym location.  
         * 2d1a1. PowerRoster informs the Trainer of the invalid input and the expected format.  
-        * 2d1a2. Trainer re-enters the location.  
+        * 2d1a2. Trainer re-enters the location.
+      
           Use case resumes from step 2d1.  
+      
     * 2d2. PowerRoster saves the gym location to the new client’s profile.  
 
 * 2e. Trainer optionally provides a note for the client.  
     
-    * 2e1. PowerRoster saves the note to the client’s profile.  
+    * 2e1. PowerRoster saves the note to the client’s profile. 
+  
       Use case resumes from step 3.
 
 **Use case: UC03 \- Delete a client**  
@@ -433,11 +436,46 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
     * 2a1. PowerRoster informs the Trainer that no matching clients were found.
       
       Use case ends.
-* 2a. The *roster* has no clients 
+    
+* 2b. The *roster* has no clients 
 
-    * 2a1. PowerRoster informs the Trainer that there are no clients in the *roster*.  
+    * 2b1. PowerRoster informs the Trainer that there are no clients in the *roster*.  
         
       Use case ends.
+
+**Use case: UC06 \- Filter Clients by Gym Location**
+**Preconditions: Trainer has launched PowerRoster. At least one client in the *roster* has a gym location specified.**
+**Guarantees: All clients who train at the specified gym location are displayed.**
+**MSS:**
+1. Trainer requests to filter clients by gym location and provides one or more gym location phrases to filter by.
+2. PowerRoster retrieves and displays all clients whose gym location matches at least one of the provided location 
+phrases.
+3. PowerRoster confirms the number of clients found for the specified gym location to the Trainer.
+
+   Use case ends.
+
+**Extensions:**
+* 1a. Trainer omits the required command prefix for filtering by gym location.
+    * 1a1. PowerRoster informs the Trainer that the command format is invalid and shows the expected command format.  
+      
+      Use case ends.
+
+* 1b. Trainer provides only blank location values.
+    * 1b1. PowerRoster informs the Trainer that the command format is invalid and shows the expected command format.  
+      
+      Use case ends.
+
+* 2a. No clients match the filter criteria.
+    * 2a1. PowerRoster informs the Trainer that no clients were found for the specified gym location.
+      
+      Use case ends.
+
+* 2b. Trainer provides multiple gym location phrases
+    * 2b1. PowerRoster retrieves and displays all clients whose gym location matches at least one of the provided 
+           location phrases.
+    
+      Use case resumes from step 4
+
 
 ### Non-Functional Requirements
 
