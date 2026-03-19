@@ -4,7 +4,7 @@
   pageNav: 3
 ---
 
-# AB-3 Developer Guide
+# PowerRoster Developer Guide
 
 <!-- * Table of Contents -->
 <page-nav-print />
@@ -12,6 +12,7 @@
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Acknowledgements**
+Github Copilot was used by our team for its auto-complete features during our developement of this application
 
 _{ list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well }_
 
@@ -118,7 +119,7 @@ How the parsing works:
 ### Model component
 **API** : [`Model.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/model/Model.java)
 
-<puml src="diagrams/ModelClassDiagram.puml" width="450" />
+<puml src="diagrams/ModelClassDiagram.puml" width="600" />
 
 
 The `Model` component,
@@ -132,7 +133,7 @@ The `Model` component,
 
 **Note:** An alternative (arguably, a more OOP) model is given below. It has a `Tag` list in the `AddressBook`, which `Person` references. This allows `AddressBook` to only require one `Tag` object per unique tag, instead of each `Person` needing their own `Tag` objects.<br>
 
-<puml src="diagrams/BetterModelClassDiagram.puml" width="450" />
+<puml src="diagrams/BetterModelClassDiagram.puml" width="500" />
 
 </box>
 
@@ -433,9 +434,41 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
     * 2a1. PowerRoster informs the Trainer that no matching clients were found.
       
       Use case ends.
-* 2a. The *roster* has no clients 
+* 2a. The *roster* has no clients.
 
     * 2a1. PowerRoster informs the Trainer that there are no clients in the *roster*.  
+        
+      Use case ends.
+
+**Use case: UC07 \- Add/Append a Note to a Client**  
+**Preconditions: Trainer has launched PowerRoster.**
+
+**MSS:**
+
+1. Trainer requests to add or append a note to a specific client and provides the note.
+2. PowerRoster locates the client and adds or appends the note to the client profile.
+3. PowerRoster confirms the successful update to the Trainer.
+
+   Use case ends.
+
+**Extensions:**
+
+* 2a. The specified identifier does not match any existing client.
+    * 2a1. PowerRoster informs the Trainer that the identifier was invalid.
+
+      Use case ends.
+* 2b. PowerRoster detects that the client has requested to add and append at the same time.
+
+    * 2b1. PowerRoster informs the Trainer that it is not possible to add and append at the same time.
+        
+      Use case ends.
+* 2c. Trainer requests to add and provides an empty note.
+
+    * 2c1. PowerRoster replaces the existing note with the empty note.
+        
+      Use case ends.
+* 2d. Trainer requests to append and provides an empty note.
+    * 2d1. PowerRoster does not change the existing note.
         
       Use case ends.
 
