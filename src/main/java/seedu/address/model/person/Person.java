@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.tag.Tag;
 
@@ -15,6 +16,9 @@ import seedu.address.model.tag.Tag;
  * Guarantees: details are present and not null, field values are validated, immutable.
  */
 public class Person {
+
+    // Unique ID
+    private final ClientId id;
 
     // Identity fields
     private final Name name;
@@ -31,6 +35,7 @@ public class Person {
 
     /**
      * Every field must be present and not null.
+     * When ID is unknown, set it to null.
      */
     public Person(Name name,
             Gender gender,
@@ -42,6 +47,7 @@ public class Person {
             Note note,
             Set<Tag> tags) {
         requireAllNonNull(name, gender, phone, email, address, location, note, tags);
+        this.id = null;
         this.name = name;
         this.gender = gender;
         this.dob = dob;
@@ -51,6 +57,50 @@ public class Person {
         this.location = location;
         this.note = note;
         this.tags.addAll(tags);
+    }
+
+    /**
+     * Returns a Person object for use when the ID is known
+     */
+    private Person(ClientId id,
+            Name name,
+            Gender gender,
+            DateOfBirth dob,
+            Phone phone,
+            Email email,
+            Address address,
+            Location location,
+            Note note,
+            Set<Tag> tags) {
+        requireAllNonNull(name, gender, phone, email, address, location, note, tags);
+        this.id = id;
+        this.name = name;
+        this.gender = gender;
+        this.dob = dob;
+        this.phone = phone;
+        this.email = email;
+        this.address = address;
+        this.location = location;
+        this.note = note;
+        this.tags.addAll(tags);
+    }
+
+    public Person withId(String id) {
+        assert this.id == null : "ID should be created once and never overwritten";
+
+        ClientId newId = new ClientId(id);
+
+        return new Person(newId,
+                this.name,
+                this.gender,
+                this.dob,
+                this.phone,
+                this.email,
+                this.address,
+                this.location,
+                this.note,
+                this.tags
+        );
     }
 
     public Name getName() {
