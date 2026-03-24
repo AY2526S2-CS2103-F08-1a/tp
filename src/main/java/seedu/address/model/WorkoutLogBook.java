@@ -37,8 +37,6 @@ public class WorkoutLogBook {
      * @return True if the object exists, false otherwise
      */
     public boolean hasLog(WorkoutLog log) {
-        requireNonNull(log);
-
         return logs.contains(log);
     }
 
