@@ -145,14 +145,14 @@ public class MeasureCommandTest {
                 Optional.of(new Height(VALID_HEIGHT_AMY)),
                 Optional.of(new Weight(VALID_WEIGHT_AMY)),
                 Optional.of(new BodyFatPercentage(VALID_BODY_FAT_AMY)));
-        // Different target index -> commands are not equal.
+        // Different target index indicates commands are not equal.
         assertFalse(standardCommand.equals(differentIndexCommand));
 
         MeasureCommand differentMeasurementCommand = new MeasureCommand(INDEX_FIRST_PERSON,
                 Optional.of(new Height("170.0")),
                 Optional.of(new Weight(VALID_WEIGHT_AMY)),
                 Optional.of(new BodyFatPercentage(VALID_BODY_FAT_AMY)));
-        // Different measurement payload -> commands are not equal.
+        // Different measurement payload indicates commands are not equal.
         assertFalse(standardCommand.equals(differentMeasurementCommand));
     }
 }
