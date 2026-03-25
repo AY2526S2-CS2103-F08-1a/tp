@@ -137,7 +137,25 @@ Format: `note INDEX n/NOTE` or `note INDEX a/NOTE`
 
 Examples:
 * `note 1 n/Prefers morning sessions.` adds the note `Prefers morning sessions.` to the 1st client, replacing any existing notes.
-* `note 2 a/Just recovered from a knee injury.` appends the note `Just recovered from a knee injury.` to the 2nd client’s existing notes. If the 2nd client has no existing notes, this behaves the same as `n/Just recovered from a knee injury.`.
+* `note 2 a/Just recovered from a knee injury.` appends the note `Just recovered from a knee injury.` to the 2nd client's existing notes. If the 2nd client has no existing notes, this behaves the same as `n/Just recovered from a knee injury.`.
+
+### Changing a client's status : `status`
+
+Changes the status of an existing client in PowerRoster between active and inactive.
+
+Format: `status INDEX s/STATUS`
+
+* Changes the status of the client at the specified `INDEX`.
+* The index refers to the index number shown in the displayed client list.
+* The index **must be a positive integer** 1, 2, 3, …​
+* `STATUS` must be either `active` or `inactive` (case-insensitive).
+* New clients are automatically set to `active` status when added.
+* Use this feature to mark clients as inactive while retaining their records for future reference.
+
+Examples:
+* `status 1 s/inactive` changes the 1st client's status to inactive.
+* `status 2 s/active` changes the 2nd client's status to active.
+* `status 3 s/INACTIVE` changes the 3rd client's status to inactive (case-insensitive).
 
 ### Locating clients by name: `find`
 
@@ -246,6 +264,7 @@ Action     | Format, Examples
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
 **Edit**   | `edit INDEX [n/NAME] [g/GENDER] [dob/DATE_OF_BIRTH] [p/PHONE] [e/EMAIL] [a/ADDRESS] [l/LOCATION] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
 **Note**   | `note INDEX n/NOTE` or `note INDEX a/NOTE`<br> e.g., `note 1 n/Prefers morning sessions.`
+**Status** | `status INDEX s/STATUS`<br> e.g., `status 1 s/inactive`
 **Find**   | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
 **Filter** | `filter l/LOCATION_PHRASE [l/MORE_LOCATION_PHRASES]...`<br> e.g., `filter l/Clementi l/ActiveSG`
 **List**   | `list`
