@@ -12,12 +12,11 @@ import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
-import java.util.Optional;
-
 import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.Messages;
+import seedu.address.logic.commands.MeasureCommand.MeasureDescriptor;
 import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
@@ -47,10 +46,11 @@ public class MeasureCommandTest {
                 .withBodyFatPercentage(VALID_BODY_FAT_AMY)
                 .build();
 
-        MeasureCommand measureCommand = new MeasureCommand(INDEX_FIRST_PERSON,
-                Optional.of(new Height(VALID_HEIGHT_AMY)),
-                Optional.of(new Weight(VALID_WEIGHT_AMY)),
-                Optional.of(new BodyFatPercentage(VALID_BODY_FAT_AMY)));
+        MeasureDescriptor descriptor = new MeasureDescriptor();
+        descriptor.setHeight(new Height(VALID_HEIGHT_AMY));
+        descriptor.setWeight(new Weight(VALID_WEIGHT_AMY));
+        descriptor.setBodyFatPercentage(new BodyFatPercentage(VALID_BODY_FAT_AMY));
+        MeasureCommand measureCommand = new MeasureCommand(INDEX_FIRST_PERSON, descriptor);
 
         String expectedMessage = String.format(MeasureCommand.MESSAGE_SUCCESS, Messages.format(editedPerson));
 
@@ -72,10 +72,9 @@ public class MeasureCommandTest {
                 .withHeight(VALID_HEIGHT_AMY)
                 .build();
 
-        MeasureCommand measureCommand = new MeasureCommand(INDEX_FIRST_PERSON,
-                Optional.of(new Height(VALID_HEIGHT_AMY)),
-                Optional.empty(),
-                Optional.empty());
+        MeasureDescriptor descriptor = new MeasureDescriptor();
+        descriptor.setHeight(new Height(VALID_HEIGHT_AMY));
+        MeasureCommand measureCommand = new MeasureCommand(INDEX_FIRST_PERSON, descriptor);
 
         String expectedMessage = String.format(MeasureCommand.MESSAGE_SUCCESS, Messages.format(editedPerson));
 
@@ -91,10 +90,9 @@ public class MeasureCommandTest {
     @Test
     public void execute_invalidPersonIndexUnfilteredList_failure() {
         Index outOfBoundIndex = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
-        MeasureCommand measureCommand = new MeasureCommand(outOfBoundIndex,
-                Optional.of(new Height(VALID_HEIGHT_AMY)),
-                Optional.empty(),
-                Optional.empty());
+        MeasureDescriptor descriptor = new MeasureDescriptor();
+        descriptor.setHeight(new Height(VALID_HEIGHT_AMY));
+        MeasureCommand measureCommand = new MeasureCommand(outOfBoundIndex, descriptor);
 
         assertCommandFailure(measureCommand, model, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
     }
@@ -109,10 +107,9 @@ public class MeasureCommandTest {
 
         assertTrue(outOfBoundIndex.getZeroBased() < model.getAddressBook().getPersonList().size());
 
-        MeasureCommand measureCommand = new MeasureCommand(outOfBoundIndex,
-                Optional.of(new Height(VALID_HEIGHT_AMY)),
-                Optional.empty(),
-                Optional.empty());
+        MeasureDescriptor descriptor = new MeasureDescriptor();
+        descriptor.setHeight(new Height(VALID_HEIGHT_AMY));
+        MeasureCommand measureCommand = new MeasureCommand(outOfBoundIndex, descriptor);
 
         assertCommandFailure(measureCommand, model, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
     }
@@ -122,15 +119,17 @@ public class MeasureCommandTest {
      */
     @Test
     public void equals() {
-        final MeasureCommand standardCommand = new MeasureCommand(INDEX_FIRST_PERSON,
-                Optional.of(new Height(VALID_HEIGHT_AMY)),
-                Optional.of(new Weight(VALID_WEIGHT_AMY)),
-                Optional.of(new BodyFatPercentage(VALID_BODY_FAT_AMY)));
+        MeasureDescriptor standardDescriptor = new MeasureDescriptor();
+        standardDescriptor.setHeight(new Height(VALID_HEIGHT_AMY));
+        standardDescriptor.setWeight(new Weight(VALID_WEIGHT_AMY));
+        standardDescriptor.setBodyFatPercentage(new BodyFatPercentage(VALID_BODY_FAT_AMY));
+        final MeasureCommand standardCommand = new MeasureCommand(INDEX_FIRST_PERSON, standardDescriptor);
 
-        MeasureCommand sameValuesCommand = new MeasureCommand(INDEX_FIRST_PERSON,
-                Optional.of(new Height(VALID_HEIGHT_AMY)),
-                Optional.of(new Weight(VALID_WEIGHT_AMY)),
-                Optional.of(new BodyFatPercentage(VALID_BODY_FAT_AMY)));
+        MeasureDescriptor sameDescriptor = new MeasureDescriptor();
+        sameDescriptor.setHeight(new Height(VALID_HEIGHT_AMY));
+        sameDescriptor.setWeight(new Weight(VALID_WEIGHT_AMY));
+        sameDescriptor.setBodyFatPercentage(new BodyFatPercentage(VALID_BODY_FAT_AMY));
+        MeasureCommand sameValuesCommand = new MeasureCommand(INDEX_FIRST_PERSON, sameDescriptor);
         // Same index and same optional measurements indicates commands are equal.
         assertTrue(standardCommand.equals(sameValuesCommand));
 
@@ -141,17 +140,20 @@ public class MeasureCommandTest {
         // Command should not be equal to objects of a different type.
         assertFalse(standardCommand.equals(new ClearCommand()));
 
-        MeasureCommand differentIndexCommand = new MeasureCommand(INDEX_SECOND_PERSON,
-                Optional.of(new Height(VALID_HEIGHT_AMY)),
-                Optional.of(new Weight(VALID_WEIGHT_AMY)),
-                Optional.of(new BodyFatPercentage(VALID_BODY_FAT_AMY)));
+        MeasureDescriptor differentIndexDescriptor = new MeasureDescriptor();
+        differentIndexDescriptor.setHeight(new Height(VALID_HEIGHT_AMY));
+        differentIndexDescriptor.setWeight(new Weight(VALID_WEIGHT_AMY));
+        differentIndexDescriptor.setBodyFatPercentage(new BodyFatPercentage(VALID_BODY_FAT_AMY));
+        MeasureCommand differentIndexCommand = new MeasureCommand(INDEX_SECOND_PERSON, differentIndexDescriptor);
         // Different target index indicates commands are not equal.
         assertFalse(standardCommand.equals(differentIndexCommand));
 
+        MeasureDescriptor differentMeasurementDescriptor = new MeasureDescriptor();
+        differentMeasurementDescriptor.setHeight(new Height("170.0"));
+        differentMeasurementDescriptor.setWeight(new Weight(VALID_WEIGHT_AMY));
+        differentMeasurementDescriptor.setBodyFatPercentage(new BodyFatPercentage(VALID_BODY_FAT_AMY));
         MeasureCommand differentMeasurementCommand = new MeasureCommand(INDEX_FIRST_PERSON,
-                Optional.of(new Height("170.0")),
-                Optional.of(new Weight(VALID_WEIGHT_AMY)),
-                Optional.of(new BodyFatPercentage(VALID_BODY_FAT_AMY)));
+                differentMeasurementDescriptor);
         // Different measurement payload indicates commands are not equal.
         assertFalse(standardCommand.equals(differentMeasurementCommand));
     }

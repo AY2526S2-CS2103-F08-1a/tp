@@ -11,8 +11,8 @@ public class Weight {
 
     public static final String MESSAGE_CONSTRAINTS =
             "Weight should be a number in kg between 20.0 and 500.0, with up to 1 decimal place.";
-    public static final String DEFAULT_WEIGHT_TEXT = "-";
-    private static final String VALIDATION_REGEX = "\\d+(?:\\.\\d)?";
+    public static final String DEFAULT_WEIGHT_TEXT = "";
+    public static final String VALIDATION_REGEX = "\\d+(?:\\.\\d)?";
 
     public final String value;
 
@@ -21,40 +21,26 @@ public class Weight {
      */
     public Weight(String weight) {
         requireNonNull(weight);
-        String normalizedWeight = normalize(weight);
-        if (DEFAULT_WEIGHT_TEXT.equalsIgnoreCase(normalizedWeight)) {
-            this.value = DEFAULT_WEIGHT_TEXT;
-            return;
-        }
-
-        checkArgument(isValidWeight(normalizedWeight), MESSAGE_CONSTRAINTS);
-        this.value = normalizedWeight;
+        checkArgument(isValidWeight(weight), MESSAGE_CONSTRAINTS);
+        value = weight;
     }
 
     /**
      * Returns true if a given string is a valid weight value.
      */
     public static boolean isValidWeight(String test) {
-        if (test == null) {
-            return false;
-        }
-
-        String normalizedTest = normalize(test);
-        if (DEFAULT_WEIGHT_TEXT.equalsIgnoreCase(normalizedTest)) {
+        if (DEFAULT_WEIGHT_TEXT.equals(test)) {
             return true;
         }
 
-        if (!normalizedTest.matches(VALIDATION_REGEX)) {
+        if (!test.matches(VALIDATION_REGEX)) {
             return false;
         }
 
-        double parsedValue = Double.parseDouble(normalizedTest);
+        double parsedValue = Double.parseDouble(test);
         return parsedValue >= 20.0 && parsedValue <= 500.0;
     }
 
-    private static String normalize(String text) {
-        return text.trim().replaceAll("\\s+", " ");
-    }
 
     @Override
     public String toString() {

@@ -76,21 +76,6 @@ class JsonAdaptedPerson {
         }
     }
 
-    /**
-     * Backward-compatible constructor used in tests and old call sites.
-     */
-    public JsonAdaptedPerson(String name,
-            String gender,
-            String dob,
-            String phone,
-            String email,
-            String address,
-            String location,
-            String note,
-            List<JsonAdaptedTag> tags) {
-        this(name, gender, dob, phone, email, address, location, note,
-                null, null, null, tags);
-    }
 
     /**
      * Converts a given {@code Person} into this class for Jackson use.
@@ -186,35 +171,30 @@ class JsonAdaptedPerson {
         }
         final Note modelNote = new Note(note);
 
-        final Height modelHeight;
         if (height == null) {
-            modelHeight = new Height(Height.DEFAULT_HEIGHT_TEXT);
-        } else {
-            if (!Height.isValidHeight(height.trim().replaceAll("\\s+", " "))) {
-                throw new IllegalValueException(Height.MESSAGE_CONSTRAINTS);
-            }
-            modelHeight = new Height(height);
+            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Height.class.getSimpleName()));
         }
+        if (!Height.isValidHeight(height)) {
+            throw new IllegalValueException(Height.MESSAGE_CONSTRAINTS);
+        }
+        final Height modelHeight = new Height(height);
 
-        final Weight modelWeight;
         if (weight == null) {
-            modelWeight = new Weight(Weight.DEFAULT_WEIGHT_TEXT);
-        } else {
-            if (!Weight.isValidWeight(weight.trim().replaceAll("\\s+", " "))) {
-                throw new IllegalValueException(Weight.MESSAGE_CONSTRAINTS);
-            }
-            modelWeight = new Weight(weight);
+            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Weight.class.getSimpleName()));
         }
+        if (!Weight.isValidWeight(weight)) {
+            throw new IllegalValueException(Weight.MESSAGE_CONSTRAINTS);
+        }
+        final Weight modelWeight = new Weight(weight);
 
-        final BodyFatPercentage modelBodyFatPercentage;
         if (bodyFatPercentage == null) {
-            modelBodyFatPercentage = new BodyFatPercentage(BodyFatPercentage.DEFAULT_BODY_FAT_TEXT);
-        } else {
-            if (!BodyFatPercentage.isValidBodyFatPercentage(bodyFatPercentage.trim().replaceAll("\\s+", " "))) {
-                throw new IllegalValueException(BodyFatPercentage.MESSAGE_CONSTRAINTS);
-            }
-            modelBodyFatPercentage = new BodyFatPercentage(bodyFatPercentage);
+            throw new IllegalValueException(
+                    String.format(MISSING_FIELD_MESSAGE_FORMAT, BodyFatPercentage.class.getSimpleName()));
         }
+        if (!BodyFatPercentage.isValidBodyFatPercentage(bodyFatPercentage)) {
+            throw new IllegalValueException(BodyFatPercentage.MESSAGE_CONSTRAINTS);
+        }
+        final BodyFatPercentage modelBodyFatPercentage = new BodyFatPercentage(bodyFatPercentage);
 
         final Set<Tag> modelTags = new HashSet<>(personTags);
         return new Person(modelName,

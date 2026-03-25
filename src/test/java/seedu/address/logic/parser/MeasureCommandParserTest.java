@@ -12,11 +12,10 @@ import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailur
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 
-import java.util.Optional;
-
 import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.commands.MeasureCommand;
+import seedu.address.logic.commands.MeasureCommand.MeasureDescriptor;
 import seedu.address.model.person.BodyFatPercentage;
 import seedu.address.model.person.Height;
 import seedu.address.model.person.Weight;
@@ -80,10 +79,9 @@ public class MeasureCommandParserTest {
      */
     @Test
     public void parse_validSinglePrefix_success() {
-        MeasureCommand expectedCommand = new MeasureCommand(INDEX_FIRST_PERSON,
-                Optional.of(new Height("165.5")),
-                Optional.empty(),
-                Optional.empty());
+        MeasureDescriptor descriptor = new MeasureDescriptor();
+        descriptor.setHeight(new Height("165.5"));
+        MeasureCommand expectedCommand = new MeasureCommand(INDEX_FIRST_PERSON, descriptor);
 
         assertParseSuccess(parser, "1" + HEIGHT_DESC_AMY, expectedCommand);
     }
@@ -93,10 +91,11 @@ public class MeasureCommandParserTest {
      */
     @Test
     public void parse_validMultiplePrefixes_success() {
-        MeasureCommand expectedCommand = new MeasureCommand(INDEX_FIRST_PERSON,
-                Optional.of(new Height("165.5")),
-                Optional.of(new Weight("58.0")),
-                Optional.of(new BodyFatPercentage("22.5")));
+        MeasureDescriptor descriptor = new MeasureDescriptor();
+        descriptor.setHeight(new Height("165.5"));
+        descriptor.setWeight(new Weight("58.0"));
+        descriptor.setBodyFatPercentage(new BodyFatPercentage("22.5"));
+        MeasureCommand expectedCommand = new MeasureCommand(INDEX_FIRST_PERSON, descriptor);
 
         assertParseSuccess(parser, "1" + HEIGHT_DESC_AMY + WEIGHT_DESC_AMY + BODY_FAT_DESC_AMY, expectedCommand);
     }

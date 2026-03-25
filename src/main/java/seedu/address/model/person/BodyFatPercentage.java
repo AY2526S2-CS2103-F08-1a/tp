@@ -11,8 +11,8 @@ public class BodyFatPercentage {
 
     public static final String MESSAGE_CONSTRAINTS =
             "Body fat percentage should be a number between 1.0 and 75.0, with up to 1 decimal place.";
-    public static final String DEFAULT_BODY_FAT_TEXT = "-";
-    private static final String VALIDATION_REGEX = "\\d+(?:\\.\\d)?";
+    public static final String DEFAULT_BODY_FAT_TEXT = "";
+    public static final String VALIDATION_REGEX = "\\d+(?:\\.\\d)?";
 
     public final String value;
 
@@ -21,40 +21,26 @@ public class BodyFatPercentage {
      */
     public BodyFatPercentage(String bodyFatPercentage) {
         requireNonNull(bodyFatPercentage);
-        String normalizedBodyFat = normalize(bodyFatPercentage);
-        if (DEFAULT_BODY_FAT_TEXT.equalsIgnoreCase(normalizedBodyFat)) {
-            this.value = DEFAULT_BODY_FAT_TEXT;
-            return;
-        }
-
-        checkArgument(isValidBodyFatPercentage(normalizedBodyFat), MESSAGE_CONSTRAINTS);
-        this.value = normalizedBodyFat;
+        checkArgument(isValidBodyFatPercentage(bodyFatPercentage), MESSAGE_CONSTRAINTS);
+        value = bodyFatPercentage;
     }
 
     /**
      * Returns true if a given string is a valid body fat percentage value.
      */
     public static boolean isValidBodyFatPercentage(String test) {
-        if (test == null) {
-            return false;
-        }
-
-        String normalizedTest = normalize(test);
-        if (DEFAULT_BODY_FAT_TEXT.equalsIgnoreCase(normalizedTest)) {
+        if (DEFAULT_BODY_FAT_TEXT.equals(test)) {
             return true;
         }
 
-        if (!normalizedTest.matches(VALIDATION_REGEX)) {
+        if (!test.matches(VALIDATION_REGEX)) {
             return false;
         }
 
-        double parsedValue = Double.parseDouble(normalizedTest);
+        double parsedValue = Double.parseDouble(test);
         return parsedValue >= 1.0 && parsedValue <= 75.0;
     }
 
-    private static String normalize(String text) {
-        return text.trim().replaceAll("\\s+", " ");
-    }
 
     @Override
     public String toString() {

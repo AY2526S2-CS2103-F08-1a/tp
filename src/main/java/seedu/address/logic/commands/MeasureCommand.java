@@ -7,6 +7,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_WEIGHT;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import seedu.address.commons.core.index.Index;
@@ -40,26 +41,17 @@ public class MeasureCommand extends Command {
     public static final String MESSAGE_SUCCESS = "Updated measurements for person: %1$s";
 
     private final Index index;
-    private final Optional<Height> height;
-    private final Optional<Weight> weight;
-    private final Optional<BodyFatPercentage> bodyFatPercentage;
+    private final MeasureDescriptor measureDescriptor;
 
     /**
      * Creates a MeasureCommand.
      */
-    public MeasureCommand(Index index,
-            Optional<Height> height,
-            Optional<Weight> weight,
-            Optional<BodyFatPercentage> bodyFatPercentage) {
+    public MeasureCommand(Index index, MeasureDescriptor measureDescriptor) {
         requireNonNull(index);
-        requireNonNull(height);
-        requireNonNull(weight);
-        requireNonNull(bodyFatPercentage);
+        requireNonNull(measureDescriptor);
 
         this.index = index;
-        this.height = height;
-        this.weight = weight;
-        this.bodyFatPercentage = bodyFatPercentage;
+        this.measureDescriptor = new MeasureDescriptor(measureDescriptor);
     }
 
     @Override
@@ -81,9 +73,9 @@ public class MeasureCommand extends Command {
                 personToEdit.getAddress(),
                 personToEdit.getLocation(),
                 personToEdit.getNote(),
-                height.orElse(personToEdit.getHeight()),
-                weight.orElse(personToEdit.getWeight()),
-                bodyFatPercentage.orElse(personToEdit.getBodyFatPercentage()),
+                measureDescriptor.getHeight().orElse(personToEdit.getHeight()),
+                measureDescriptor.getWeight().orElse(personToEdit.getWeight()),
+                measureDescriptor.getBodyFatPercentage().orElse(personToEdit.getBodyFatPercentage()),
                 personToEdit.getTags());
 
         model.setPerson(personToEdit, editedPerson);
@@ -104,9 +96,77 @@ public class MeasureCommand extends Command {
 
         MeasureCommand otherCommand = (MeasureCommand) other;
         return index.equals(otherCommand.index)
-                && height.equals(otherCommand.height)
-                && weight.equals(otherCommand.weight)
-                && bodyFatPercentage.equals(otherCommand.bodyFatPercentage);
+                && measureDescriptor.equals(otherCommand.measureDescriptor);
+    }
+
+    /**
+     * Stores the body measurement fields to update.
+     */
+    public static class MeasureDescriptor {
+        private Height height;
+        private Weight weight;
+        private BodyFatPercentage bodyFatPercentage;
+
+        public MeasureDescriptor() {}
+
+        /**
+         * Copy constructor.
+         */
+        public MeasureDescriptor(MeasureDescriptor toCopy) {
+            setHeight(toCopy.height);
+            setWeight(toCopy.weight);
+            setBodyFatPercentage(toCopy.bodyFatPercentage);
+        }
+
+        /**
+         * Returns true if at least one measurement field is set.
+         */
+        public boolean isAnyFieldEdited() {
+            return height != null || weight != null || bodyFatPercentage != null;
+        }
+
+        public void setHeight(Height height) {
+            this.height = height;
+        }
+
+        public Optional<Height> getHeight() {
+            return Optional.ofNullable(height);
+        }
+
+        public void setWeight(Weight weight) {
+            this.weight = weight;
+        }
+
+        public Optional<Weight> getWeight() {
+            return Optional.ofNullable(weight);
+        }
+
+        public void setBodyFatPercentage(BodyFatPercentage bodyFatPercentage) {
+            this.bodyFatPercentage = bodyFatPercentage;
+        }
+
+        public Optional<BodyFatPercentage> getBodyFatPercentage() {
+            return Optional.ofNullable(bodyFatPercentage);
+        }
+
+        @Override
+        public boolean equals(Object other) {
+            if (other == this) {
+                return true;
+            }
+            if (!(other instanceof MeasureDescriptor)) {
+                return false;
+            }
+            MeasureDescriptor otherDescriptor = (MeasureDescriptor) other;
+            return Objects.equals(height, otherDescriptor.height)
+                    && Objects.equals(weight, otherDescriptor.weight)
+                    && Objects.equals(bodyFatPercentage, otherDescriptor.bodyFatPercentage);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(height, weight, bodyFatPercentage);
+        }
     }
 }
 

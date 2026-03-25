@@ -28,17 +28,14 @@ import static seedu.address.logic.commands.CommandTestUtil.PREAMBLE_WHITESPACE;
 import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_FRIEND;
 import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_HUSBAND;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_BODY_FAT_DEFAULT;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_DOB_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_GENDER_BOB;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_HEIGHT_DEFAULT;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_LOCATION_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_WEIGHT_DEFAULT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_DOB;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
@@ -72,9 +69,6 @@ public class AddCommandParserTest {
     @Test
     public void parse_allFieldsPresent_success() {
         Person expectedPerson = new PersonBuilder(BOB)
-                .withHeight(VALID_HEIGHT_DEFAULT)
-                .withWeight(VALID_WEIGHT_DEFAULT)
-                .withBodyFatPercentage(VALID_BODY_FAT_DEFAULT)
                 .withTags(VALID_TAG_FRIEND)
                 .build();
 
@@ -94,9 +88,6 @@ public class AddCommandParserTest {
 
         // multiple tags - all accepted
         Person expectedPersonMultipleTags = new PersonBuilder(BOB)
-                .withHeight(VALID_HEIGHT_DEFAULT)
-                .withWeight(VALID_WEIGHT_DEFAULT)
-                .withBodyFatPercentage(VALID_BODY_FAT_DEFAULT)
                 .withTags(VALID_TAG_FRIEND, VALID_TAG_HUSBAND)
                 .build();
         assertParseSuccess(parser,
@@ -234,9 +225,6 @@ public class AddCommandParserTest {
     public void parse_optionalFieldsMissing_success() {
         // zero tags
         Person expectedPerson = new PersonBuilder(AMY)
-                .withHeight(VALID_HEIGHT_DEFAULT)
-                .withWeight(VALID_WEIGHT_DEFAULT)
-                .withBodyFatPercentage(VALID_BODY_FAT_DEFAULT)
                 .withTags()
                 .build();
         assertParseSuccess(parser,
@@ -252,9 +240,6 @@ public class AddCommandParserTest {
         //no location
         Person expectedNoLocationPerson = new PersonBuilder(AMY)
                 .withLocation("No Location Specified")
-                .withHeight(VALID_HEIGHT_DEFAULT)
-                .withWeight(VALID_WEIGHT_DEFAULT)
-                .withBodyFatPercentage(VALID_BODY_FAT_DEFAULT)
                 .build();
         assertParseSuccess(parser,
                 NAME_DESC_AMY

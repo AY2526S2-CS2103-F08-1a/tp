@@ -30,6 +30,7 @@ import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.MeasureCommand;
+import seedu.address.logic.commands.MeasureCommand.MeasureDescriptor;
 import seedu.address.logic.commands.NoteCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.BodyFatPercentage;
@@ -51,9 +52,6 @@ public class AddressBookParserTest {
     public void parseCommand_add() throws Exception {
         Person person = new PersonBuilder().build();
         Person expectedPerson = new PersonBuilder(person)
-                .withHeight(Height.DEFAULT_HEIGHT_TEXT)
-                .withWeight(Weight.DEFAULT_WEIGHT_TEXT)
-                .withBodyFatPercentage(BodyFatPercentage.DEFAULT_BODY_FAT_TEXT)
                 .build();
         AddCommand command = (AddCommand) parser.parseCommand(PersonUtil.getAddCommand(person));
         assertEquals(new AddCommand(expectedPerson), command);
@@ -106,10 +104,11 @@ public class AddressBookParserTest {
                         + PREFIX_WEIGHT + "72.0 "
                         + PREFIX_BODY_FAT + "14.8");
 
-        assertEquals(new MeasureCommand(INDEX_FIRST_PERSON,
-                java.util.Optional.of(new Height("175.5")),
-                java.util.Optional.of(new Weight("72.0")),
-                java.util.Optional.of(new BodyFatPercentage("14.8"))), command);
+        MeasureDescriptor descriptor = new MeasureDescriptor();
+        descriptor.setHeight(new Height("175.5"));
+        descriptor.setWeight(new Weight("72.0"));
+        descriptor.setBodyFatPercentage(new BodyFatPercentage("14.8"));
+        assertEquals(new MeasureCommand(INDEX_FIRST_PERSON, descriptor), command);
     }
 
     @Test

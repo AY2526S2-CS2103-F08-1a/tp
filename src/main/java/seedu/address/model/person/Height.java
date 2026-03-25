@@ -11,8 +11,8 @@ public class Height {
 
     public static final String MESSAGE_CONSTRAINTS =
             "Height should be a number in cm between 50.0 and 300.0, with up to 1 decimal place.";
-    public static final String DEFAULT_HEIGHT_TEXT = "-";
-    private static final String VALIDATION_REGEX = "\\d+(?:\\.\\d)?";
+    public static final String DEFAULT_HEIGHT_TEXT = "";
+    public static final String VALIDATION_REGEX = "\\d+(?:\\.\\d)?";
 
     public final String value;
 
@@ -21,40 +21,26 @@ public class Height {
      */
     public Height(String height) {
         requireNonNull(height);
-        String normalizedHeight = normalize(height);
-        if (DEFAULT_HEIGHT_TEXT.equalsIgnoreCase(normalizedHeight)) {
-            this.value = DEFAULT_HEIGHT_TEXT;
-            return;
-        }
-
-        checkArgument(isValidHeight(normalizedHeight), MESSAGE_CONSTRAINTS);
-        this.value = normalizedHeight;
+        checkArgument(isValidHeight(height), MESSAGE_CONSTRAINTS);
+        value = height;
     }
 
     /**
      * Returns true if a given string is a valid height value.
      */
     public static boolean isValidHeight(String test) {
-        if (test == null) {
-            return false;
-        }
-
-        String normalizedTest = normalize(test);
-        if (DEFAULT_HEIGHT_TEXT.equalsIgnoreCase(normalizedTest)) {
+        if (DEFAULT_HEIGHT_TEXT.equals(test)) {
             return true;
         }
 
-        if (!normalizedTest.matches(VALIDATION_REGEX)) {
+        if (!test.matches(VALIDATION_REGEX)) {
             return false;
         }
 
-        double parsedValue = Double.parseDouble(normalizedTest);
+        double parsedValue = Double.parseDouble(test);
         return parsedValue >= 50.0 && parsedValue <= 300.0;
     }
 
-    private static String normalize(String text) {
-        return text.trim().replaceAll("\\s+", " ");
-    }
 
     @Override
     public String toString() {

@@ -31,9 +31,9 @@ public class PersonBuilder {
     public static final String DEFAULT_ADDRESS = "123, Jurong West Ave 6, #08-111";
     public static final String DEFAULT_LOCATION = "ActiveSG @ Fernvale Square";
     public static final String DEFAULT_NOTE = "";
-    public static final String DEFAULT_HEIGHT = "170.0";
-    public static final String DEFAULT_WEIGHT = "68.0";
-    public static final String DEFAULT_BODY_FAT = "18.0";
+    public static final String DEFAULT_HEIGHT = "";
+    public static final String DEFAULT_WEIGHT = "";
+    public static final String DEFAULT_BODY_FAT = "";
 
     private Name name;
     private Gender gender;

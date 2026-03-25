@@ -8,6 +8,9 @@
     "address": "123, Jurong West Ave 6, #08-111",
     "location": "Sengkang ActiveSG Gym",
     "note": "Likes to workout in the morning",
+    "height" : "166.0",
+    "weight" : "59.2",
+    "bodyFatPercentage" : "21.8",
     "tags": [ "friends" ]
   }, {
     "name": "Alice Pauline",
@@ -17,6 +20,9 @@
     "email": "pauline@example.com",
     "address": "4th street",
     "location": "Pasir Ris ActiveSG Gym",
-    "note": "Likes to workout in the morning"
+    "note": "Likes to workout in the morning",
+    "height" : "167.4",
+    "weight" : "60.5",
+    "bodyFatPercentage" : "22.4"
   } ]
 }

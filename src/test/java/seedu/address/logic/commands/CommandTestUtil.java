@@ -59,9 +59,6 @@ public class CommandTestUtil {
     public static final String VALID_WEIGHT_BOB = "80.5";
     public static final String VALID_BODY_FAT_AMY = "22.5";
     public static final String VALID_BODY_FAT_BOB = "15.0";
-    public static final String VALID_HEIGHT_DEFAULT = "-";
-    public static final String VALID_WEIGHT_DEFAULT = "-";
-    public static final String VALID_BODY_FAT_DEFAULT = "-";
 
     public static final String NAME_DESC_AMY = " " + PREFIX_NAME + VALID_NAME_AMY;
     public static final String NAME_DESC_BOB = " " + PREFIX_NAME + VALID_NAME_BOB;
