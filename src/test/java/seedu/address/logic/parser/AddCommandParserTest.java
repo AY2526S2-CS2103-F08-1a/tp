@@ -69,7 +69,6 @@ public class AddCommandParserTest {
     @Test
     public void parse_allFieldsPresent_success() {
         Person expectedPerson = new PersonBuilder(BOB)
-                .withPlan(PersonBuilder.DEFAULT_PLAN)
                 .withTags(VALID_TAG_FRIEND)
                 .build();
 
@@ -89,7 +88,6 @@ public class AddCommandParserTest {
 
         // multiple tags - all accepted
         Person expectedPersonMultipleTags = new PersonBuilder(BOB)
-                .withPlan(PersonBuilder.DEFAULT_PLAN)
                 .withTags(VALID_TAG_FRIEND, VALID_TAG_HUSBAND)
                 .build();
         assertParseSuccess(parser,
@@ -227,7 +225,6 @@ public class AddCommandParserTest {
     public void parse_optionalFieldsMissing_success() {
         // zero tags
         Person expectedPerson = new PersonBuilder(AMY)
-                .withPlan(PersonBuilder.DEFAULT_PLAN)
                 .withTags()
                 .build();
         assertParseSuccess(parser,
@@ -242,7 +239,6 @@ public class AddCommandParserTest {
 
         //no location
         Person expectedNoLocationPerson = new PersonBuilder(AMY)
-                .withPlan(PersonBuilder.DEFAULT_PLAN)
                 .withLocation("No Location Specified")
                 .build();
         assertParseSuccess(parser,
