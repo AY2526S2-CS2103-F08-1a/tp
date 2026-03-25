@@ -29,7 +29,7 @@ public class PersonBuilder {
     public static final String DEFAULT_ADDRESS = "123, Jurong West Ave 6, #08-111";
     public static final String DEFAULT_LOCATION = "ActiveSG @ Fernvale Square";
     public static final String DEFAULT_NOTE = "";
-    public static final String DEFAULT_RATE = "80.00";
+    public static final String DEFAULT_RATE = "";
 
     private Name name;
     private Gender gender;
