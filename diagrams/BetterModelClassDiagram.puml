@@ -22,4 +22,5 @@ Person *--> Email
 Person *--> Address
 Person *--> Location
 Person *--> "0..1" Note
+Person *--> Status
 @enduml
