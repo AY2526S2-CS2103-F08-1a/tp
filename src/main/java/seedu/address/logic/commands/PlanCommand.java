@@ -7,6 +7,7 @@ import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 import java.util.List;
 
 import seedu.address.commons.core.index.Index;
+import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
@@ -33,7 +34,11 @@ public class PlanCommand extends Command {
     private final Plan plan;
 
     /**
-     * Creates a PlanCommand.
+     * Creates a PlanCommand to assign/update the specified {@code plan} of the person at the
+     * specified {@code index}.
+     *
+     * @param index of the person in the last person list to edit the workout plan
+     * @param plan of the person to be updated to
      */
     public PlanCommand(Index index, Plan plan) {
         requireNonNull(index);
@@ -75,6 +80,17 @@ public class PlanCommand extends Command {
 
         PlanCommand otherCommand = (PlanCommand) other;
         return index.equals(otherCommand.index) && plan.equals(otherCommand.plan);
+    }
+
+    /**
+     * Returns a debug-friendly string representation of this command.
+     */
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .add("index", index)
+                .add("plan", plan)
+                .toString();
     }
 }
 
