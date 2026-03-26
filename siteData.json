@@ -50,6 +50,8 @@
         "storage-component": "Storage component",
         "common-classes": "Common classes",
         "implementation": "Implementation",
+        "view-command-and-client-detail-panel": "View command and client detail panel",
+        "to-keep-the-panel-consistent-with-model-updates-mainwindow-also-clears-the-detail-panel-after-successful-commands-when-the-currently-viewed-person-no-longer-exists-e-g-after-a-delete-or-clear": "To keep the panel consistent with model updates, MainWindow also clears the detail panel after successful commands when the currently viewed person no longer exists (e.g., after a delete or clear).",
         "sort-feature": "Sort feature",
         "status-feature": "Status Feature",
         "rate-feature": "Rate Feature",
@@ -66,6 +68,7 @@
         "appendix-instructions-for-manual-testing": "Appendix: Instructions for manual testing",
         "launch-and-shutdown": "Launch and shutdown",
         "deleting-a-client": "Deleting a client",
+        "viewing-a-client-s-full-profile": "Viewing a client's full profile",
         "saving-data": "Saving data"
       },
       "headingKeywords": {}
@@ -116,6 +119,7 @@
         "viewing-help-help": "Viewing help : help",
         "adding-a-client-add": "Adding a client: add",
         "listing-all-clients-list": "Listing all clients : list",
+        "viewing-a-client-s-full-profile-view": "Viewing a client's full profile : view",
         "editing-a-client-edit": "Editing a client : edit",
         "adding-notes-to-a-client-note": "Adding notes to a client : note",
         "setting-a-client-s-session-rate-rate": "Setting a client's session rate : rate",
