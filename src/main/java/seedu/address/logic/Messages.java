@@ -51,6 +51,14 @@ public class Messages {
                 .append(person.getLocation())
                 .append("; Note: ")
                 .append(person.getNote())
+                .append("; Height: ")
+                .append(person.getHeight())
+                .append("; Weight: ")
+                .append(person.getWeight())
+                .append("; Body Fat %: ")
+                .append(person.getBodyFatPercentage())
+                .append("; Rate: ")
+                .append(person.getRate())
                 .append("; Tags: ");
         person.getTags().forEach(builder::append);
         return builder.toString();
