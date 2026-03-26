@@ -22,6 +22,7 @@ import seedu.address.model.person.Height;
 import seedu.address.model.person.Location;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Note;
+import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Rate;
 import seedu.address.model.person.Weight;
@@ -53,6 +54,7 @@ public class JsonAdaptedPersonTest {
     private static final String VALID_WEIGHT = BENSON.getWeight().toString();
     private static final String VALID_BODY_FAT = BENSON.getBodyFatPercentage().toString();
     private static final String VALID_RATE = BENSON.getRate().toString();
+    private static final String VALID_STATUS = BENSON.getStatus().toString();
     private static final List<JsonAdaptedTag> VALID_TAGS = BENSON.getTags().stream()
             .map(JsonAdaptedTag::new)
             .collect(Collectors.toList());
@@ -75,10 +77,11 @@ public class JsonAdaptedPersonTest {
                 VALID_ADDRESS,
                 VALID_LOCATION,
                 VALID_NOTE,
+                VALID_RATE,
+                VALID_STATUS,
                 VALID_HEIGHT,
                 VALID_WEIGHT,
                 VALID_BODY_FAT,
-                VALID_RATE,
                 VALID_TAGS);
         String expectedMessage = ClientId.MESSAGE_CONSTRAINTS;
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
@@ -96,6 +99,7 @@ public class JsonAdaptedPersonTest {
                 VALID_LOCATION,
                 VALID_NOTE,
                 VALID_RATE,
+                VALID_STATUS,
                 VALID_HEIGHT,
                 VALID_WEIGHT,
                 VALID_BODY_FAT,
@@ -116,6 +120,7 @@ public class JsonAdaptedPersonTest {
                 VALID_LOCATION,
                 VALID_NOTE,
                 VALID_RATE,
+                VALID_STATUS,
                 VALID_HEIGHT,
                 VALID_WEIGHT,
                 VALID_BODY_FAT,
@@ -137,6 +142,7 @@ public class JsonAdaptedPersonTest {
                 VALID_LOCATION,
                 VALID_NOTE,
                 VALID_RATE,
+                VALID_STATUS,
                 VALID_HEIGHT,
                 VALID_WEIGHT,
                 VALID_BODY_FAT,
@@ -158,6 +164,7 @@ public class JsonAdaptedPersonTest {
                 VALID_LOCATION,
                 VALID_NOTE,
                 VALID_RATE,
+                VALID_STATUS,
                 VALID_HEIGHT,
                 VALID_WEIGHT,
                 VALID_BODY_FAT,
@@ -179,6 +186,7 @@ public class JsonAdaptedPersonTest {
                 VALID_LOCATION,
                 VALID_NOTE,
                 VALID_RATE,
+                VALID_STATUS,
                 VALID_HEIGHT,
                 VALID_WEIGHT,
                 VALID_BODY_FAT,
@@ -200,6 +208,7 @@ public class JsonAdaptedPersonTest {
                 VALID_LOCATION,
                 VALID_NOTE,
                 VALID_RATE,
+                VALID_STATUS,
                 VALID_HEIGHT,
                 VALID_WEIGHT,
                 VALID_BODY_FAT,
@@ -221,6 +230,7 @@ public class JsonAdaptedPersonTest {
                 VALID_LOCATION,
                 VALID_NOTE,
                 VALID_RATE,
+                VALID_STATUS,
                 VALID_HEIGHT,
                 VALID_WEIGHT,
                 VALID_BODY_FAT,
@@ -242,6 +252,7 @@ public class JsonAdaptedPersonTest {
                 VALID_LOCATION,
                 VALID_NOTE,
                 VALID_RATE,
+                VALID_STATUS,
                 VALID_HEIGHT,
                 VALID_WEIGHT,
                 VALID_BODY_FAT,
@@ -263,6 +274,7 @@ public class JsonAdaptedPersonTest {
                 VALID_LOCATION,
                 VALID_NOTE,
                 VALID_RATE,
+                VALID_STATUS,
                 VALID_HEIGHT,
                 VALID_WEIGHT,
                 VALID_BODY_FAT,
@@ -284,6 +296,7 @@ public class JsonAdaptedPersonTest {
                 VALID_LOCATION,
                 VALID_NOTE,
                 VALID_RATE,
+                VALID_STATUS,
                 VALID_HEIGHT,
                 VALID_WEIGHT,
                 VALID_BODY_FAT,
@@ -305,6 +318,7 @@ public class JsonAdaptedPersonTest {
                 VALID_LOCATION,
                 VALID_NOTE,
                 VALID_RATE,
+                VALID_STATUS,
                 VALID_HEIGHT,
                 VALID_WEIGHT,
                 VALID_BODY_FAT,
@@ -326,6 +340,7 @@ public class JsonAdaptedPersonTest {
                 VALID_LOCATION,
                 VALID_NOTE,
                 VALID_RATE,
+                VALID_STATUS,
                 VALID_HEIGHT,
                 VALID_WEIGHT,
                 VALID_BODY_FAT,
@@ -347,6 +362,7 @@ public class JsonAdaptedPersonTest {
                 VALID_LOCATION,
                 VALID_NOTE,
                 VALID_RATE,
+                VALID_STATUS,
                 VALID_HEIGHT,
                 VALID_WEIGHT,
                 VALID_BODY_FAT,
@@ -368,6 +384,7 @@ public class JsonAdaptedPersonTest {
                 INVALID_LOCATION,
                 VALID_NOTE,
                 VALID_RATE,
+                VALID_STATUS,
                 VALID_HEIGHT,
                 VALID_WEIGHT,
                 VALID_BODY_FAT,
@@ -389,6 +406,7 @@ public class JsonAdaptedPersonTest {
                 null,
                 VALID_NOTE,
                 VALID_RATE,
+                VALID_STATUS,
                 VALID_HEIGHT,
                 VALID_WEIGHT,
                 VALID_BODY_FAT,
@@ -412,6 +430,7 @@ public class JsonAdaptedPersonTest {
                 VALID_LOCATION,
                 VALID_NOTE,
                 VALID_RATE,
+                VALID_STATUS,
                 VALID_HEIGHT,
                 VALID_WEIGHT,
                 VALID_BODY_FAT,
@@ -432,6 +451,7 @@ public class JsonAdaptedPersonTest {
                 VALID_LOCATION,
                 null,
                 VALID_RATE,
+                VALID_STATUS,
                 VALID_HEIGHT,
                 VALID_WEIGHT,
                 VALID_BODY_FAT,
@@ -453,6 +473,7 @@ public class JsonAdaptedPersonTest {
                 VALID_LOCATION,
                 VALID_NOTE,
                 null,
+                VALID_STATUS,
                 VALID_HEIGHT,
                 VALID_WEIGHT,
                 VALID_BODY_FAT,
@@ -460,6 +481,28 @@ public class JsonAdaptedPersonTest {
 
         String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, Rate.class.getSimpleName());
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
+    }
+
+    @Test
+    public void toModelType_nullStatus_defaultsToActive() throws Exception {
+        JsonAdaptedPerson person = new JsonAdaptedPerson(
+                VALID_ID,
+                VALID_NAME,
+                VALID_GENDER,
+                VALID_DOB,
+                VALID_PHONE,
+                VALID_EMAIL,
+                VALID_ADDRESS,
+                VALID_LOCATION,
+                VALID_NOTE,
+                VALID_RATE,
+                null,
+                VALID_HEIGHT,
+                VALID_WEIGHT,
+                VALID_BODY_FAT,
+                VALID_TAGS);
+        Person convertedPerson = person.toModelType();
+        assertEquals("Active", convertedPerson.getStatus().toString());
     }
 
     @Test
@@ -475,6 +518,7 @@ public class JsonAdaptedPersonTest {
                 VALID_LOCATION,
                 VALID_NOTE,
                 VALID_RATE,
+                VALID_STATUS,
                 INVALID_HEIGHT,
                 VALID_WEIGHT,
                 VALID_BODY_FAT,
@@ -496,6 +540,7 @@ public class JsonAdaptedPersonTest {
                 VALID_LOCATION,
                 VALID_NOTE,
                 VALID_RATE,
+                VALID_STATUS,
                 null,
                 VALID_WEIGHT,
                 VALID_BODY_FAT,
@@ -517,6 +562,7 @@ public class JsonAdaptedPersonTest {
                 VALID_LOCATION,
                 VALID_NOTE,
                 VALID_RATE,
+                VALID_STATUS,
                 VALID_HEIGHT,
                 INVALID_WEIGHT,
                 VALID_BODY_FAT,
@@ -538,6 +584,7 @@ public class JsonAdaptedPersonTest {
                 VALID_LOCATION,
                 VALID_NOTE,
                 VALID_RATE,
+                VALID_STATUS,
                 VALID_HEIGHT,
                 null,
                 VALID_BODY_FAT,
@@ -559,6 +606,7 @@ public class JsonAdaptedPersonTest {
                 VALID_LOCATION,
                 VALID_NOTE,
                 VALID_RATE,
+                VALID_STATUS,
                 VALID_HEIGHT,
                 VALID_WEIGHT,
                 INVALID_BODY_FAT,
@@ -580,6 +628,7 @@ public class JsonAdaptedPersonTest {
                 VALID_LOCATION,
                 VALID_NOTE,
                 VALID_RATE,
+                VALID_STATUS,
                 VALID_HEIGHT,
                 VALID_WEIGHT,
                 null,

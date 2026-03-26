@@ -31,7 +31,6 @@ import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.MeasureCommand;
-import seedu.address.logic.commands.MeasureCommand.MeasureDescriptor;
 import seedu.address.logic.commands.NoteCommand;
 import seedu.address.logic.commands.RateCommand;
 import seedu.address.logic.commands.ViewCommand;
@@ -113,11 +112,8 @@ public class AddressBookParserTest {
                         + PREFIX_WEIGHT + "72.0 "
                         + PREFIX_BODY_FAT + "14.8");
 
-        MeasureDescriptor descriptor = new MeasureDescriptor();
-        descriptor.setHeight(new Height("175.5"));
-        descriptor.setWeight(new Weight("72.0"));
-        descriptor.setBodyFatPercentage(new BodyFatPercentage("14.8"));
-        assertEquals(new MeasureCommand(INDEX_FIRST_PERSON, descriptor), command);
+        assertEquals(new MeasureCommand(INDEX_FIRST_PERSON,
+                new Height("175.5"), new Weight("72.0"), new BodyFatPercentage("14.8")), command);
     }
 
     @Test

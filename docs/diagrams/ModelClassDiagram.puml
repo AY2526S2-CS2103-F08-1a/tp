@@ -49,6 +49,7 @@ Person *--> Gender
 Person *--> DateOfBirth
 Person *--> Location
 Person *--> "0..1" Note
+Person *--> Status
 
 Person -[hidden]up--> I
 UniquePersonList -[hidden]right-> I

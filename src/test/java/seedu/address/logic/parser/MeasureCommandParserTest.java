@@ -16,7 +16,6 @@ import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.MeasureCommand;
-import seedu.address.logic.commands.MeasureCommand.MeasureDescriptor;
 import seedu.address.model.person.BodyFatPercentage;
 import seedu.address.model.person.Height;
 import seedu.address.model.person.Weight;
@@ -89,9 +88,8 @@ public class MeasureCommandParserTest {
     public void parse_validSinglePrefix_success() {
         Index targetIndex = INDEX_FIRST_PERSON;
         String userInput = targetIndex.getOneBased() + HEIGHT_DESC_AMY;
-        MeasureDescriptor descriptor = new MeasureDescriptor();
-        descriptor.setHeight(new Height("165.5"));
-        MeasureCommand expectedCommand = new MeasureCommand(INDEX_FIRST_PERSON, descriptor);
+        MeasureCommand expectedCommand = new MeasureCommand(INDEX_FIRST_PERSON,
+                new Height("165.5"), null, null);
 
         assertParseSuccess(parser, userInput, expectedCommand);
     }
@@ -103,9 +101,8 @@ public class MeasureCommandParserTest {
     public void parse_clearMeasurement_success() {
         Index targetIndex = INDEX_FIRST_PERSON;
         String userInput = targetIndex.getOneBased() + " " + PREFIX_HEIGHT;
-        MeasureDescriptor descriptor = new MeasureDescriptor();
-        descriptor.setHeight(new Height(""));
-        MeasureCommand expectedCommand = new MeasureCommand(INDEX_FIRST_PERSON, descriptor);
+        MeasureCommand expectedCommand = new MeasureCommand(INDEX_FIRST_PERSON,
+                new Height(""), null, null);
 
         assertParseSuccess(parser, userInput, expectedCommand);
     }
@@ -117,11 +114,8 @@ public class MeasureCommandParserTest {
     public void parse_validMultiplePrefixes_success() {
         Index targetIndex = INDEX_FIRST_PERSON;
         String userInput = targetIndex.getOneBased() + HEIGHT_DESC_AMY + WEIGHT_DESC_AMY + BODY_FAT_DESC_AMY;
-        MeasureDescriptor descriptor = new MeasureDescriptor();
-        descriptor.setHeight(new Height("165.5"));
-        descriptor.setWeight(new Weight("58.0"));
-        descriptor.setBodyFatPercentage(new BodyFatPercentage("22.5"));
-        MeasureCommand expectedCommand = new MeasureCommand(INDEX_FIRST_PERSON, descriptor);
+        MeasureCommand expectedCommand = new MeasureCommand(INDEX_FIRST_PERSON,
+                new Height("165.5"), new Weight("58.0"), new BodyFatPercentage("22.5"));
 
         assertParseSuccess(parser, userInput, expectedCommand);
     }

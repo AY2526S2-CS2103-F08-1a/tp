@@ -37,6 +37,7 @@ import seedu.address.model.person.Note;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Rate;
+import seedu.address.model.person.Status;
 import seedu.address.model.person.Weight;
 import seedu.address.model.tag.Tag;
 
@@ -125,10 +126,11 @@ public class EditCommand extends Command {
         // Body fat percentage is not editable through EditCommand
         BodyFatPercentage oldBodyFatPercentage = personToEdit.getBodyFatPercentage();
         Rate oldRate = personToEdit.getRate(); // Rate is not editable through EditCommand
+        Status oldStatus = personToEdit.getStatus(); // Status is not editable through EditCommand
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
 
         return new Person(fixedId, updatedName, updatedGender, updatedDob, updatedPhone, updatedEmail,
-                updatedAddress, updatedLocation, oldNote, oldRate,
+                updatedAddress, updatedLocation, oldNote, oldRate, oldStatus,
                 oldHeight, oldWeight, oldBodyFatPercentage,
                 updatedTags);
     }

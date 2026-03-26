@@ -1,5 +1,8 @@
 package seedu.address.ui;
 
+import static seedu.address.model.person.Status.StatusEnum.ACTIVE;
+import static seedu.address.model.person.Status.StatusEnum.INACTIVE;
+
 import java.util.Comparator;
 
 import javafx.fxml.FXML;
@@ -15,8 +18,8 @@ import seedu.address.model.person.Person;
 public class PersonCard extends UiPart<Region> {
 
     private static final String FXML = "PersonListCard.fxml";
-    private static final String PHONE_LABEL_PREFIX = "Phone number: ";
-    private static final String LOCATION_LABEL_PREFIX = "Gym Location: ";
+    private static final String PREFIX_PHONE_LABEL = "Phone number: ";
+    private static final String PREFIX_LOCATION_LABEL = "Gym Location: ";
 
     /**
      * Note: Certain keywords such as "location" and "resources" are reserved keywords in JavaFX. As
@@ -42,13 +45,7 @@ public class PersonCard extends UiPart<Region> {
     @FXML
     private Label gymLocation;
     @FXML
-    private Label height;
-    @FXML
-    private Label weight;
-    @FXML
-    private Label bodyFat;
-    @FXML
-    private Label email;
+    private Label status;
     @FXML
     private FlowPane tags;
 
@@ -61,13 +58,19 @@ public class PersonCard extends UiPart<Region> {
         id.setText(String.valueOf(displayedIndex));
         name.setText(person.getName().fullName);
         gender.setText(person.getGender().value.toString());
-        phone.setText(PHONE_LABEL_PREFIX + person.getPhone().value);
-        gymLocation.setText(LOCATION_LABEL_PREFIX + person.getLocation().value);
-        height.setText(String.format("H: %s cm", person.getHeight().value));
-        weight.setText(String.format("W: %s kg", person.getWeight().value));
-        bodyFat.setText(String.format("BF: %s %%", person.getBodyFatPercentage().value));
-        person.getTags().stream()
-                .sorted(Comparator.comparing(tag -> tag.tagName))
+        phone.setText(PREFIX_PHONE_LABEL + person.getPhone().value);
+        gymLocation.setText(PREFIX_LOCATION_LABEL + person.getLocation().value);
+        status.setText(person.getStatus().value.toString());
+        status.getStyleClass().removeAll("cell_status_active", "cell_status_inactive");
+        switch (person.getStatus().value) {
+        case ACTIVE -> status.getStyleClass().add("cell_status_active");
+        case INACTIVE -> status.getStyleClass().add("cell_status_inactive");
+        default -> {
+            // No status-specific style for future enum values.
+        }
+        }
+        person.getTags().stream().sorted(Comparator.comparing(tag -> tag.tagName))
                 .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
     }
 }
+

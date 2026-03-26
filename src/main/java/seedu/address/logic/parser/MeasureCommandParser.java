@@ -7,8 +7,10 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_WEIGHT;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.MeasureCommand;
-import seedu.address.logic.commands.MeasureCommand.MeasureDescriptor;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.person.BodyFatPercentage;
+import seedu.address.model.person.Height;
+import seedu.address.model.person.Weight;
 
 /**
  * Parses input arguments and creates a new MeasureCommand object.
@@ -34,32 +36,33 @@ public class MeasureCommandParser implements Parser<MeasureCommand> {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MeasureCommand.MESSAGE_USAGE));
         }
 
-        MeasureDescriptor measureDescriptor = new MeasureDescriptor();
+        Height height = null;
+        Weight weight = null;
+        BodyFatPercentage bodyFatPercentage = null;
 
         if (argMultimap.getValue(PREFIX_HEIGHT).isPresent()) {
             try {
-                measureDescriptor.setHeight(ParserUtil.parseHeight(argMultimap.getValue(PREFIX_HEIGHT).get()));
+                height = ParserUtil.parseHeight(argMultimap.getValue(PREFIX_HEIGHT).get());
             } catch (ParseException pe) {
                 throw new ParseException(pe.getMessage(), pe);
             }
         }
         if (argMultimap.getValue(PREFIX_WEIGHT).isPresent()) {
             try {
-                measureDescriptor.setWeight(ParserUtil.parseWeight(argMultimap.getValue(PREFIX_WEIGHT).get()));
+                weight = ParserUtil.parseWeight(argMultimap.getValue(PREFIX_WEIGHT).get());
             } catch (ParseException pe) {
                 throw new ParseException(pe.getMessage(), pe);
             }
         }
         if (argMultimap.getValue(PREFIX_BODY_FAT).isPresent()) {
             try {
-                measureDescriptor.setBodyFatPercentage(
-                        ParserUtil.parseBodyFatPercentage(argMultimap.getValue(PREFIX_BODY_FAT).get()));
+                bodyFatPercentage = ParserUtil.parseBodyFatPercentage(argMultimap.getValue(PREFIX_BODY_FAT).get());
             } catch (ParseException pe) {
                 throw new ParseException(pe.getMessage(), pe);
             }
         }
 
-        return new MeasureCommand(index, measureDescriptor);
+        return new MeasureCommand(index, height, weight, bodyFatPercentage);
     }
 }
 

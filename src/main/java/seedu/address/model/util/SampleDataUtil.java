@@ -20,6 +20,7 @@ import seedu.address.model.person.Note;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Rate;
+import seedu.address.model.person.Status;
 import seedu.address.model.person.Weight;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.workout.WorkoutLog;
@@ -42,9 +43,11 @@ public class SampleDataUtil {
                     new Location("Anytime Fitness Geylang South East"),
                     new Note("Prefers morning workouts"),
                     new Rate("120.50"),
+                    new Status("active"),
                     new Height("178.0"),
                     new Weight("76.5"),
                     new BodyFatPercentage("16.2"),
+
                     getTagSet("friends")),
             new Person(
                     new ClientId("e6e66102-3112-45e3-9975-ed1e35a11c21"),
@@ -57,6 +60,7 @@ public class SampleDataUtil {
                     new Location("ActiveSG Gym @ Serangoon Central"),
                     new Note("Enjoys group fitness classes"),
                     new Rate("199.00"),
+                    new Status("active"),
                     new Height("162.4"),
                     new Weight("60.8"),
                     new BodyFatPercentage("24.5"),
@@ -72,6 +76,7 @@ public class SampleDataUtil {
                     new Location("ActiveSG Gym @ Ang Mo Kio Community Centre"),
                     new Note("Interested in yoga"),
                     new Rate("80.00"),
+                    new Status("active"),
                     new Height("167.2"),
                     new Weight("58.3"),
                     new BodyFatPercentage("22.1"),
@@ -87,6 +92,7 @@ public class SampleDataUtil {
                     new Location("ActiveSG Gym @ Serangoon Central"),
                     new Note("Prefers evening workouts"),
                     new Rate("75.00"),
+                    new Status("active"),
                     new Height("181.0"),
                     new Weight("82.4"),
                     new BodyFatPercentage("18.0"),
@@ -102,6 +108,7 @@ public class SampleDataUtil {
                     new Location("Tampines ActiveSG Gym"),
                     new Note("Enjoys swimming"),
                     new Rate("90.00"),
+                    new Status("active"),
                     new Height("173.5"),
                     new Weight("77.2"),
                     new BodyFatPercentage("20.3"),
@@ -117,6 +124,7 @@ public class SampleDataUtil {
                     new Location("Anytime Fitness Aljunied 119"),
                     new Note("Prefers morning workouts"),
                     new Rate("120.00"),
+                    new Status("active"),
                     new Height("176.8"),
                     new Weight("79.6"),
                     new BodyFatPercentage("17.4"),

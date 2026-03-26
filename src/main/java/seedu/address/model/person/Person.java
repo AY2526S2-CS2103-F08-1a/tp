@@ -34,6 +34,7 @@ public class Person {
     private final Weight weight;
     private final BodyFatPercentage bodyFatPercentage;
     private final Rate rate;
+    private final Status status;
     private final Set<Tag> tags = new HashSet<>();
 
     /**
@@ -49,11 +50,12 @@ public class Person {
             Location location,
             Note note,
             Rate rate,
+            Status status,
             Height height,
             Weight weight,
             BodyFatPercentage bodyFatPercentage,
             Set<Tag> tags) {
-        requireAllNonNull(id, name, gender, phone, email, address, location, note, rate,
+        requireAllNonNull(id, name, gender, phone, email, address, location, note, rate, status,
                 height, weight, bodyFatPercentage, tags);
         this.id = id;
         this.name = name;
@@ -65,6 +67,7 @@ public class Person {
         this.location = location;
         this.note = note;
         this.rate = rate;
+        this.status = status;
         this.height = height;
         this.weight = weight;
         this.bodyFatPercentage = bodyFatPercentage;
@@ -115,6 +118,13 @@ public class Person {
      */
     public Rate getRate() {
         return rate;
+    }
+
+    /**
+     * Returns the status of the person.
+     */
+    public Status getStatus() {
+        return status;
     }
 
     /**
@@ -184,6 +194,7 @@ public class Person {
                 && location.equals(otherPerson.location)
                 && note.equals(otherPerson.note)
                 && rate.equals(otherPerson.rate)
+                && status.equals(otherPerson.status)
                 && height.equals(otherPerson.height)
                 && weight.equals(otherPerson.weight)
                 && bodyFatPercentage.equals(otherPerson.bodyFatPercentage)
@@ -194,7 +205,7 @@ public class Person {
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
         return Objects.hash(name, gender, dob, phone, email, address, location,
-                note, rate, height, weight, bodyFatPercentage, tags);
+                note, rate, status, height, weight, bodyFatPercentage, tags);
     }
 
     @Override
@@ -209,6 +220,7 @@ public class Person {
                 .add("location", location)
                 .add("note", note)
                 .add("rate", rate)
+                .add("status", status)
                 .add("height", height)
                 .add("weight", weight)
                 .add("bodyFatPercentage", bodyFatPercentage)
