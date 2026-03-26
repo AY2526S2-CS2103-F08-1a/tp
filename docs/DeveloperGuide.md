@@ -188,6 +188,32 @@ The `Status` class enforces validation to ensure only valid status values ("acti
 * The `Status` class validates input using a regex pattern, rejecting invalid values like "pending" or "unknown".
 * Duplicate status prefixes (e.g., `status 1 s/active s/inactive`) are detected and rejected by the parser.
 
+### Rate Feature
+
+The rate feature allows trainers to store a per-client session rate and update it via a dedicated command.
+
+#### Implementation
+
+The rate mechanism is implemented through the following components:
+
+* `Rate` — A value class that represents a client's session rate.
+* `RateCommand` — Replaces or clears the rate for a specified client.
+* `RateCommandParser` — Parses user input to create a `RateCommand`.
+
+The `Rate` class normalizes valid values to 2 decimal places (e.g., `120`, `120.`, and `.5` are stored as `120.00`, `120.00`, and `0.50` respectively).
+
+#### Key Design Decisions
+
+**Dedicated command for rate changes:**
+* Rate updates are performed only through `rate INDEX r/RATE`.
+* `EditCommand` intentionally preserves the existing rate to keep rate updates explicit and auditable.
+
+**Storage and Migration:**
+* `JsonAdaptedPerson` persists `rate` in the data file. For old data files without a `rate` field, the user/developer has to manually add it in the JSON file (e.g., `"rate": "120.00"`) to avoid errors when loading the data.
+
+**Immutability:**
+* Following the existing model pattern, updating a rate creates a new `Person` instance with only the `rate` field changed while preserving all other fields.
+
 ### \[Proposed\] Undo/redo feature
 
 #### Proposed Implementation
@@ -512,7 +538,7 @@ phrases.
       Use case resumes from step 3
 
 **Use case: UC07 \- Add/Append a Note to a Client**  
-**Preconditions: Trainer has launched PowerRoster.**
+**Preconditions: Trainer has launched PowerRoster. At least one client exists in the displayed list.**
 
 **MSS:**
 
@@ -544,9 +570,10 @@ phrases.
       Use case ends.
 
 **Use case: UC08 \- Change a Client's Status**
+**Preconditions: Trainer has launched PowerRoster. At least one client exists in the displayed list.**
 
 **MSS**
-
+    
 1. Trainer requests to list all clients or performs a search/filter.
 2. PowerRoster shows a list of clients.
 3. Trainer requests to change the status of a specific client by providing the index and new status (active/inactive).
@@ -572,6 +599,35 @@ phrases.
 
 * 3c. The client already has the specified status.
     * 3c1. PowerRoster indicates that no changes were made.
+
+      Use case ends.
+
+**Use case: UC09 \- Set/Clear a Client's Session Rate**
+**Preconditions: Trainer has launched PowerRoster. At least one client exists in the displayed list.**
+
+**MSS**
+
+1. Trainer requests to set the rate of a specific client and provides the rate.
+2. PowerRoster locates the client and validates the rate.
+3. PowerRoster sets the client's rate and confirms the successful update to the Trainer.
+
+   Use case ends.
+
+**Extensions**
+
+* 2a. The specified identifier does not match any existing client.
+    * 2a1. PowerRoster informs the Trainer that the identifier was invalid.
+
+      Use case ends.
+
+* 2b. The rate is invalid
+    * 2b1. PowerRoster informs the user of the error.
+
+      Use case ends.
+
+* 1c. Trainer requests to clear a client's rate.
+    * 1c1. PowerRoster locates the client and clears the client's existing rate.
+    * 1c2. PowerRoster confirms the successful update to the Trainer.
 
       Use case ends.
 
