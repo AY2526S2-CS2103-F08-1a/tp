@@ -202,6 +202,82 @@ public class SortCommandTest {
     }
 
     @Test
+    public void equals_differentOrder_returnsFalse() {
+        SortCommand sortByNameAsc = new SortCommand("name", "asc");
+        SortCommand sortByNameDesc = new SortCommand("name", "desc");
+        assertFalse(sortByNameAsc.equals(sortByNameDesc));
+    }
+
+    @Test
+    public void equals_differentNewAttributes_returnsFalse() {
+        SortCommand sortByStatus = new SortCommand("status", "asc");
+        SortCommand sortByPlan = new SortCommand("plan", "asc");
+        SortCommand sortByRate = new SortCommand("rate", "asc");
+
+        // status vs plan -> returns false
+        assertFalse(sortByStatus.equals(sortByPlan));
+
+        // status vs rate -> returns false
+        assertFalse(sortByStatus.equals(sortByRate));
+
+        // plan vs rate -> returns false
+        assertFalse(sortByPlan.equals(sortByRate));
+    }
+
+    @Test
+    public void equals_newAttributeSameValues_returnsTrue() {
+        SortCommand sortByStatusAsc = new SortCommand("status", "asc");
+        SortCommand sortByStatusAscCopy = new SortCommand("status", "asc");
+        assertTrue(sortByStatusAsc.equals(sortByStatusAscCopy));
+
+        SortCommand sortByPlanDesc = new SortCommand("plan", "desc");
+        SortCommand sortByPlanDescCopy = new SortCommand("plan", "desc");
+        assertTrue(sortByPlanDesc.equals(sortByPlanDescCopy));
+
+        SortCommand sortByRateAsc = new SortCommand("rate", "asc");
+        SortCommand sortByRateAscCopy = new SortCommand("rate", "asc");
+        assertTrue(sortByRateAsc.equals(sortByRateAscCopy));
+    }
+
+    @Test
+    public void execute_sortByStatusDescending_success() {
+        String expectedMessage = String.format(SortCommand.MESSAGE_SUCCESS, "status", "desc");
+        Comparator<Person> statusComparator = Comparator.comparing((
+                Person p) -> p.getStatus().value.name()).reversed();
+        SortCommand command = new SortCommand("status", "desc");
+        expectedModel.updatePersonListComparator(statusComparator);
+        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+        assertEquals(7, model.getFilteredPersonList().size());
+    }
+
+    @Test
+    public void execute_sortByPlanDescending_success() {
+        String expectedMessage = String.format(SortCommand.MESSAGE_SUCCESS, "plan", "desc");
+        Comparator<Person> planComparator = Comparator.comparing((
+                Person p) -> p.getPlan().value.name()).reversed();
+        SortCommand command = new SortCommand("plan", "desc");
+        expectedModel.updatePersonListComparator(planComparator);
+        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+        // Reverse alphabetical by enum name: PUSH (ALICE), PULL (BENSON), LEGS (DANIEL),
+        // FULL_BODY (ELLE), CORE (FIONA), CONDITIONING (GEORGE), CARDIO (CARL)
+        assertEquals(Arrays.asList(ALICE, BENSON, DANIEL, ELLE, FIONA, GEORGE, CARL),
+                model.getFilteredPersonList());
+    }
+
+    @Test
+    public void execute_sortByRateDescending_success() {
+        String expectedMessage = String.format(SortCommand.MESSAGE_SUCCESS, "rate", "desc");
+        Comparator<Person> rateComparator = Comparator.comparingDouble((Person p) ->
+                p.getRate().value.isEmpty() ? -1.0 : Double.parseDouble(p.getRate().value)).reversed();
+        SortCommand command = new SortCommand("rate", "desc");
+        expectedModel.updatePersonListComparator(rateComparator);
+        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+        // ALICE (100), BENSON (90), CARL (90), ELLE (85), FIONA (80), GEORGE (75), DANIEL (no rate = -1)
+        assertEquals(Arrays.asList(ALICE, BENSON, CARL, ELLE, FIONA, GEORGE, DANIEL),
+                model.getFilteredPersonList());
+    }
+
+    @Test
     public void toStringMethod() {
         SortCommand sortCommand = new SortCommand("name", "asc");
         String expected = SortCommand.class.getCanonicalName()
