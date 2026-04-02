@@ -90,6 +90,29 @@ public class MeasureCommandTest {
     }
 
     /**
+     * Executes measure with only body fat provided and verifies success.
+     */
+    @Test
+    public void execute_updateBodyFatOnly_success() {
+        Person firstPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        Person editedPerson = new PersonBuilder(firstPerson)
+                .withBodyFatPercentage(VALID_BODY_FAT_AMY)
+                .build();
+
+        MeasureCommand measureCommand = new MeasureCommand(INDEX_FIRST_PERSON,
+                null, null, new BodyFatPercentage(VALID_BODY_FAT_AMY));
+
+        String expectedMessage = String.format(MeasureCommand.MESSAGE_BODY_FAT_SET_SUCCESS,
+                editedPerson.getName(), "22.5%");
+
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()),
+                new UserPrefs(), new WorkoutLogBook());
+        expectedModel.setPerson(firstPerson, editedPerson);
+
+        assertCommandSuccess(measureCommand, model, expectedMessage, expectedModel);
+    }
+
+    /**
      * Executes measure with blank values to clear measurements and verifies success.
      */
     @Test
@@ -147,6 +170,31 @@ public class MeasureCommandTest {
     }
 
     /**
+     * Executes measure clearing only body fat when already empty and verifies success message.
+     */
+    @Test
+    public void execute_clearBodyFatAlreadyCleared_success() {
+        Person firstPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        Person personWithClearedBodyFat = new PersonBuilder(firstPerson)
+                .withBodyFatPercentage("")
+                .build();
+        model.setPerson(firstPerson, personWithClearedBodyFat);
+
+        MeasureCommand measureCommand = new MeasureCommand(INDEX_FIRST_PERSON,
+                null, null, new BodyFatPercentage(""));
+
+        String expectedMessage = String.format(MeasureCommand.MESSAGE_BODY_FAT_ALREADY_CLEARED,
+                personWithClearedBodyFat.getName());
+
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()),
+                new UserPrefs(), new WorkoutLogBook());
+        firstPerson = expectedModel.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        expectedModel.setPerson(firstPerson, personWithClearedBodyFat);
+
+        assertCommandSuccess(measureCommand, model, expectedMessage, expectedModel);
+    }
+
+    /**
      * Executes measure with mixed update and clear inputs and verifies set-summary feedback.
      */
     @Test
@@ -194,6 +242,37 @@ public class MeasureCommandTest {
                 editedPerson.getName())
                 + "\n" + String.format(MeasureCommand.MESSAGE_WEIGHT_SET_SUCCESS,
                 editedPerson.getName(), "120.0 kg");
+
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()),
+                new UserPrefs(), new WorkoutLogBook());
+        firstPerson = expectedModel.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        expectedModel.setPerson(firstPerson, editedPerson);
+
+        assertCommandSuccess(measureCommand, model, expectedMessage, expectedModel);
+    }
+
+    /**
+     * Executes measure clearing two fields with mixed clear outcomes and verifies message ordering.
+     */
+    @Test
+    public void execute_clearMeasurementsMixedStatuses_success() {
+        Person firstPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        Person personWithClearedHeight = new PersonBuilder(firstPerson)
+                .withHeight("")
+                .build();
+        model.setPerson(firstPerson, personWithClearedHeight);
+
+        Person editedPerson = new PersonBuilder(personWithClearedHeight)
+                .withHeight("")
+                .withWeight("")
+                .build();
+
+        MeasureCommand measureCommand = new MeasureCommand(INDEX_FIRST_PERSON,
+                new Height(""), new Weight(""), null);
+
+        String expectedMessage = String.format(MeasureCommand.MESSAGE_HEIGHT_ALREADY_CLEARED,
+                editedPerson.getName())
+                + "\n" + String.format(MeasureCommand.MESSAGE_WEIGHT_CLEAR_SUCCESS, editedPerson.getName());
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()),
                 new UserPrefs(), new WorkoutLogBook());

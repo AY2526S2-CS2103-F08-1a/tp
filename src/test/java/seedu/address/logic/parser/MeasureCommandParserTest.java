@@ -81,6 +81,30 @@ public class MeasureCommandParserTest {
     }
 
     /**
+     * Parses input with all invalid measurement values and verifies aggregated failure.
+     */
+    @Test
+    public void parse_allInvalidMeasurements_failure() {
+        String userInput = INDEX_FIRST_PERSON.getOneBased() + " " + PREFIX_HEIGHT + "a "
+                + PREFIX_WEIGHT + "a " + PREFIX_BODY_FAT + "a";
+        String expectedMessage = Height.MESSAGE_CONSTRAINTS + "\n"
+                + Weight.MESSAGE_CONSTRAINTS + "\n"
+                + BodyFatPercentage.MESSAGE_CONSTRAINTS;
+        assertParseFailure(parser, userInput, expectedMessage);
+    }
+
+    /**
+     * Parses input with mixed valid and invalid measurement values and verifies aggregated failure.
+     */
+    @Test
+    public void parse_mixedValidInvalidMeasurements_failure() {
+        String userInput = INDEX_FIRST_PERSON.getOneBased() + " " + PREFIX_HEIGHT + "170.0 "
+                + PREFIX_WEIGHT + "a " + PREFIX_BODY_FAT + "a";
+        String expectedMessage = Weight.MESSAGE_CONSTRAINTS + "\n" + BodyFatPercentage.MESSAGE_CONSTRAINTS;
+        assertParseFailure(parser, userInput, expectedMessage);
+    }
+
+    /**
      * Parses input with duplicate measurement prefixes and verifies failure.
      */
     @Test
@@ -104,6 +128,9 @@ public class MeasureCommandParserTest {
         assertParseSuccess(parser, userInput, expectedCommand);
     }
 
+    /**
+     * Parses input with a valid trailing-dot measurement value and verifies success.
+     */
     @Test
     public void parse_validTrailingDotPrefix_success() {
         Index targetIndex = INDEX_FIRST_PERSON;
@@ -136,6 +163,19 @@ public class MeasureCommandParserTest {
         String userInput = targetIndex.getOneBased() + HEIGHT_DESC_AMY + WEIGHT_DESC_AMY + BODY_FAT_DESC_AMY;
         MeasureCommand expectedCommand = new MeasureCommand(INDEX_FIRST_PERSON,
                 new Height("165.5"), new Weight("58.0"), new BodyFatPercentage("22.5"));
+
+        assertParseSuccess(parser, userInput, expectedCommand);
+    }
+
+    /**
+     * Parses input with multiple valid prefixes in different order and verifies success.
+     */
+    @Test
+    public void parse_validMultiplePrefixesDifferentOrder_success() {
+        Index targetIndex = INDEX_FIRST_PERSON;
+        String userInput = targetIndex.getOneBased() + " " + PREFIX_WEIGHT + "58.0 " + PREFIX_HEIGHT + "165.5";
+        MeasureCommand expectedCommand = new MeasureCommand(INDEX_FIRST_PERSON,
+                new Height("165.5"), new Weight("58.0"), null);
 
         assertParseSuccess(parser, userInput, expectedCommand);
     }
