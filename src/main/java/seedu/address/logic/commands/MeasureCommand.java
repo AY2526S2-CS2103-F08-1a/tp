@@ -129,7 +129,7 @@ public class MeasureCommand extends Command {
             String message = oldValue.isEmpty() ? MESSAGE_HEIGHT_ALREADY_CLEARED : MESSAGE_HEIGHT_CLEAR_SUCCESS;
             return String.format(message, clientName);
         }
-        return String.format(MESSAGE_HEIGHT_SET_SUCCESS, clientName, height.value + " cm");
+        return String.format(MESSAGE_HEIGHT_SET_SUCCESS, clientName, height.value);
     }
 
     private String formatWeightOutcome(Object clientName, String oldValue) {
@@ -137,7 +137,7 @@ public class MeasureCommand extends Command {
             String message = oldValue.isEmpty() ? MESSAGE_WEIGHT_ALREADY_CLEARED : MESSAGE_WEIGHT_CLEAR_SUCCESS;
             return String.format(message, clientName);
         }
-        return String.format(MESSAGE_WEIGHT_SET_SUCCESS, clientName, weight.value + " kg");
+        return String.format(MESSAGE_WEIGHT_SET_SUCCESS, clientName, weight.value);
     }
 
     private String formatBodyFatOutcome(Object clientName, String oldValue) {
@@ -145,7 +145,7 @@ public class MeasureCommand extends Command {
             String message = oldValue.isEmpty() ? MESSAGE_BODY_FAT_ALREADY_CLEARED : MESSAGE_BODY_FAT_CLEAR_SUCCESS;
             return String.format(message, clientName);
         }
-        return String.format(MESSAGE_BODY_FAT_SET_SUCCESS, clientName, bodyFatPercentage.value + "%");
+        return String.format(MESSAGE_BODY_FAT_SET_SUCCESS, clientName, bodyFatPercentage.value);
     }
 
     @Override
@@ -165,4 +165,3 @@ public class MeasureCommand extends Command {
                 && Objects.equals(bodyFatPercentage, otherCommand.bodyFatPercentage);
     }
 }
-
