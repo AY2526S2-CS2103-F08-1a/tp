@@ -234,7 +234,8 @@ The `Status` class enforces validation to ensure only valid status values ("acti
 
 **Validation:**
 * The `Status` class validates input using a regex pattern, rejecting invalid values like "pending" or "unknown".
-* Duplicate status prefixes (e.g., `status 1 s/active s/inactive`) are detected and rejected by the parser.
+* Duplicate status prefixes (e.g., `status 1 s/active s/inactive`) are detected and rejected by the parser with a user-friendly message: "Only one status value (either active or inactive) can be specified."
+* If the client already has the specified status, the command does not modify the person and instead returns an informational message.
 
 ### Rate Feature
 
