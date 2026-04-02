@@ -145,8 +145,11 @@ public class CommandTestUtil {
             CommandResult expectedCommandResult, Model expectedModel) {
         try {
             CommandResult result = command.execute(actualModel);
-            assertEquals(expectedCommandResult, result);
-            assertEquals(expectedModel, actualModel);
+            assertEquals(expectedCommandResult, result,
+                    "CommandResult mismatch.\nExpected: " + expectedCommandResult + "\nActual: " + result);
+            assertEquals(expectedModel, actualModel,
+                    "Model mismatch after successful command execution.\nExpected model: "
+                            + expectedModel + "\nActual model: " + actualModel);
         } catch (CommandException ce) {
             throw new AssertionError("Execution of command should not fail.", ce);
         }
@@ -177,8 +180,11 @@ public class CommandTestUtil {
         List<Person> expectedFilteredList = new ArrayList<>(actualModel.getFilteredPersonList());
 
         assertThrows(CommandException.class, expectedMessage, () -> command.execute(actualModel));
-        assertEquals(expectedAddressBook, actualModel.getAddressBook());
-        assertEquals(expectedFilteredList, actualModel.getFilteredPersonList());
+        assertEquals(expectedAddressBook, actualModel.getAddressBook(),
+                "AddressBook changed despite command failure.");
+        assertEquals(expectedFilteredList, actualModel.getFilteredPersonList(),
+                "Filtered list changed despite command failure.\nExpected filtered list: "
+                        + expectedFilteredList + "\nActual filtered list: " + actualModel.getFilteredPersonList());
     }
 
     /**
