@@ -51,11 +51,11 @@ public class MeasureCommandTest {
                 new BodyFatPercentage(VALID_BODY_FAT_AMY));
 
         String expectedMessage = String.format(MeasureCommand.MESSAGE_HEIGHT_SET_SUCCESS,
-                editedPerson.getName(), "165.5 cm")
+                editedPerson.getName(), "165.5")
                 + "\n" + String.format(MeasureCommand.MESSAGE_WEIGHT_SET_SUCCESS,
-                editedPerson.getName(), "58.0 kg")
+                editedPerson.getName(), "58.0")
                 + "\n" + String.format(MeasureCommand.MESSAGE_BODY_FAT_SET_SUCCESS,
-                editedPerson.getName(), "22.5%");
+                editedPerson.getName(), "22.5");
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()),
                 new UserPrefs(), new WorkoutLogBook());
@@ -80,7 +80,7 @@ public class MeasureCommandTest {
                 new Height(VALID_HEIGHT_AMY), null, null);
 
         String expectedMessage = String.format(MeasureCommand.MESSAGE_HEIGHT_SET_SUCCESS,
-                editedPerson.getName(), "165.5 cm");
+                editedPerson.getName(), "165.5");
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()),
                 new UserPrefs(), new WorkoutLogBook());
@@ -103,7 +103,7 @@ public class MeasureCommandTest {
                 null, null, new BodyFatPercentage(VALID_BODY_FAT_AMY));
 
         String expectedMessage = String.format(MeasureCommand.MESSAGE_BODY_FAT_SET_SUCCESS,
-                editedPerson.getName(), "22.5%");
+                editedPerson.getName(), "22.5");
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()),
                 new UserPrefs(), new WorkoutLogBook());
@@ -209,8 +209,8 @@ public class MeasureCommandTest {
                 new Height("180"), new Weight(""), null);
 
         String expectedMessage = String.format(MeasureCommand.MESSAGE_HEIGHT_SET_SUCCESS,
-                editedPerson.getName(), "180.0 cm")
-                + "\n" + String.format(MeasureCommand.MESSAGE_WEIGHT_CLEAR_SUCCESS, editedPerson.getName());
+                editedPerson.getName(), "180.0")
+                 + "\n" + String.format(MeasureCommand.MESSAGE_WEIGHT_CLEAR_SUCCESS, editedPerson.getName());
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()),
                 new UserPrefs(), new WorkoutLogBook());
@@ -241,7 +241,7 @@ public class MeasureCommandTest {
         String expectedMessage = String.format(MeasureCommand.MESSAGE_HEIGHT_ALREADY_CLEARED,
                 editedPerson.getName())
                 + "\n" + String.format(MeasureCommand.MESSAGE_WEIGHT_SET_SUCCESS,
-                editedPerson.getName(), "120.0 kg");
+                editedPerson.getName(), "120.0");
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()),
                 new UserPrefs(), new WorkoutLogBook());
@@ -346,4 +346,3 @@ public class MeasureCommandTest {
     }
 
 }
-
