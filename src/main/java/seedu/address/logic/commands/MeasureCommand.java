@@ -105,47 +105,58 @@ public class MeasureCommand extends Command {
         model.setPerson(personToEdit, editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
 
-        String message = formatOutcomeMessages(personToEdit, editedPerson.getName());
+        String message = formatOutcomeMessages(
+                personToEdit,
+                editedPerson.getName(),
+                updatedHeight,
+                updatedWeight,
+                updatedBodyFatPercentage);
         return new CommandResult(message);
     }
 
     /** Returns field-specific outcomes in deterministic order (h/, w/, bf/). */
-    private String formatOutcomeMessages(Person personBeforeEdit, Object clientName) {
+    private String formatOutcomeMessages(Person personBeforeEdit,
+                                         Object clientName,
+                                         Height newHeight,
+                                         Weight newWeight,
+                                         BodyFatPercentage newBodyFat) {
         StringJoiner joiner = new StringJoiner("\n");
         if (height != null) {
-            joiner.add(formatHeightOutcome(clientName, personBeforeEdit.getHeight().value));
+            joiner.add(formatHeightOutcome(clientName, personBeforeEdit.getHeight().value, newHeight.value));
         }
         if (weight != null) {
-            joiner.add(formatWeightOutcome(clientName, personBeforeEdit.getWeight().value));
+            joiner.add(formatWeightOutcome(clientName, personBeforeEdit.getWeight().value, newWeight.value));
         }
         if (bodyFatPercentage != null) {
-            joiner.add(formatBodyFatOutcome(clientName, personBeforeEdit.getBodyFatPercentage().value));
+            joiner.add(formatBodyFatOutcome(clientName,
+                    personBeforeEdit.getBodyFatPercentage().value,
+                    newBodyFat.value));
         }
         return joiner.toString();
     }
 
-    private String formatHeightOutcome(Object clientName, String oldValue) {
-        if (height.value.isEmpty()) {
+    private String formatHeightOutcome(Object clientName, String oldValue, String newValue) {
+        if (newValue.isEmpty()) {
             String message = oldValue.isEmpty() ? MESSAGE_HEIGHT_ALREADY_CLEARED : MESSAGE_HEIGHT_CLEAR_SUCCESS;
             return String.format(message, clientName);
         }
-        return String.format(MESSAGE_HEIGHT_SET_SUCCESS, clientName, height.value + " cm");
+        return String.format(MESSAGE_HEIGHT_SET_SUCCESS, clientName, newValue + " cm");
     }
 
-    private String formatWeightOutcome(Object clientName, String oldValue) {
-        if (weight.value.isEmpty()) {
+    private String formatWeightOutcome(Object clientName, String oldValue, String newValue) {
+        if (newValue.isEmpty()) {
             String message = oldValue.isEmpty() ? MESSAGE_WEIGHT_ALREADY_CLEARED : MESSAGE_WEIGHT_CLEAR_SUCCESS;
             return String.format(message, clientName);
         }
-        return String.format(MESSAGE_WEIGHT_SET_SUCCESS, clientName, weight.value + " kg");
+        return String.format(MESSAGE_WEIGHT_SET_SUCCESS, clientName, newValue + " kg");
     }
 
-    private String formatBodyFatOutcome(Object clientName, String oldValue) {
-        if (bodyFatPercentage.value.isEmpty()) {
+    private String formatBodyFatOutcome(Object clientName, String oldValue, String newValue) {
+        if (newValue.isEmpty()) {
             String message = oldValue.isEmpty() ? MESSAGE_BODY_FAT_ALREADY_CLEARED : MESSAGE_BODY_FAT_CLEAR_SUCCESS;
             return String.format(message, clientName);
         }
-        return String.format(MESSAGE_BODY_FAT_SET_SUCCESS, clientName, bodyFatPercentage.value + "%");
+        return String.format(MESSAGE_BODY_FAT_SET_SUCCESS, clientName, newValue + "%");
     }
 
     @Override
