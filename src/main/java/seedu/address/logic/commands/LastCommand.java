@@ -56,4 +56,19 @@ public class LastCommand extends Command {
                 latest.getTime(),
                 latest.getLocation()));
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+
+        // instanceof handles nulls
+        if (!(other instanceof LastCommand)) {
+            return false;
+        }
+
+        LastCommand otherLastCommand = (LastCommand) other;
+        return targetIndex.equals(otherLastCommand.targetIndex);
+    }
 }
