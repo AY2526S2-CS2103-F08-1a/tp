@@ -30,11 +30,11 @@ public class LocationTest {
         assertThrows(NullPointerException.class, () -> Location.isValidLocation(null));
 
         // invalid Locations
-        assertFalse(Location.isValidLocation("")); // empty string
         assertFalse(Location.isValidLocation(" ")); // spaces only
         assertFalse(Location.isValidLocation(":")); // invalid special character
 
         // valid Locations
+        assertTrue(Location.isValidLocation("")); // empty string
         assertTrue(Location.isValidLocation("Anytime Fitness Marine Parade"));
         assertTrue(Location.isValidLocation("B")); // one character
         assertTrue(Location.isValidLocation("ActiveSG Gym @ Fernvale Square")); // contains @ symbol

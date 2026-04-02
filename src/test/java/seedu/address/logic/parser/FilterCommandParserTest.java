@@ -30,10 +30,10 @@ public class FilterCommandParserTest {
     @Test
     public void parse_multiplePrefixesWithBlankValue_throwsParseException() {
         assertParseFailure(parser, " l/Anytime Fitness Jurong l/   ",
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FilterCommand.MESSAGE_USAGE));
+                FilterCommandParser.MESSAGE_MULTIPLE_PREFIXES_CANNOT_BE_BLANK);
 
         assertParseFailure(parser, " l/   l/Clementi",
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FilterCommand.MESSAGE_USAGE));
+                FilterCommandParser.MESSAGE_MULTIPLE_PREFIXES_CANNOT_BE_BLANK);
     }
 
     @Test

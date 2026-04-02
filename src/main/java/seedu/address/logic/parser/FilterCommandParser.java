@@ -15,6 +15,9 @@ import seedu.address.model.person.LocationContainsKeywordsPredicate;
  */
 public class FilterCommandParser implements Parser<FilterCommand> {
 
+    public static final String MESSAGE_MULTIPLE_PREFIXES_CANNOT_BE_BLANK =
+            "For multiple l/ prefixes, none of them can be blank.";
+
     /**
      * Parses the given {@code String} of arguments in the context of the FilterCommand and returns a
      * FilterCommand object for execution.
@@ -33,7 +36,7 @@ public class FilterCommandParser implements Parser<FilterCommand> {
         }
 
         if (locationKeywords.size() > 1 && locationKeywords.stream().anyMatch(String::isEmpty)) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FilterCommand.MESSAGE_USAGE));
+            throw new ParseException(MESSAGE_MULTIPLE_PREFIXES_CANNOT_BE_BLANK);
         }
 
         return new FilterCommand(new LocationContainsKeywordsPredicate(locationKeywords));
