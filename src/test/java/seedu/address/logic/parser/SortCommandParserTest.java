@@ -1,5 +1,6 @@
 package seedu.address.logic.parser;
 
+import static seedu.address.logic.Messages.MESSAGE_DUPLICATE_FIELDS;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_DOB;
@@ -110,6 +111,12 @@ public class SortCommandParserTest {
     public void parse_sortByRateAscending_success() {
         SortCommand expectedCommand = new SortCommand("rate", "asc");
         assertParseSuccess(parser, " " + PREFIX_RATE, expectedCommand);
+    }
+
+    @Test
+    public void parse_duplicateOrderPrefix_throwsParseException() {
+        assertParseFailure(parser, " " + PREFIX_NAME + " " + PREFIX_ORDER + "asc " + PREFIX_ORDER + "desc",
+                MESSAGE_DUPLICATE_FIELDS + PREFIX_ORDER);
     }
 
     @Test
