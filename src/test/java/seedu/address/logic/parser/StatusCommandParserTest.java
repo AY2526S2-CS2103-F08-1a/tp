@@ -8,7 +8,6 @@ import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 
 import org.junit.jupiter.api.Test;
 
-import seedu.address.logic.Messages;
 import seedu.address.logic.commands.StatusCommand;
 import seedu.address.model.person.Status;
 
@@ -55,6 +54,6 @@ public class StatusCommandParserTest {
     @Test
     public void parse_duplicateStatus_throwsParseException() {
         assertParseFailure(parser, "1 " + PREFIX_STATUS + "active " + PREFIX_STATUS + "inactive",
-                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_STATUS));
+                StatusCommand.MESSAGE_DUPLICATE_STATUS);
     }
 }

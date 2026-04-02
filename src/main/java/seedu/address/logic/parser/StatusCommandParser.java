@@ -29,7 +29,11 @@ public class StatusCommandParser implements Parser<StatusCommand> {
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, StatusCommand.MESSAGE_USAGE), pe);
         }
 
-        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_STATUS);
+        try {
+            argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_STATUS);
+        } catch (ParseException pe) {
+            throw new ParseException(StatusCommand.MESSAGE_DUPLICATE_STATUS, pe);
+        }
 
         if (!argMultimap.getValue(PREFIX_STATUS).isPresent()) {
             throw new ParseException(

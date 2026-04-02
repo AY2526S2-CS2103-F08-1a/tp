@@ -28,6 +28,8 @@ public class StatusCommand extends Command {
 
     public static final String MESSAGE_STATUS_PERSON_SUCCESS = "Updated status of Person: %1$s";
     public static final String MESSAGE_NOT_CHANGED = "Status is already set to %1$s for person: %2$s";
+    public static final String MESSAGE_DUPLICATE_STATUS =
+            "Only one status value (either active or inactive) can be specified.";
 
     private final Index index;
     private final Status status;
