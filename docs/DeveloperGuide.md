@@ -664,6 +664,10 @@ phrases.
     * 2d1. PowerRoster does not change the existing note.
 
       Use case ends.
+* 2d Trainer requests to add or append more than one note at a time.
+    * 2d1. PowerRoster informs the Trainer that it is not possible to do so.
+
+      Use case ends.
 
 **Use case: UC08 \- Change a Client's Status**
 **Preconditions: Trainer has launched PowerRoster. At least one client exists in the displayed list.**
