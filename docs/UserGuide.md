@@ -224,7 +224,7 @@ Format: `status INDEX s/STATUS`
 * The index refers to the index number shown in the displayed client list.
 * The index **must be a positive integer** 1, 2, 3, …​
 * `STATUS` must be either `active` or `inactive` (case-insensitive).
-* Only one `s/` prefix can be specified. Providing it more than once (e.g. `status 1 s/active s/inactive`) will result in an error.
+* Provide only one status prefix (e.g., `s/active`). Providing it more than once (e.g. `status 1 s/active s/inactive`) will result in an error.
 * If the client's status is already set to the specified value, a message will be shown and no change will be made.
 * New clients are automatically set to `active` status when added.
 * Use this feature to mark clients as inactive while retaining their records for future reference.
