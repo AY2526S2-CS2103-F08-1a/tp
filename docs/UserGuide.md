@@ -383,6 +383,16 @@ Furthermore, certain edits can cause the PowerRoster to behave in unexpected way
 
 _Details coming soon ..._
 
+### Viewing all workout logs `[coming soon]`
+* Users will be able to view the entire workout log history of a specified client.
+
+_Details coming soon ..._
+
+### Editing and Deleting workout logs `[coming soon]`
+* Users will be able to edit and delete workout logs.
+
+_Details coming soon ..._
+
 --------------------------------------------------------------------------------------------------------------------
 
 ## FAQ
