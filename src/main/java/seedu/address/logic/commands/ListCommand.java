@@ -6,7 +6,7 @@ import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 import seedu.address.model.Model;
 
 /**
- * Lists all clients in the PowerRoster to the user.
+ * Lists all clients in PowerRoster to the user.
  */
 public class ListCommand extends Command {
 
