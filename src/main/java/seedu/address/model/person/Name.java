@@ -27,8 +27,16 @@ public class Name {
      */
     public Name(String name) {
         requireNonNull(name);
-        checkArgument(isValidName(name), MESSAGE_CONSTRAINTS);
-        fullName = name;
+        String normalisedName = normaliseWhitespace(name);
+        checkArgument(isValidName(normalisedName), MESSAGE_CONSTRAINTS);
+        fullName = normalisedName;
+    }
+
+    /**
+     * Normalises runs of spaces to a single space and trims leading/trailing spaces.
+     */
+    private static String normaliseWhitespace(String value) {
+        return value.trim().replaceAll(" +", " ");
     }
 
     /**
