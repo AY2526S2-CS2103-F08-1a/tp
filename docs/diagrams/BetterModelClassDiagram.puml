@@ -17,29 +17,29 @@ Person -up-> "*" Tag
 class Person {
   -- Identity --
   clientId: ClientId
-  
+
   -- Basic Information --
   name: Name
   gender: Gender
   dateOfBirth: DateOfBirth
-  
+
   -- Contact Details --
   phone: Phone
   email: Email
   address: Address
   location: Location
-  
+
   -- Fitness Tracking --
   height: Height
   weight: Weight
   bodyFatPercentage: BodyFatPercentage
-  
+
   -- Session & Program --
   plan: Plan
   rate: Rate
   status: Status
   note: Note
-  
+
   -- Tags --
   tags: Tag[*]
 }
