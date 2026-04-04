@@ -4,14 +4,10 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.AppUtil.checkArgument;
 
 /**
- * Represents a client's name in PowerRoster.
+ * Represents a Person's name in PowerRoster.
  * Guarantees: immutable; is valid as declared in {@link #isValidName(String)}
  */
 public class Name {
-
-    public static final String MESSAGE_CONSTRAINTS =
-            "Names should only contain alphanumeric characters, spaces, apostrophes ('), hyphens (-), "
-                    + "and periods (.), and it should not be blank";
 
     /*
      * The first character of the name must not be a whitespace,
@@ -19,7 +15,10 @@ public class Name {
      * A trailing period is allowed (e.g., "Dr.").
      */
     public static final String VALIDATION_REGEX = "[\\p{Alnum}](?:[\\p{Alnum}' .-]*[\\p{Alnum}.])?";
-
+    private static final String SPECIAL_CHARACTERS = "'-.";
+    public static final String MESSAGE_CONSTRAINTS =
+            "Names should only contain alphanumeric characters, spaces and " + SPECIAL_CHARACTERS
+                    + " while not being blank.";
     public final String fullName;
 
     /**

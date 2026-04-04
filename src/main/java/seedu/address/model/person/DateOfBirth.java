@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 /**
- * Represents a person's date of birth in the address book.
+ * Represents a Person's date of birth in PowerRoster.
  * Guarantees: immutable; is valid as declared in {@link #isValidDob(String)}
  */
 public class DateOfBirth {
