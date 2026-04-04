@@ -22,7 +22,7 @@ PowerRoster is a **desktop app built to help Freelance Personal Fitness Trainers
 
 1. Copy the file to the folder you want to use as the _home folder_ for your PowerRoster.
 
-1. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar powerroster.jar` command to run the application.<br>
+1. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar PowerRoster.jar` command to run the application.<br>
    A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
    ![Ui](images/Ui.png)
 
@@ -93,6 +93,8 @@ Format: `add n/NAME g/GENDER dob/DATE_OF_BIRTH p/PHONE_NUMBER e/EMAIL_ADDRESS a/
 
 * Names with forward slashes (e.g., "s/o" for "son of") are not supported due to the "/" being used as a command delimiter. You can replace the slashes with spaces (e.g., "Muthu s/o Rajan" can be entered as "Muthu s o Rajan".)
 * Other names with non-alphanumeric characters like José Muñoz or 小明 should be replaced with suitable alphanumeric characters.
+* `NAME` are case-sensitive for duplicate detection
+* `EMAIL_ADDRESS` must not contain consecutive special characters in the local-part (the part before `@`).
 * `GENDER` must be either `M` or `F` (case-insensitive)
 * `DATE_OF_BIRTH` must follow the format 'DD/MM/YYYY'
 * `DATE_OF_BIRTH` must be a valid date, not in the future, and not more than 100 years in the past.
@@ -137,6 +139,8 @@ Format: `edit INDEX [n/NAME] [g/GENDER] [dob/DATE_OF_BIRTH] [p/PHONE] [e/EMAIL] 
 * Edits the client at the specified `INDEX`. The index refers to the index number shown in the displayed client list. The index **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
+* Feedback (e.g. `added/updated` or `unchanged`) is shown per specified field.
+* If multiple provided field values are invalid in one command, all related validation errors are shown together.
 * When editing tags, the existing tags of the client will be removed i.e adding of tags is not cumulative.
 * You can remove all the client’s tags by typing `t/` without specifying any tags after it.
 
@@ -151,7 +155,7 @@ Adds / appends a note to an existing client in PowerRoster.
 Format: `note INDEX n/NOTE` or `note INDEX a/NOTE`
 
 * Adds/appends a note to the client at the specified `INDEX`. The index refers to the index number shown in the displayed client list. The index **must be a positive integer** 1, 2, 3, …​
-* At least one of `n/NOTE` and `a/NOTE` must be provided, but not both. 
+* At least one of `n/NOTE` and `a/NOTE` must be provided, but not both.
 * Repeated use of the same prefix (e.g., `n/first n/second`) is not allowed.
 * `n/NOTE` adds a note to the client. Any existing notes will be replaced by the new note.
 * `a/NOTE` appends a note to the client's existing notes (if any) with a space in between. If the client has no existing notes, `a/NOTE` behaves the same as `n/NOTE`.
