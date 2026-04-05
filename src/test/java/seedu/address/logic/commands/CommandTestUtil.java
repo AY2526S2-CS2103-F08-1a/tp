@@ -110,8 +110,8 @@ public class CommandTestUtil {
     public static final String INVALID_EMAIL_DESC = " " + PREFIX_EMAIL + "bob!yahoo";
     // empty string not allowed for addresses
     public static final String INVALID_ADDRESS_DESC = " " + PREFIX_ADDRESS;
-    // empty string not allowed for locations
-    public static final String INVALID_LOCATION_DESC = " " + PREFIX_LOCATION + ":";
+    // '/' symbol not allowed for locations
+    public static final String INVALID_LOCATION_DESC = " " + PREFIX_LOCATION + "Gym/Studio";
     // height out of valid range
     public static final String INVALID_HEIGHT_DESC = " " + PREFIX_HEIGHT + "49.9";
     // weight out of valid range

@@ -15,7 +15,7 @@ public class LocationTest {
 
     @Test
     public void constructor_invalidLocation_throwsIllegalArgumentException() {
-        String invalidLocation = ":";
+        String invalidLocation = "Home/Gym";
         assertThrows(IllegalArgumentException.class, () -> new Location(invalidLocation));
     }
 
@@ -30,8 +30,7 @@ public class LocationTest {
         assertThrows(NullPointerException.class, () -> Location.isValidLocation(null));
 
         // invalid Locations
-        assertFalse(Location.isValidLocation(" ")); // spaces only
-        assertFalse(Location.isValidLocation(":")); // invalid special character
+        assertFalse(Location.isValidLocation("/")); // '/' symbol invalid
 
         // valid Locations
         assertTrue(Location.isValidLocation("")); // empty string

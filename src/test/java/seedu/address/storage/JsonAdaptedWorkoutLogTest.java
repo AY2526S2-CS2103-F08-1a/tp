@@ -16,7 +16,7 @@ public class JsonAdaptedWorkoutLogTest {
 
     private static final String INVALID_ID = "345hjj5-345-GFNJ";
     private static final String INVALID_TIME = "23-01-25 0900";
-    private static final String INVALID_LOCATION = " ";
+    private static final String INVALID_LOCATION = "/";
 
     private static final String VALID_ID = BENSON_LOG_1.getTrainee().toString();
     private static final String VALID_TIME = BENSON_LOG_1.getTime().toString();

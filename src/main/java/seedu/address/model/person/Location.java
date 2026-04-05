@@ -10,18 +10,16 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
  */
 public class Location {
     public static final String MESSAGE_CONSTRAINTS =
-        "Locations can take any alphanumeric input and the @ symbol. "
+        "Locations can take any value not containing the '/' symbol. "
         + "Leave it blank to indicate no specified location.";
 
     public static final String EMPTY_LOCATION = "";
 
-    /*
-     * The first character of the location must not be a whitespace,
-     * otherwise " " (a blank string) becomes a valid input.
-     * A valid location includes alphanumeric characters and the
-     * @ symbol only.
+    /**
+     * Location can take on any value as long as it does not contain
+     * the / symbol
      */
-    public static final String VALIDATION_REGEX = "^[a-zA-Z0-9@][a-zA-Z0-9@\\s]*$";
+    public static final String VALIDATION_REGEX = "^[^/]*$";
 
     public final String value;
 
