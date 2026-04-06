@@ -111,6 +111,9 @@ public class EditCommandParser implements Parser<EditCommand> {
     private void parseTagsIntoDescriptor(ArgumentMultimap argMultimap,
                                          EditPersonDescriptor editPersonDescriptor,
                                          StringJoiner validationErrors) {
+        requireNonNull(argMultimap);
+        requireNonNull(editPersonDescriptor);
+        requireNonNull(validationErrors);
         try {
             parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG)).ifPresent(editPersonDescriptor::setTags);
         } catch (ParseException pe) {
@@ -120,6 +123,7 @@ public class EditCommandParser implements Parser<EditCommand> {
 
     /** Throws a single ParseException containing all collected validation messages. */
     private void throwIfAnyValidationErrors(StringJoiner validationErrors) throws ParseException {
+        requireNonNull(validationErrors);
         if (validationErrors.length() > 0) {
             throw new ParseException(validationErrors.toString());
         }
@@ -133,6 +137,10 @@ public class EditCommandParser implements Parser<EditCommand> {
                                         FieldParser<T> parser,
                                         Consumer<T> setter,
                                         StringJoiner validationErrors) {
+        requireNonNull(rawInput);
+        requireNonNull(parser);
+        requireNonNull(setter);
+        requireNonNull(validationErrors);
         if (!rawInput.isPresent()) {
             return;
         }
@@ -150,7 +158,7 @@ public class EditCommandParser implements Parser<EditCommand> {
      * {@code Set<Tag>} containing zero tags.
      */
     private Optional<Set<Tag>> parseTagsForEdit(Collection<String> tags) throws ParseException {
-        assert tags != null;
+        requireNonNull(tags);
 
         if (tags.isEmpty()) {
             return Optional.empty();

@@ -107,8 +107,7 @@ public class EditCommand extends Command {
         logger.info("Executing edit command for index: " + index.getOneBased());
         List<Person> lastShownList = model.getFilteredPersonList();
 
-        if (isTargetIndexOutOfBounds(lastShownList)) {
-            logger.warning("Edit command failed due to invalid index: " + index.getOneBased());
+        if (isTargetIndexInvalid(lastShownList)) {
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         }
 
@@ -117,22 +116,22 @@ public class EditCommand extends Command {
         assertInvariantFieldsUnchanged(personToEdit, editedPerson);
 
         if (!personToEdit.isSamePerson(editedPerson) && model.hasPerson(editedPerson)) {
-            logger.warning("Edit command failed because edited client duplicates an existing client: "
-                    + editedPerson.getName());
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
         }
 
         model.setPerson(personToEdit, editedPerson);
         String outcomeMessage = formatOutcomeMessages(personToEdit, editedPerson, editPersonDescriptor);
-        logger.fine("Edit command completed for client: " + editedPerson.getName());
         return new CommandResult(outcomeMessage);
     }
 
-    private boolean isTargetIndexOutOfBounds(List<Person> lastShownList) {
-        return index.getZeroBased() >= lastShownList.size();
+    private boolean isTargetIndexInvalid(List<Person> lastShownList) {
+        int zeroBasedIndex = index.getZeroBased();
+        return zeroBasedIndex < 0 || zeroBasedIndex >= lastShownList.size();
     }
 
     private static void assertInvariantFieldsUnchanged(Person personToEdit, Person editedPerson) {
+        requireNonNull(personToEdit);
+        requireNonNull(editedPerson);
         assert editedPerson != null : "Edited client should not be null";
         assert editedPerson.getId().equals(personToEdit.getId()) : "Client ID must remain unchanged";
         assert editedPerson.getNote().equals(personToEdit.getNote()) : "Note should remain unchanged by edit";
@@ -211,7 +210,8 @@ public class EditCommand extends Command {
      */
     private static Person createEditedPerson(Person personToEdit,
             EditPersonDescriptor editPersonDescriptor) {
-        assert personToEdit != null;
+        requireNonNull(personToEdit);
+        requireNonNull(editPersonDescriptor);
 
         ClientId fixedId = personToEdit.getId();
         Name updatedName = editPersonDescriptor.getName().orElse(personToEdit.getName());
@@ -247,11 +247,9 @@ public class EditCommand extends Command {
         }
 
         // instanceof handles nulls
-        if (!(other instanceof EditCommand)) {
+        if (!(other instanceof EditCommand otherEditCommand)) {
             return false;
         }
-
-        EditCommand otherEditCommand = (EditCommand) other;
         return index.equals(otherEditCommand.index)
                 && editPersonDescriptor.equals(otherEditCommand.editPersonDescriptor);
     }
@@ -385,11 +383,9 @@ public class EditCommand extends Command {
             }
 
             // instanceof handles nulls
-            if (!(other instanceof EditPersonDescriptor)) {
+            if (!(other instanceof EditPersonDescriptor otherEditPersonDescriptor)) {
                 return false;
             }
-
-            EditPersonDescriptor otherEditPersonDescriptor = (EditPersonDescriptor) other;
             return Objects.equals(name, otherEditPersonDescriptor.name)
                     && Objects.equals(gender, otherEditPersonDescriptor.gender)
                     && Objects.equals(dob, otherEditPersonDescriptor.dob)

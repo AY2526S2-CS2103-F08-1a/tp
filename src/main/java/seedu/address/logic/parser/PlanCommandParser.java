@@ -49,6 +49,7 @@ public class PlanCommandParser implements Parser<PlanCommand> {
     }
 
     private Plan parsePlan(String rawPlan) throws ParseException {
+        requireNonNull(rawPlan);
         if (rawPlan.trim().isEmpty()) {
             return Plan.getDefaultPlan();
         }

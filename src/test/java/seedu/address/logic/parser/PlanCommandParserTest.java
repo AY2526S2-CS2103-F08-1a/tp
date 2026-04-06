@@ -1,8 +1,8 @@
 package seedu.address.logic.parser;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.Messages.getErrorMessageForDuplicatePrefixes;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static seedu.address.logic.commands.CommandTestUtil.PLAN_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.PLAN_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PLAN_AMY;
@@ -19,7 +19,7 @@ import seedu.address.model.person.Plan;
 
 public class PlanCommandParserTest {
 
-    private PlanCommandParser parser = new PlanCommandParser();
+    private final PlanCommandParser parser = new PlanCommandParser();
 
     /**
      * Parses valid wp/ inputs, including mixed-case values and normalized internal whitespace.

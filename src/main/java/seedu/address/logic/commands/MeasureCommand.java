@@ -8,7 +8,9 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_WEIGHT;
 import java.util.List;
 import java.util.Objects;
 import java.util.StringJoiner;
+import java.util.logging.Logger;
 
+import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
@@ -55,6 +57,8 @@ public class MeasureCommand extends Command {
     private static final String MESSAGE_NO_MEASUREMENTS_PROVIDED =
             "At least one measurement must be provided.";
 
+    private static final Logger logger = LogsCenter.getLogger(MeasureCommand.class);
+
     private final Index index;
     private final Height height;
     private final Weight weight;
@@ -78,8 +82,10 @@ public class MeasureCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
+        logger.info("Executing measure command for index: " + index.getOneBased());
+
         List<Person> lastShownList = model.getFilteredPersonList();
-        if (isTargetIndexOutOfBounds(lastShownList)) {
+        if (isTargetIndexInvalid(lastShownList)) {
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         }
 
@@ -119,8 +125,9 @@ public class MeasureCommand extends Command {
                 personToEdit.getTags());
     }
 
-    private boolean isTargetIndexOutOfBounds(List<Person> lastShownList) {
-        return index.getZeroBased() >= lastShownList.size();
+    private boolean isTargetIndexInvalid(List<Person> lastShownList) {
+        int zeroBasedIndex = index.getZeroBased();
+        return zeroBasedIndex < 0 || zeroBasedIndex >= lastShownList.size();
     }
 
     private static boolean hasAnyMeasurementProvided(Height height, Weight weight,
@@ -177,11 +184,9 @@ public class MeasureCommand extends Command {
             return true;
         }
 
-        if (!(other instanceof MeasureCommand)) {
+        if (!(other instanceof MeasureCommand otherCommand)) {
             return false;
         }
-
-        MeasureCommand otherCommand = (MeasureCommand) other;
         return index.equals(otherCommand.index)
                 && Objects.equals(height, otherCommand.height)
                 && Objects.equals(weight, otherCommand.weight)

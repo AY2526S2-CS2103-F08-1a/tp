@@ -267,7 +267,7 @@ public class EditCommandTest {
                 String.format(EditCommand.MESSAGE_TAGS_UNCHANGED, clientName),
                 String.format(EditCommand.MESSAGE_TAGS_SET_SUCCESS, clientName, formatTags(afterEdit.getTags())));
 
-        if (builder.length() == 0) {
+        if (builder.isEmpty()) {
             return String.format(EditCommand.MESSAGE_NO_CHANGES, clientName);
         }
         return builder.toString();
@@ -282,7 +282,7 @@ public class EditCommandTest {
     }
 
     private void appendLine(StringBuilder builder, String messageLine) {
-        if (builder.length() > 0) {
+        if (!builder.isEmpty()) {
             builder.append("\n");
         }
         builder.append(messageLine);

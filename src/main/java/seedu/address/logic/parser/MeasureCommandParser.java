@@ -48,13 +48,14 @@ public class MeasureCommandParser implements Parser<MeasureCommand> {
 
         throwIfAnyValidationErrors(validationErrors);
 
-        assert hasAnyParsedMeasurement(height, weight, bodyFatPercentage)
+        assert hasAnyParsedMeasurementValue(height, weight, bodyFatPercentage)
                 : "Invariant broken: successful parse must produce at least one measurement.";
 
         return new MeasureCommand(index, height, weight, bodyFatPercentage);
     }
 
     private void throwIfAnyValidationErrors(StringJoiner validationErrors) throws ParseException {
+        requireNonNull(validationErrors);
         if (validationErrors.length() > 0) {
             throw new ParseException(validationErrors.toString());
         }
@@ -64,6 +65,9 @@ public class MeasureCommandParser implements Parser<MeasureCommand> {
     private <T> T parseOptionalValue(Optional<String> rawInput,
                                      FieldParser<T> parser,
                                      StringJoiner validationErrors) {
+        requireNonNull(rawInput);
+        requireNonNull(parser);
+        requireNonNull(validationErrors);
         if (!rawInput.isPresent()) {
             return null;
         }
@@ -90,7 +94,8 @@ public class MeasureCommandParser implements Parser<MeasureCommand> {
         return heightInput.isPresent() || weightInput.isPresent() || bodyFatInput.isPresent();
     }
 
-    private boolean hasAnyParsedMeasurement(Height height, Weight weight, BodyFatPercentage bodyFatPercentage) {
+    private boolean hasAnyParsedMeasurementValue(Height height, Weight weight,
+                                                 BodyFatPercentage bodyFatPercentage) {
         return height != null || weight != null || bodyFatPercentage != null;
     }
 
