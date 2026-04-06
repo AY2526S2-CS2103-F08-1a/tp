@@ -51,6 +51,9 @@ public class MeasureCommand extends Command {
     public static final String MESSAGE_BODY_FAT_ALREADY_CLEARED =
             "Body Fat is already cleared for client: %1$s";
 
+    private static final String MESSAGE_NO_MEASUREMENTS_PROVIDED =
+            "At least one measurement must be provided.";
+
     private final Index index;
     private final Height height;
     private final Weight weight;
@@ -61,6 +64,9 @@ public class MeasureCommand extends Command {
      */
     public MeasureCommand(Index index, Height height, Weight weight, BodyFatPercentage bodyFatPercentage) {
         requireNonNull(index);
+        if (!hasAnyMeasurementProvided(height, weight, bodyFatPercentage)) {
+            throw new IllegalArgumentException(MESSAGE_NO_MEASUREMENTS_PROVIDED);
+        }
 
         this.index = index;
         this.height = height;
@@ -72,18 +78,28 @@ public class MeasureCommand extends Command {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
         List<Person> lastShownList = model.getFilteredPersonList();
-
-        if (index.getZeroBased() >= lastShownList.size()) {
+        if (isTargetIndexOutOfBounds(lastShownList)) {
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         }
 
+        assert hasAnyMeasurementProvided(height, weight, bodyFatPercentage)
+                : "Invariant broken: MeasureCommand must carry at least one measurement.";
+
         Person personToEdit = lastShownList.get(index.getZeroBased());
+        Person editedPerson = createEditedPerson(personToEdit);
+        model.setPerson(personToEdit, editedPerson);
+
+        String message = formatOutcomeMessages(personToEdit, editedPerson.getName().toString());
+        return new CommandResult(message);
+    }
+
+    private Person createEditedPerson(Person personToEdit) {
         Height updatedHeight = height != null ? height : personToEdit.getHeight();
         Weight updatedWeight = weight != null ? weight : personToEdit.getWeight();
         BodyFatPercentage updatedBodyFatPercentage = bodyFatPercentage != null
                 ? bodyFatPercentage : personToEdit.getBodyFatPercentage();
 
-        Person editedPerson = new Person(
+        return new Person(
                 personToEdit.getId(),
                 personToEdit.getName(),
                 personToEdit.getGender(),
@@ -100,11 +116,15 @@ public class MeasureCommand extends Command {
                 updatedWeight,
                 updatedBodyFatPercentage,
                 personToEdit.getTags());
+    }
 
-        model.setPerson(personToEdit, editedPerson);
+    private boolean isTargetIndexOutOfBounds(List<Person> lastShownList) {
+        return index.getZeroBased() >= lastShownList.size();
+    }
 
-        String message = formatOutcomeMessages(personToEdit, editedPerson.getName().toString());
-        return new CommandResult(message);
+    private static boolean hasAnyMeasurementProvided(Height height, Weight weight,
+                                                     BodyFatPercentage bodyFatPercentage) {
+        return height != null || weight != null || bodyFatPercentage != null;
     }
 
     /** Returns field-specific outcomes in deterministic order (h/, w/, bf/). */
@@ -123,6 +143,7 @@ public class MeasureCommand extends Command {
     }
 
     private String formatHeightOutcome(String clientName, String oldValue) {
+        assert height != null : "Invariant broken: formatHeightOutcome should only be called when height is present.";
         if (height.value.isEmpty()) {
             String message = oldValue.isEmpty() ? MESSAGE_HEIGHT_ALREADY_CLEARED : MESSAGE_HEIGHT_CLEAR_SUCCESS;
             return String.format(message, clientName);
@@ -131,6 +152,7 @@ public class MeasureCommand extends Command {
     }
 
     private String formatWeightOutcome(String clientName, String oldValue) {
+        assert weight != null : "Invariant broken: formatWeightOutcome should only be called when weight is present.";
         if (weight.value.isEmpty()) {
             String message = oldValue.isEmpty() ? MESSAGE_WEIGHT_ALREADY_CLEARED : MESSAGE_WEIGHT_CLEAR_SUCCESS;
             return String.format(message, clientName);
@@ -139,6 +161,8 @@ public class MeasureCommand extends Command {
     }
 
     private String formatBodyFatOutcome(String clientName, String oldValue) {
+        assert bodyFatPercentage != null
+                : "Invariant broken: formatBodyFatOutcome should only be called when body fat is present.";
         if (bodyFatPercentage.value.isEmpty()) {
             String message = oldValue.isEmpty() ? MESSAGE_BODY_FAT_ALREADY_CLEARED : MESSAGE_BODY_FAT_CLEAR_SUCCESS;
             return String.format(message, clientName);
@@ -161,5 +185,10 @@ public class MeasureCommand extends Command {
                 && Objects.equals(height, otherCommand.height)
                 && Objects.equals(weight, otherCommand.weight)
                 && Objects.equals(bodyFatPercentage, otherCommand.bodyFatPercentage);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(index, height, weight, bodyFatPercentage);
     }
 }

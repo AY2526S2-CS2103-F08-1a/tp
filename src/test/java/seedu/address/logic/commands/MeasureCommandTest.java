@@ -1,6 +1,7 @@
 package seedu.address.logic.commands;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_BODY_FAT_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_HEIGHT_AMY;
@@ -336,6 +337,15 @@ public class MeasureCommandTest {
                 new BodyFatPercentage(VALID_BODY_FAT_AMY));
         // Different measurement payload indicates commands are not equal.
         assertFalse(standardCommand.equals(differentMeasurementCommand));
+    }
+
+    /**
+     * Verifies constructor enforces that at least one measurement is provided.
+     */
+    @Test
+    public void constructor_noMeasurementsProvided_throwsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class,
+                () -> new MeasureCommand(INDEX_FIRST_PERSON, null, null, null));
     }
 
 }
