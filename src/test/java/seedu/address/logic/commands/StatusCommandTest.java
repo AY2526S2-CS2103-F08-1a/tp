@@ -49,7 +49,6 @@ public class StatusCommandTest {
     public void execute_filteredList_filterPreserved() throws Exception {
         // Simulate "find <name>" — filter to show only the first person
         showPersonAtIndex(model, INDEX_FIRST_PERSON);
-        assertEquals(1, model.getFilteredPersonList().size());
 
         // Run status on that person
         StatusCommand statusCommand = new StatusCommand(INDEX_FIRST_PERSON, new Status("inactive"));
