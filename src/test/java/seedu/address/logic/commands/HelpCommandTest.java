@@ -2,6 +2,8 @@ package seedu.address.logic.commands;
 
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 
+import java.util.stream.Collectors;
+
 import org.junit.jupiter.api.Test;
 
 import seedu.address.model.Model;
@@ -13,24 +15,8 @@ public class HelpCommandTest {
 
     @Test
     public void execute_helpWithoutArgs_success() {
-        String expectedMessage = AddCommand.MESSAGE_USAGE + "\n\n"
-                + DeleteCommand.MESSAGE_USAGE + "\n\n"
-                + EditCommand.MESSAGE_USAGE + "\n\n"
-                + NoteCommand.MESSAGE_USAGE + "\n\n"
-                + PlanCommand.MESSAGE_USAGE + "\n\n"
-                + StatusCommand.MESSAGE_USAGE + "\n\n"
-                + MeasureCommand.MESSAGE_USAGE + "\n\n"
-                + RateCommand.MESSAGE_USAGE + "\n\n"
-                + LogCommand.MESSAGE_USAGE + "\n\n"
-                + LastCommand.MESSAGE_USAGE + "\n\n"
-                + FindCommand.MESSAGE_USAGE + "\n\n"
-                + FilterCommand.MESSAGE_USAGE + "\n\n"
-                + SortCommand.MESSAGE_USAGE + "\n\n"
-                + ViewCommand.MESSAGE_USAGE + "\n\n"
-                + ListCommand.MESSAGE_USAGE + "\n\n"
-                + ClearCommand.MESSAGE_USAGE + "\n\n"
-                + HelpCommand.MESSAGE_USAGE + "\n\n"
-                + ExitCommand.MESSAGE_USAGE;
+        String expectedMessage = CommandRegistry.getUsageMap().values().stream()
+                .collect(Collectors.joining("\n\n"));
         CommandResult expectedCommandResult = new CommandResult(expectedMessage, true, false);
         assertCommandSuccess(new HelpCommand(""), model, expectedCommandResult, expectedModel);
     }
