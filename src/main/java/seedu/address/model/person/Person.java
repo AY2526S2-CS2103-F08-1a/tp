@@ -57,8 +57,8 @@ public class Person {
             Weight weight,
             BodyFatPercentage bodyFatPercentage,
             Set<Tag> tags) {
-        requireAllNonNull(id, name, gender, phone, email, address, location, note, plan, rate, status,
-                height, weight, bodyFatPercentage, tags);
+        requireAllNonNull(id, name, gender, dob, phone, email, address, location, note, plan, rate, status,
+            height, weight, bodyFatPercentage, tags);
         this.id = id;
         this.name = name;
         this.gender = gender;

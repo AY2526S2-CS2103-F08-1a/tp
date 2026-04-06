@@ -3,7 +3,9 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 
 import java.util.List;
+import java.util.logging.Logger;
 
+import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -31,6 +33,8 @@ public class RateCommand extends Command {
     public static final String MESSAGE_RATE_ALREADY_CLEARED =
             "Rate is already cleared for client: %1$s";
 
+    private static final Logger logger = LogsCenter.getLogger(RateCommand.class);
+
     private final Index index;
     private final Rate rate;
 
@@ -47,34 +51,43 @@ public class RateCommand extends Command {
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
+        requireNonNull(model);
         List<Person> lastShownList = model.getFilteredPersonList();
         if (index.getZeroBased() >= lastShownList.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         }
 
         Person personToEdit = lastShownList.get(index.getZeroBased());
-        Person editedPerson = new Person(personToEdit.getId(), personToEdit.getName(),
-                personToEdit.getGender(), personToEdit.getDateOfBirth(), personToEdit.getPhone(),
-                personToEdit.getEmail(), personToEdit.getAddress(), personToEdit.getLocation(),
-                personToEdit.getNote(), personToEdit.getPlan(), rate, personToEdit.getStatus(),
-                personToEdit.getHeight(), personToEdit.getWeight(),
-                personToEdit.getBodyFatPercentage(), personToEdit.getTags());
+        Person editedPerson = createPersonWithUpdatedRate(personToEdit);
 
         model.setPerson(personToEdit, editedPerson);
+        logger.fine(() -> String.format("Updated rate for client %s", editedPerson.getName()));
 
-        String message;
-        boolean oldRateEmpty = personToEdit.getRate().value.isEmpty();
-        boolean newRateEmpty = rate.value.isEmpty();
-
-        if (newRateEmpty && oldRateEmpty) {
-            message = MESSAGE_RATE_ALREADY_CLEARED;
-        } else if (newRateEmpty && !oldRateEmpty) {
-            message = MESSAGE_CLEAR_SUCCESS;
-        } else {
-            message = MESSAGE_SET_SUCCESS;
-        }
+        String message = determineSuccessMessage(personToEdit);
 
         return new CommandResult(String.format(message, editedPerson.getName(), rate.value));
+    }
+
+    private Person createPersonWithUpdatedRate(Person personToEdit) {
+        return new Person(personToEdit.getId(), personToEdit.getName(), personToEdit.getGender(),
+                personToEdit.getDateOfBirth(), personToEdit.getPhone(), personToEdit.getEmail(),
+                personToEdit.getAddress(), personToEdit.getLocation(), personToEdit.getNote(),
+                personToEdit.getPlan(), rate, personToEdit.getStatus(), personToEdit.getHeight(),
+                personToEdit.getWeight(), personToEdit.getBodyFatPercentage(),
+                personToEdit.getTags());
+    }
+
+    private String determineSuccessMessage(Person personToEdit) {
+        boolean wasRateCleared = personToEdit.getRate().value.isEmpty();
+        boolean isRateCleared = rate.value.isEmpty();
+
+        if (isRateCleared && wasRateCleared) {
+            return MESSAGE_RATE_ALREADY_CLEARED;
+        }
+        if (isRateCleared) {
+            return MESSAGE_CLEAR_SUCCESS;
+        }
+        return MESSAGE_SET_SUCCESS;
     }
 
     @Override

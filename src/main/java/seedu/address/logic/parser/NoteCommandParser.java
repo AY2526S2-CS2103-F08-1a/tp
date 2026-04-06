@@ -20,40 +20,34 @@ public class NoteCommandParser implements Parser<NoteCommand> {
      *
      * @throws ParseException if the user input does not conform the expected format
      */
+    @Override
     public NoteCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_NOTE, PREFIX_NOTE_APPEND);
 
-        Index index;
-
-        try {
-            index = ParserUtil.parseIndex(argMultimap.getPreamble());
-        } catch (ParseException pe) {
-            throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, NoteCommand.MESSAGE_USAGE), pe);
-        }
+        Index index = parseIndex(argMultimap);
 
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NOTE, PREFIX_NOTE_APPEND);
 
-        boolean hasNotePrefix = argMultimap.getValue(PREFIX_NOTE).isPresent();
+        boolean hasReplacePrefix = argMultimap.getValue(PREFIX_NOTE).isPresent();
         boolean hasAppendPrefix = argMultimap.getValue(PREFIX_NOTE_APPEND).isPresent();
 
-        if ((!hasNotePrefix && !hasAppendPrefix) || (hasNotePrefix && hasAppendPrefix)) {
+        if (hasReplacePrefix == hasAppendPrefix) {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, NoteCommand.MESSAGE_USAGE));
         }
 
-        // Determine which prefix was used and extract content
-        String noteContent;
-        boolean isAppend;
-
-        if (hasNotePrefix) {
-            noteContent = argMultimap.getValue(PREFIX_NOTE).get();
-            isAppend = false;
-        } else {
-            noteContent = argMultimap.getValue(PREFIX_NOTE_APPEND).get();
-            isAppend = true;
+        if (hasReplacePrefix) {
+            return new NoteCommand(index, new Note(argMultimap.getValue(PREFIX_NOTE).orElse("")), false);
         }
+        return new NoteCommand(index, new Note(argMultimap.getValue(PREFIX_NOTE_APPEND).orElse("")), true);
+    }
 
-        return new NoteCommand(index, new Note(noteContent), isAppend);
+    private Index parseIndex(ArgumentMultimap argMultimap) throws ParseException {
+        try {
+            return ParserUtil.parseIndex(argMultimap.getPreamble());
+        } catch (ParseException pe) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, NoteCommand.MESSAGE_USAGE), pe);
+        }
     }
 }

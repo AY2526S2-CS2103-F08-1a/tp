@@ -26,8 +26,8 @@ import seedu.address.logic.parser.exceptions.ParseException;
 public class MainWindow extends UiPart<Stage> {
 
     private static final String FXML = "MainWindow.fxml";
-    private static final Boolean IS_COMMAND_BOOLEAN = true;
-    private static final Boolean IS_NOT_COMMAND_BOOLEAN = false;
+    private static final boolean IS_COMMAND_INPUT = true;
+    private static final boolean IS_COMMAND_RESULT = false;
 
     private final Logger logger = LogsCenter.getLogger(getClass());
 
@@ -190,17 +190,16 @@ public class MainWindow extends UiPart<Stage> {
     }
 
     /**
-     * Keeps the detail panel in sync with model updates for the currently viewed person.
-     * Clears the detail panel only when the person no longer exists.
+     * Keeps the detail panel in sync with model updates for the currently viewed person. Clears the
+     * detail panel only when the person no longer exists.
      */
     private void refreshDetailViewForCurrentPerson() {
-        if (personDetailPanel.getCurrentPerson() == null) {
+        if (personDetailPanel == null || personDetailPanel.getCurrentPerson() == null) {
             return;
         }
 
         logic.getAddressBook().getPersonList().stream()
-                .filter(p -> p.isSamePersonId(personDetailPanel.getCurrentPerson()))
-                .findFirst()
+                .filter(p -> p.isSamePersonId(personDetailPanel.getCurrentPerson())).findFirst()
                 .ifPresentOrElse(personDetailPanel::displayPerson, personDetailPanel::clearPerson);
     }
 
@@ -211,29 +210,36 @@ public class MainWindow extends UiPart<Stage> {
      */
     private CommandResult executeCommand(String commandText)
             throws CommandException, ParseException {
-        resultDisplay.setFeedbackToUser(commandText, IS_COMMAND_BOOLEAN);
+        resultDisplay.setFeedbackToUser(commandText, IS_COMMAND_INPUT);
         try {
             CommandResult commandResult = logic.execute(commandText);
-            logger.info("Result: " + commandResult.getFeedbackToUser());
-            resultDisplay.setFeedbackToUser(commandResult.getFeedbackToUser(),
-                    IS_NOT_COMMAND_BOOLEAN);
-            if (commandResult.isShowHelp()) {
-                handleHelp();
-            }
-            if (commandResult.isExit()) {
-                handleExit();
-            }
-            if (commandResult.isShowPersonView()) {
-                personDetailPanel.displayPerson(commandResult.getPersonToView());
-            } else {
-                refreshDetailViewForCurrentPerson();
-            }
-
+            handleCommandSuccess(commandResult);
             return commandResult;
         } catch (CommandException | ParseException e) {
-            logger.info("An error occurred while executing command: " + commandText);
-            resultDisplay.setFeedbackToUser(e.getMessage(), IS_NOT_COMMAND_BOOLEAN);
+            handleCommandFailure(commandText, e);
             throw e;
         }
+    }
+
+    private void handleCommandSuccess(CommandResult commandResult) {
+        logger.info("Result: " + commandResult.getFeedbackToUser());
+        resultDisplay.setFeedbackToUser(commandResult.getFeedbackToUser(), IS_COMMAND_RESULT);
+        if (commandResult.isShowHelp()) {
+            handleHelp();
+        }
+        if (commandResult.isExit()) {
+            handleExit();
+        }
+        if (commandResult.isShowPersonView()) {
+            personDetailPanel.displayPerson(commandResult.getPersonToView());
+            return;
+        }
+        refreshDetailViewForCurrentPerson();
+    }
+
+    private void handleCommandFailure(String commandText, Exception exception) {
+        logger.warning(() -> "Failed to execute command: " + commandText + ". Reason: "
+                + exception.getMessage());
+        resultDisplay.setFeedbackToUser(exception.getMessage(), IS_COMMAND_RESULT);
     }
 }

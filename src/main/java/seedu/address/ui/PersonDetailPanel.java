@@ -1,5 +1,7 @@
 package seedu.address.ui;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.Comparator;
 
 import javafx.fxml.FXML;
@@ -17,6 +19,7 @@ import seedu.address.model.person.Person;
 public class PersonDetailPanel extends UiPart<Region> {
 
     private static final String FXML = "PersonDetailPanel.fxml";
+    private static final String EMPTY_DISPLAY_VALUE = "N/A";
 
     private Person currentPerson;
 
@@ -67,31 +70,12 @@ public class PersonDetailPanel extends UiPart<Region> {
      * Displays the full details of the given {@code Person}.
      */
     public void displayPerson(Person person) {
+        requireNonNull(person);
         this.currentPerson = person;
 
-        name.setText(person.getName().fullName);
-        gender.setText(person.getGender().value.toString());
-        dob.setText(person.getDateOfBirth().toString());
-        phone.setText(person.getPhone().value);
-        email.setText(person.getEmail().value);
-        gymLocation.setText(person.getLocation().value.isEmpty() ? "N/A" : person.getLocation().value);
-        address.setText(person.getAddress().value);
-        rate.setText(person.getRate().value.isEmpty() ? "N/A" : person.getRate().value);
-        plan.setText(person.getPlan().isUnassigned() ? "N/A" : person.getPlan().toString());
-        height.setText(person.getHeight().value.isEmpty() ? "N/A" : person.getHeight().value);
-        weight.setText(person.getWeight().value.isEmpty() ? "N/A" : person.getWeight().value);
-        bodyFat.setText(person.getBodyFatPercentage().value.isEmpty() ? "N/A"
-                : person.getBodyFatPercentage().value);
-        note.setText(person.getNote().value.isEmpty() ? "N/A" : person.getNote().value);
-
-        tags.getChildren().clear();
-        person.getTags().stream().sorted(Comparator.comparing(tag -> tag.tagName))
-                .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
-
-        placeholderView.setVisible(false);
-        placeholderView.setManaged(false);
-        personDetailView.setVisible(true);
-        personDetailView.setManaged(true);
+        updateDetailPanelFields(person);
+        updateTagDisplay(person);
+        setPlaceholderVisible(false);
     }
 
     /**
@@ -99,10 +83,7 @@ public class PersonDetailPanel extends UiPart<Region> {
      */
     public void clearPerson() {
         this.currentPerson = null;
-        personDetailView.setVisible(false);
-        personDetailView.setManaged(false);
-        placeholderView.setVisible(true);
-        placeholderView.setManaged(true);
+        setPlaceholderVisible(true);
     }
 
     /**
@@ -120,5 +101,39 @@ public class PersonDetailPanel extends UiPart<Region> {
             valueLabel.setMinWidth(Region.USE_PREF_SIZE);
             valueLabel.setTextOverrun(OverrunStyle.CLIP);
         }
+    }
+
+    private void updateDetailPanelFields(Person person) {
+        name.setText(person.getName().fullName);
+        gender.setText(person.getGender().value.toString());
+        dob.setText(person.getDateOfBirth().toString());
+        phone.setText(person.getPhone().value);
+        email.setText(person.getEmail().value);
+        gymLocation.setText(defaultIfBlank(person.getLocation().value));
+        address.setText(person.getAddress().value);
+        rate.setText(defaultIfBlank(person.getRate().value));
+        plan.setText(person.getPlan().isUnassigned() ? EMPTY_DISPLAY_VALUE : person.getPlan().toString());
+        height.setText(defaultIfBlank(person.getHeight().value));
+        weight.setText(defaultIfBlank(person.getWeight().value));
+        bodyFat.setText(defaultIfBlank(person.getBodyFatPercentage().value));
+        note.setText(defaultIfBlank(person.getNote().value));
+    }
+
+    private void updateTagDisplay(Person person) {
+        tags.getChildren().clear();
+        person.getTags().stream()
+                .sorted(Comparator.comparing(tag -> tag.tagName))
+                .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
+    }
+
+    private void setPlaceholderVisible(boolean shouldShowPlaceholder) {
+        placeholderView.setVisible(shouldShowPlaceholder);
+        placeholderView.setManaged(shouldShowPlaceholder);
+        personDetailView.setVisible(!shouldShowPlaceholder);
+        personDetailView.setManaged(!shouldShowPlaceholder);
+    }
+
+    private String defaultIfBlank(String value) {
+        return value.isEmpty() ? EMPTY_DISPLAY_VALUE : value;
     }
 }

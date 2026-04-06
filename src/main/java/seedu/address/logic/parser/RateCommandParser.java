@@ -19,30 +19,29 @@ public class RateCommandParser implements Parser<RateCommand> {
      *
      * @throws ParseException if the user input does not conform the expected format
      */
+    @Override
     public RateCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_RATE);
 
-        Index index;
-        try {
-            index = ParserUtil.parseIndex(argMultimap.getPreamble());
-        } catch (ParseException pe) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, RateCommand.MESSAGE_USAGE), pe);
-        }
+        Index index = parseIndex(argMultimap);
 
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_RATE);
 
-        if (!argMultimap.getValue(PREFIX_RATE).isPresent()) {
+        if (argMultimap.getValue(PREFIX_RATE).isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, RateCommand.MESSAGE_USAGE));
         }
 
-        String rateContent = argMultimap.getValue(PREFIX_RATE).get();
-        Rate rate;
-        try {
-            rate = ParserUtil.parseRate(rateContent);
-        } catch (ParseException pe) {
-            throw new ParseException(pe.getMessage(), pe);
-        }
+        String rateContent = argMultimap.getValue(PREFIX_RATE).orElse("");
+        Rate rate = ParserUtil.parseRate(rateContent);
 
         return new RateCommand(index, rate);
+    }
+
+    private Index parseIndex(ArgumentMultimap argMultimap) throws ParseException {
+        try {
+            return ParserUtil.parseIndex(argMultimap.getPreamble());
+        } catch (ParseException pe) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, RateCommand.MESSAGE_USAGE), pe);
+        }
     }
 }

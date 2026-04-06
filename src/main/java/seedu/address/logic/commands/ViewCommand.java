@@ -28,7 +28,13 @@ public class ViewCommand extends Command {
 
     private final Index targetIndex;
 
+    /**
+     * Creates a ViewCommand to display a person by index in the current filtered list.
+     *
+     * @param targetIndex index of the person in the filtered list.
+     */
     public ViewCommand(Index targetIndex) {
+        requireNonNull(targetIndex);
         this.targetIndex = targetIndex;
     }
 

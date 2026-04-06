@@ -7,18 +7,20 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 /**
- * Represents a Person's session rate in PowerRoster. Guarantees: immutable; is valid as
- * declared in {@link #isValidRate(String)}
+ * Represents a Person's session rate in PowerRoster. Guarantees: immutable; is valid as declared in
+ * {@link #isValidRate(String)}
  */
 public class Rate {
+
+    // Accepts: 120, 120., 120.5, 120.50, .50
+    // Rejects: -1, 1,000, $100
+    public static final String VALIDATION_REGEX = "(?:\\d+(?:\\.\\d{0,2})?|\\.\\d{1,2})";
 
     public static final String MESSAGE_CONSTRAINTS =
             "Rate must be a non-negative amount with up to 2 decimal places "
                     + "(e.g. 120, 120.5, 120.50). No currency symbols allowed.";
 
-    // Accepts: 120, 120., 120.5, 120.50, .50
-    // Rejects: -1, 1,000, $100
-    public static final String VALIDATION_REGEX = "(?:\\d+(?:\\.\\d{0,2})?|\\.\\d{1,2})";
+    private static final int RATE_DECIMAL_SCALE = 2;
 
     public final String value;
 
@@ -60,7 +62,9 @@ public class Rate {
     }
 
     private static String normaliseRate(String rate) {
-        return new BigDecimal(rate).setScale(2, RoundingMode.UNNECESSARY).toPlainString();
+        assert !rate.trim().isEmpty() : "Rate should not be empty when attempting to normalise";
+        return new BigDecimal(rate).setScale(RATE_DECIMAL_SCALE, RoundingMode.UNNECESSARY)
+                .toPlainString();
     }
 
     @Override
