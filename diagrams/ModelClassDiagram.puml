@@ -16,22 +16,10 @@ Class UserPrefs
 Class UniquePersonList
 Class WorkoutLog
 Class WorkoutTime
+Class Location
 Class Person
 Class PersonComparators
 Class ClientId
-Class Gender
-Class DateOfBirth
-Class Address
-Class Email
-Class Name
-Class Phone
-Class Location
-Class Plan
-Class Rate
-Class Height
-Class Weight
-Class BodyFatPercentage
-Class Tag
 
 Class I #FFFFFF
 }
@@ -61,10 +49,6 @@ Person --> "1" ClientId
 
 Person -[hidden]up--> I
 UniquePersonList -[hidden]right-> I
-
-Name -[hidden]right-> Phone
-Phone -[hidden]right-> Address
-Address -[hidden]right-> Email
 
 ModelManager --> "~* filtered" Person
 @enduml
