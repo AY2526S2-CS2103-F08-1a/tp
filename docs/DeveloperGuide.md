@@ -12,9 +12,15 @@
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Acknowledgements**
-Github Copilot was used by our team for its auto-complete features during our developement of this application
+This project is adapted from [AddressBook-Level3](https://se-education.org/addressbook-level3/) by the [SE-EDU initiative](https://se-education.org).
 
-_{ list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well }_
+The team also used GitHub Copilot for its auto-complete assistance during development.
+
+PowerRoster relies on the following third-party libraries/frameworks:
+
+* [JavaFX](https://openjfx.io/) for the GUI.
+* [Jackson](https://github.com/FasterXML/jackson) for JSON serialization/deserialization.
+* [JUnit 5](https://junit.org/junit5/) for automated testing.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -36,7 +42,7 @@ Given below is a quick overview of main components and how they interact with ea
 
 **Main components of the architecture**
 
-**`Main`** (consisting of classes [`Main`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/Main.java) and [`MainApp`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/MainApp.java)) is in charge of the app launch and shut down.
+**`Main`** (consisting of classes [`Main`](https://github.com/ay2526s2-cs2103-f08-1a/tp/tree/master/src/main/java/seedu/address/Main.java) and [`MainApp`](https://github.com/ay2526s2-cs2103-f08-1a/tp/tree/master/src/main/java/seedu/address/MainApp.java)) is in charge of the app launch and shut down.
 * At app launch, it initializes the other components in the correct sequence, and connects them up with each other.
 * At shut down, it shuts down the other components and invokes cleanup methods where necessary.
 
@@ -68,13 +74,13 @@ The sections below give more details of each component.
 
 ### UI component
 
-The **API** of this component is specified in [`Ui.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/ui/Ui.java)
+The **API** of this component is specified in [`Ui.java`](https://github.com/ay2526s2-cs2103-f08-1a/tp/tree/master/src/main/java/seedu/address/ui/Ui.java)
 
 <puml src="diagrams/UiClassDiagram.puml" alt="Structure of the UI Component"/>
 
 The UI consists of a `MainWindow` that is made up of parts e.g. `CommandBox`, `ResultDisplay`, `PersonListPanel`, `PersonDetailPanel`, `StatusBarFooter` etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class which captures the commonalities between classes that represent parts of the visible GUI.
 
-The `UI` component uses the JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files that are in the `src/main/resources/view` folder. For example, the layout of the [`MainWindow`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/ui/MainWindow.java) is specified in [`MainWindow.fxml`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/resources/view/MainWindow.fxml)
+The `UI` component uses the JavaFX UI framework. The layout of these UI parts are defined in matching `.fxml` files that are in the `src/main/resources/view` folder. For example, the layout of the [`MainWindow`](https://github.com/ay2526s2-cs2103-f08-1a/tp/tree/master/src/main/java/seedu/address/ui/MainWindow.java) is specified in [`MainWindow.fxml`](https://github.com/ay2526s2-cs2103-f08-1a/tp/tree/master/src/main/resources/view/MainWindow.fxml)
 
 The `UI` component,
 
@@ -86,7 +92,7 @@ The `UI` component,
 
 ### Logic component
 
-**API** : [`Logic.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/logic/Logic.java)
+**API** : [`Logic.java`](https://github.com/ay2526s2-cs2103-f08-1a/tp/tree/master/src/main/java/seedu/address/logic/Logic.java)
 
 Here's a (partial) class diagram of the `Logic` component:
 
@@ -105,7 +111,7 @@ How the `Logic` component works:
 
 1. When `Logic` is called upon to execute a command, it is passed to an `AddressBookParser` object which in turn creates a parser that matches the command (e.g., `DeleteCommandParser`) and uses it to parse the command.
 1. This results in a `Command` object (more precisely, an object of one of its subclasses e.g., `DeleteCommand`) which is executed by the `LogicManager`.
-1. The command can communicate with the `Model` when it is executed (e.g. to delete a person).<br>
+1. The command can communicate with the `Model` when it is executed (e.g. to delete a client).<br>
    Note that although this is shown as a single step in the diagram above (for simplicity), in the code it can take several interactions (between the command object and the `Model`) to achieve.
 1. The result of the command execution is encapsulated as a `CommandResult` object which is returned back from `Logic`.
     - `CommandResult` can optionally carry a `Person` to be displayed in the UI detail panel. This is used by commands such as `view` that trigger a UI detail-view update without modifying model data.
@@ -119,18 +125,18 @@ How the parsing works:
 * All `XYZCommandParser` classes (e.g., `AddCommandParser`, `DeleteCommandParser`, ...) inherit from the `Parser` interface so that they can be treated similarly where possible e.g, during testing.
 
 ### Model component
-**API** : [`Model.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/model/Model.java)
+**API** : [`Model.java`](https://github.com/ay2526s2-cs2103-f08-1a/tp/tree/master/src/main/java/seedu/address/model/Model.java)
 
 <puml src="diagrams/ModelClassDiagram.puml" />
 
 
 The `Model` component,
 
-* stores the address book data i.e., all `Person` objects (which are contained in a `UniquePersonList` object).
+* stores each PowerRoster client data as `Person` objects (contained in a `UniquePersonList`object).
 * stores the currently 'selected' `Person` objects (e.g., results of a search query) as a separate _filtered_ list which is exposed to outsiders as an unmodifiable `ObservableList<Person>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
-* stores a `UserPref` object that represents the user’s preferences. This is exposed to the outside as a `ReadOnlyUserPref` objects.
-* stores the workout logs in an `ArrayList` of `WorkoutLog` objects
-* does not depend on any of the other three components (as the `Model` represents data entities of the domain, they should make sense on their own without depending on other components)
+* stores a `UserPref` object that represents user preferences, exposed as a `ReadOnlyUserPref` object.
+* stores workout session logs as a `WorkoutLogBook` containing `WorkoutLog` entries.
+* does not depend on the other three components: `UI`, `Logic`, or `Storage` (as the `Model` represents data entities of the domain, they should make sense on their own without depending on other components).
 
 <box type="info" seamless>
 
@@ -143,12 +149,12 @@ The `Model` component,
 
 ### Storage component
 
-**API** : [`Storage.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/storage/Storage.java)
+**API** : [`Storage.java`](https://github.com/ay2526s2-cs2103-f08-1a/tp/tree/master/src/main/java/seedu/address/storage/Storage.java)
 
 <puml src="diagrams/StorageClassDiagram.puml" width="550" />
 
 The `Storage` component,
-* can save address book data, workout log book data and user preference data in JSON format, and read them back into corresponding objects.
+* can save PowerRoster data (client data, workout logs, and user preferences) in JSON format, and read them back into corresponding objects.
 * inherits from `AddressBookStorage`, `WorkoutLogBookStorage`, and `UserPrefStorage`, which means it can be treated as any one (if only the functionality of only one is needed).
 * depends on some classes in the `Model` component (because the `Storage` component's job is to save/retrieve objects that belong to the `Model`)
 
@@ -176,7 +182,7 @@ The `view` feature is implemented as a collaboration between `Logic` and `UI`:
 * Placeholder state shown when no client is currently being viewed.
 * Detailed state shown after a successful `view INDEX` command.
 
-To keep the panel consistent with model updates, `MainWindow` also clears the detail panel after successful commands when the currently viewed person no longer exists (e.g., after a `delete` or `clear`).
+To keep the panel consistent with model updates, `MainWindow` updates the panel after every command and also clears the panel after successful commands when the currently viewed client no longer exists (e.g., after a `delete` or `clear`).
 
 ### Sort feature
 
@@ -237,7 +243,7 @@ The `Status` class enforces validation to ensure only valid status values ("acti
 **Validation:**
 * The `Status` class validates input using a regex pattern, rejecting invalid values like "pending" or "unknown".
 * Duplicate status prefixes (e.g., `status 1 s/active s/inactive`) are detected and rejected by the parser with a user-friendly message: "Only one status value (either active or inactive) can be specified."
-* If the client already has the specified status, the command does not modify the person and instead returns an informational message.
+* If the client already has the specified status, the command does not modify the client record and instead returns an informational message.
 
 ### Rate Feature
 
@@ -298,102 +304,9 @@ In the UI detail panel, measurement values are displayed to 1 decimal place to m
 **Storage and Migration:**
 * `JsonAdaptedPerson` persists `height`, `weight`, and `bodyFatPercentage` in the data file and validates these values when converting to model objects.
 
-### \[Proposed\] Undo/redo feature
+### Future enhancements
 
-#### Proposed Implementation
-
-The proposed undo/redo mechanism is facilitated by `VersionedAddressBook`. It extends `AddressBook` with an undo/redo history, stored internally as an `addressBookStateList` and `currentStatePointer`. Additionally, it implements the following operations:
-
-* `VersionedAddressBook#commit()` — Saves the current address book state in its history.
-* `VersionedAddressBook#undo()` — Restores the previous address book state from its history.
-* `VersionedAddressBook#redo()` — Restores a previously undone address book state from its history.
-
-These operations are exposed in the `Model` interface as `Model#commitAddressBook()`, `Model#undoAddressBook()` and `Model#redoAddressBook()` respectively.
-
-Given below is an example usage scenario and how the undo/redo mechanism behaves at each step.
-
-Step 1. The user launches the application for the first time. The `VersionedAddressBook` will be initialized with the initial address book state, and the `currentStatePointer` pointing to that single address book state.
-
-<puml src="diagrams/UndoRedoState0.puml" alt="UndoRedoState0" />
-
-Step 2. The user executes `delete 5` command to delete the 5th person in the address book. The `delete` command calls `Model#commitAddressBook()`, causing the modified state of the address book after the `delete 5` command executes to be saved in the `addressBookStateList`, and the `currentStatePointer` is shifted to the newly inserted address book state.
-
-<puml src="diagrams/UndoRedoState1.puml" alt="UndoRedoState1" />
-
-Step 3. The user executes `add n/David …​` to add a new person. The `add` command also calls `Model#commitAddressBook()`, causing another modified address book state to be saved into the `addressBookStateList`.
-
-<puml src="diagrams/UndoRedoState2.puml" alt="UndoRedoState2" />
-
-<box type="info" seamless>
-
-**Note:** If a command fails its execution, it will not call `Model#commitAddressBook()`, so the address book state will not be saved into the `addressBookStateList`.
-
-</box>
-
-Step 4. The user now decides that adding the person was a mistake, and decides to undo that action by executing the `undo` command. The `undo` command will call `Model#undoAddressBook()`, which will shift the `currentStatePointer` once to the left, pointing it to the previous address book state, and restores the address book to that state.
-
-<puml src="diagrams/UndoRedoState3.puml" alt="UndoRedoState3" />
-
-
-<box type="info" seamless>
-
-**Note:** If the `currentStatePointer` is at index 0, pointing to the initial AddressBook state, then there are no previous AddressBook states to restore. The `undo` command uses `Model#canUndoAddressBook()` to check if this is the case. If so, it will return an error to the user rather
-than attempting to perform the undo.
-
-</box>
-
-The following sequence diagram shows how an undo operation goes through the `Logic` component:
-
-<puml src="diagrams/UndoSequenceDiagram-Logic.puml" alt="UndoSequenceDiagram-Logic" />
-
-<box type="info" seamless>
-
-**Note:** The lifeline for `UndoCommand` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
-
-</box>
-
-Similarly, how an undo operation goes through the `Model` component is shown below:
-
-<puml src="diagrams/UndoSequenceDiagram-Model.puml" alt="UndoSequenceDiagram-Model" />
-
-The `redo` command does the opposite — it calls `Model#redoAddressBook()`, which shifts the `currentStatePointer` once to the right, pointing to the previously undone state, and restores the address book to that state.
-
-<box type="info" seamless>
-
-**Note:** If the `currentStatePointer` is at index `addressBookStateList.size() - 1`, pointing to the latest address book state, then there are no undone AddressBook states to restore. The `redo` command uses `Model#canRedoAddressBook()` to check if this is the case. If so, it will return an error to the user rather than attempting to perform the redo.
-
-</box>
-
-Step 5. The user then decides to execute the command `list`. Commands that do not modify the address book, such as `list`, will usually not call `Model#commitAddressBook()`, `Model#undoAddressBook()` or `Model#redoAddressBook()`. Thus, the `addressBookStateList` remains unchanged.
-
-<puml src="diagrams/UndoRedoState4.puml" alt="UndoRedoState4" />
-
-Step 6. The user executes `clear`, which calls `Model#commitAddressBook()`. Since the `currentStatePointer` is not pointing at the end of the `addressBookStateList`, all address book states after the `currentStatePointer` will be purged. Reason: It no longer makes sense to redo the `add n/David …​` command. This is the behavior that most modern desktop applications follow.
-
-<puml src="diagrams/UndoRedoState5.puml" alt="UndoRedoState5" />
-
-The following activity diagram summarizes what happens when a user executes a new command:
-
-<puml src="diagrams/CommitActivityDiagram.puml" width="250" />
-
-#### Design considerations:
-
-**Aspect: How undo & redo executes:**
-
-* **Alternative 1 (current choice):** Saves the entire address book.
-  * Pros: Easy to implement.
-  * Cons: May have performance issues in terms of memory usage.
-
-* **Alternative 2:** Individual command knows how to undo/redo by
-  itself.
-  * Pros: Will use less memory (e.g. for `delete`, just save the person being deleted).
-  * Cons: We must ensure that the implementation of each individual command are correct.
-
-_{more aspects and alternatives to be added}_
-
-### \[Proposed\] Data archiving
-
-_{Explain here how the data archiving feature will be implemented}_
+Potential future enhancements include undo/redo support, archival workflows for old client records/workout logs and expansion of workout logs and plans to include more information (e.g., type of exercise, number of sets and reps, etc.).
 
 
 --------------------------------------------------------------------------------------------------------------------
@@ -412,15 +325,15 @@ _{Explain here how the data archiving feature will be implemented}_
 
 ### Product scope
 
-**Target user profile**: Freelance Personal Fitness Trainers
+**Target user profile**: Freelance personal fitness trainers
 
 * Fully freelance, not affiliated with any single gym which means he/she manages his/her own client base independently
-* Handles a diverse client base of 10-25 clients, with varying fitness goals, dietary requirements, workout plans and gym location
+* Handles a diverse client base of 10-25 clients, with varying fitness goals, workout plans and gym location
 * Prefers laptop apps for work and keyboard-driven workflows over Graphical User Interface (GUI) navigation
 * Currently, has client information spread out across different applications, which makes it time-consuming to retrieve and update client information, and needs a *centralised* *application* to help with this
-* Needs to pull up/update a specific client’s full information before/after a session
+* Needs to access/update clients' information before/after a session
 
-**Value proposition**: PowerRoster helps freelance personal fitness trainers manage diverse client needs by linking their workout histories, dietary restrictions and preferred locations directly to their contact profiles. This allows for a *centralised* *application* for trainers to efficiently access any information needed about a client via an easy-to-use application optimised for text commands.
+**Value proposition**: PowerRoster helps freelance personal fitness trainers manage diverse client needs by linking their workout histories, plans, gym locations, etc. directly to their contact profiles. This allows for a *centralised* *application* for trainers to efficiently access any information needed about a client via an easy-to-use application optimised for text commands.
 
 
 ### User stories
@@ -463,72 +376,75 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 (For all use cases below, the **System** is the `PowerRoster` and the **Actor** is the `trainer`, unless specified otherwise)
 
-**Use case: UC01 \- List all clients**  
-**Preconditions: Trainer launched PowerRoster.**  
-**Guarantees: The full client *roster* (if any) is displayed, preserving the current active sort order if one has been applied.**
+**Use case: UC01 - List all clients**
+**Preconditions:** Trainer has launched PowerRoster.
+**Guarantees:** The full client *roster* is displayed.
 
 **MSS**
 
-1. Trainer requests to list all clients.  
-2. PowerRoster retrieves and displays all clients in the *roster*.
+1. Trainer requests to list all clients.
+2. PowerRoster retrieves and displays all clients.
 
    Use case ends.
 
-**Use case: UC02 \- Add a client**  
-**Preconditions: Trainer has launched PowerRoster.**   
-**Guarantees: A new client is added to the *roster* if all the required details are valid.**
+**Use case: UC02 - Add a client**
+**Preconditions:** Trainer has launched PowerRoster.
+**Guarantees:** A new client is added to the *roster* if all required fields are valid.
 
 **MSS**
 
-1. Trainer requests to add a new client and input the respective details.  
-2. PowerRoster validates the details.  
-3. PowerRoster creates a new *client profile* and adds it to the *roster*.  
-4. PowerRoster confirms the successful addition to the Trainer.
+1. Trainer requests to add a new client with respective details.
+2. PowerRoster validates the details.
+3. PowerRoster creates and stores the *client profile* in the *roster*.
+4. PowerRoster confirms the successful addition.
 
    Use case ends.
 
 **Extensions**
 
 * 2a. PowerRoster detects that one or more required fields are missing.
-
-    * 2a1. PowerRoster informs the Trainer of the missing fields.  
-    * 2a2. Trainer re-enters the details with the missing fields included.
-
-      Steps 2a1-2a2 are repeated until all required fields are present.
+    * 2a1. PowerRoster informs the Trainer of the missing fields.
+    * 2a2. Trainer re-enters the details.
 
       Use case resumes from step 2.
-* 2b. PowerRoster detects that the provided details contain invalid values (e.g. invalid phone number format).  
-    
-    * 2b1. PowerRoster informs the Trainer of the invalid fields and the expected format.  
+* 2b. PowerRoster detects that the provided details contain invalid values.
+    * 2b1. PowerRoster informs the Trainer of the invalid fields and corresponding accepted values.
     * 2b2. Trainer re-enters the corrected details.
 
-      Steps 2b1-2b2 are repeated until all fields are valid.
-
       Use case resumes from step 2.
-* 2c. PowerRoster detects that a client with the same name already exists.  
-  
-    * 2c1. PowerRoster warns the Trainer of the potential duplicate.  
-    * 2c2. Trainer confirms they wish to proceed with adding the client.
+* 2c. PowerRoster detects that a duplicate client already exists.
+    * 2c1. PowerRoster informs the Trainer of the duplicate and inability to add a new client.
 
-      Use case resumes from step 3.
-* 2d. Trainer optionally provides a gym location.  
+      Use case ends.
 
-    * 2d1. PowerRoster validates the gym location.  
-        * 2d1a1. PowerRoster informs the Trainer of the invalid input and the expected format.  
-        * 2d1a2. Trainer re-enters the location.
-      
-          Use case resumes from step 2d1.
-    * 2d2. PowerRoster saves the gym location to the new client’s profile.  
+**Use case: UC03 - Edit a client**
+**Preconditions:** Trainer has launched PowerRoster. At least one client exists in the *roster*.
+**Guarantees:** The selected fields of the client profile are updated if inputs are valid.
 
-* 2e. Trainer optionally provides a note for the client.  
-    
-    * 2e1. PowerRoster saves the note to the client’s profile. 
-  
-      Use case resumes from step 3.
+**MSS**
 
-**Use case: UC03 \- Delete a client**  
-**Preconditions: Trainer has launched PowerRoster. At least one client exists in the *roster*.**   
-**Guarantees: The client and all associated data are permanently removed if the deletion is confirmed.**
+1. Trainer requests to edit a specific client and provides updated details.
+2. PowerRoster locates the client.
+3. PowerRoster validates the provided details.
+4. PowerRoster updates the client profile.
+5. PowerRoster confirms the successful update to the Trainer.
+
+   Use case ends.
+
+**Extensions**
+
+* 2a. PowerRoster cannot find a client matching the given identifier.
+    * 2a1. PowerRoster informs the Trainer that no matching client was found and no update was carried out.
+
+      Use case ends.
+* 3a. PowerRoster detects that the provided details contain invalid values.
+    * 3a1. PowerRoster informs the Trainer of the invalid fields and corresponding accepted values.
+
+      Use case ends.
+
+**Use case: UC04 - Delete a client**
+**Preconditions:** Trainer has launched PowerRoster. At least one client exists in the *roster*.
+**Guarantees:** The client and all associated data are removed if deletion is successful.
 
 **MSS**
 
@@ -537,208 +453,198 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 3. PowerRoster removes the client and all associated data from the *roster*.
 4. PowerRoster confirms the successful deletion to the Trainer.
 
+   Use case ends.
+
 **Extensions**
 
 * 2a. PowerRoster cannot find a client matching the given identifier.
-    * 2a1. PowerRoster informs the Trainer that no matching contact was found and no deletion was carried out.  
-      
+    * 2a1. PowerRoster informs the Trainer that no matching contact was found and no deletion was carried out.
+
       Use case ends.
 
-**Use case: UC04 \- View Help and Command Guide**  
-**Actor: New user**  
-**Preconditions: User has launched PowerRoster.**  
-**Guarantees: The requested command usage information is displayed.**
+**Use case: UC05 - View Help and Command Guide**
+**Actor:** New user
+**Preconditions:** User has launched PowerRoster.
+**Guarantees:** The requested command usage information is displayed.
 
-**MSS:**
+**MSS**
 
 1. User requests to view the help guide.
-2. PowerRoster displays the list of all available commands with their syntax and descriptions.
+2. PowerRoster displays the list of available commands with their syntax and descriptions.
 
    Use case ends.
 
-**Extensions:**
+**Extensions**
 
 * 1a. User requests help for a specific command.
     * 1a1. PowerRoster displays only the usage instructions for the specified command.
 
       Use case ends.
-
 * 1b. User requests help for an unknown command.
     * 1b1. PowerRoster informs the User that the command is unknown.
-    * 1b2. PowerRoster displays a message suggesting to type 'help' to see all available commands.
+    * 1b2. PowerRoster displays a message suggesting to view the full help guide instead.
 
       Use case ends.
 
-**Use case: UC05 \- Search for a Client by Name**  
-**Preconditions: Trainer has launched PowerRoster.**  
-**Guarantees: All clients whose names match the search query are displayed.**  
-**MSS:**
+**Use case: UC06 - Search for a client by name**
+**Preconditions:** Trainer has launched PowerRoster.
+**Guarantees:** Clients whose names match the query are displayed.
 
-1. Trainer requests to search for a client by name and provides the name to search for.
-2. PowerRoster retrieves and displays all clients whose names match the search query.
+**MSS**
+
+1. Trainer requests to search for a client by name and provides one or more keywords.
+2. PowerRoster retrieves and displays all matching clients.
 
    Use case ends.
 
-**Extensions:**
+**Extensions**
 
 * 2a. No clients match the search query.
     * 2a1. PowerRoster informs the Trainer that no matching clients were found.
-      
-      Use case ends.
-* 2b. The *roster* has no clients 
 
-    * 2b1. PowerRoster informs the Trainer that there are no clients in the *roster*.  
-        
+      Use case ends.
+* 2b. The *roster* has no clients.
+    * 2b1. PowerRoster informs the Trainer that there are no clients in the *roster*.
+
       Use case ends.
 
-**Use case: UC06 \- Filter Clients by Gym Location**
-**Preconditions: Trainer has launched PowerRoster. At least one client in the *roster* has a gym location specified.**
-**Guarantees: All clients who train at the specified gym location are displayed.**
-**MSS:**
+**Use case: UC07 - Filter clients by gym location**
+**Preconditions:** Trainer has launched PowerRoster.
+**Guarantees:** Clients whose gym locations match the given location phrase(s) are displayed.
+
+**MSS**
+
 1. Trainer requests to filter clients by gym location and provides one or more location phrases.
 2. PowerRoster retrieves and displays all clients whose gym location matches at least one provided location phrase.
-3. PowerRoster confirms the number of clients found for the specified gym location to the Trainer.
+3. PowerRoster confirms the number of matching clients to the Trainer.
 
    Use case ends.
 
-**Extensions:**
-* 1a. Trainer omits the required command prefix for filtering by gym location.
-    * 1a1. PowerRoster informs the Trainer that the command format is invalid and shows the expected command format.  
-      
+**Extensions**
+
+* 1a. Trainer provides an invalid filter request format.
+    * 1a1. PowerRoster informs the Trainer that the request format is invalid and shows the expected format.
+
       Use case ends.
-* 1b. Trainer provides a blank location value for filtering.
+* 1b. Trainer requests to filter clients with no specified location.
     * 1b1. PowerRoster displays clients with no specified location.
 
       Use case resumes from step 3.
-*2a.  No clients match the filter criteria.
-    * 2a1. PowerRoster informs the Trainer that no clients were found for the specified gym location.
-
-      Use case ends.
-* 1c. Trainer provides multiple location values for filtering, with at least one blank value.
-    * 1c1. PowerRoster informs the Trainer that the command format is invalid.
+* 2a. No clients' location match the filter criteria.
+    * 2a1. PowerRoster informs the Trainer that no clients were found for the specified location criteria.
 
       Use case ends.
 
-**Use case: UC07 \- View a Client's Full Profile**  
-**Preconditions: Trainer has launched PowerRoster. At least one client is shown in the current list.**
+**Use case: UC08 - View a client's full profile**
+**Preconditions:** Trainer has launched PowerRoster. At least one client is shown in the current list.
+**Guarantees:** Full details of the selected client are displayed.
 
-**MSS:**
+**MSS**
 
-1. Trainer requests to view a specific client profile by index.
+1. Trainer requests to view a specific client profile.
 2. PowerRoster locates the client.
-3. PowerRoster displays that client's full details in the detail panel.
+3. PowerRoster displays the client's full details.
 
-    Use case ends.
+   Use case ends.
 
-**Extensions:**
+**Extensions**
 
 * 2a. The specified identifier does not match any existing client.
     * 2a1. PowerRoster informs the Trainer that the identifier was invalid.
 
-   Use case ends.
+      Use case ends.
 
-**Use case: UC08 \- Add/Append a Note to a Client**  
-**Preconditions: Trainer has launched PowerRoster.**
+**Use case: UC09 - Add or append a note to a client**
+**Preconditions:** Trainer has launched PowerRoster. At least one client exists in the *roster*.
+**Guarantees:** The selected client's note is added, replaced, or appended according to the request.
 
-**MSS:**
+**MSS**
 
-1. Trainer requests to add or append a note to a specific client and provides the note.
-2. PowerRoster locates the client and adds or appends the note to the client profile.
+1. Trainer requests to add or append a note to a specific client and provides the note content.
+2. PowerRoster locates the client and applies the requested note update.
 3. PowerRoster confirms the successful update to the Trainer.
 
    Use case ends.
 
-**Extensions:**
+**Extensions**
 
 * 2a. The specified identifier does not match any existing client.
     * 2a1. PowerRoster informs the Trainer that the identifier was invalid.
 
       Use case ends.
-* 2b. PowerRoster detects that the client has requested to add and append at the same time.
+* 2b. Trainer requests to add and append in the same request.
+    * 2b1. PowerRoster informs the Trainer that both actions cannot be performed at the same time.
 
-    * 2b1. PowerRoster informs the Trainer that it is not possible to add and append at the same time.
-        
       Use case ends.
-* 2c. Trainer requests to add and provides an empty note.
+* 2c. Trainer requests to add a note but provides an empty note.
+    * 2c1. PowerRoster replaces the existing note with an empty note.
 
-    * 2c1. PowerRoster replaces the existing note with the empty note.
-        
       Use case ends.
-* 2d. Trainer requests to append and provides an empty note.
-
+* 2d. Trainer requests to append a note but provides an empty note.
     * 2d1. PowerRoster does not change the existing note.
 
       Use case ends.
-* 2e. Trainer requests to add or append more than one note at a time.
 
-    * 2e1. PowerRoster informs the Trainer that it is not possible to do so.
-
-      Use case ends.
-
-**Use case: UC08 \- Change a Client's Status**
-**Preconditions: Trainer has launched PowerRoster. At least one client exists in the displayed list.**
+**Use case: UC10 - Change a client's status**
+**Preconditions:** Trainer has launched PowerRoster. At least one client exists in the *roster*.
+**Guarantees:** The selected client's status is updated if the request is valid.
 
 **MSS**
-    
-1. Trainer requests to list all clients or performs a search/filter.
-2. PowerRoster shows a list of clients.
-3. Trainer requests to change the status of a specific client by providing the index and new status (active/inactive).
+
+1. Trainer requests to change the status of a specific client.
+2. PowerRoster locates the client.
+3. PowerRoster validates the requested status value.
 4. PowerRoster updates the client's status and confirms the change.
 
    Use case ends.
 
 **Extensions**
 
-* 2a. The list is empty.
+* 2a. PowerRoster cannot find a client matching the given identifier.
+    * 2a1. PowerRoster informs the Trainer that the identifier was invalid.
 
       Use case ends.
-
-* 3a. The given index is invalid.
+* 3a. The given status is invalid.
     * 3a1. PowerRoster shows an error message.
 
       Use case ends.
-
-* 3b. The given status is invalid (not "active" or "inactive").
-    * 3b1. PowerRoster shows an error message.
-
-      Use case ends.
-
-* 3c. The client already has the specified status.
-    * 3c1. PowerRoster indicates that no changes were made.
+* 4a. The client already has the specified status.
+    * 4a1. PowerRoster indicates that no changes were made.
 
       Use case ends.
 
-**Use case: UC09 \- Set/Clear a Client's Session Rate**
-**Preconditions: Trainer has launched PowerRoster. At least one client exists in the displayed list.**
+**Use case: UC11 - Set or clear a client's session rate**
+**Preconditions:** Trainer has launched PowerRoster. At least one client exists in the *roster*.
+**Guarantees:** The selected client's session rate is set or cleared.
 
 **MSS**
 
-1. Trainer requests to set the rate of a specific client and provides the rate.
+1. Trainer requests to set the rate of a specific client and provides a rate value.
 2. PowerRoster locates the client and validates the rate.
-3. PowerRoster sets the client's rate and confirms the successful update to the Trainer.
+3. PowerRoster sets the client's rate.
+4. PowerRoster confirms the successful update to the Trainer.
 
    Use case ends.
 
 **Extensions**
 
+* 1a. Trainer requests to clear a client's rate.
+    * 1a1. PowerRoster locates the client and clears the client's existing rate.
+    * 1a2. PowerRoster confirms the successful update to the Trainer.
+
+      Use case ends.
 * 2a. The specified identifier does not match any existing client.
     * 2a1. PowerRoster informs the Trainer that the identifier was invalid.
 
       Use case ends.
-
-* 2b. The rate is invalid
-    * 2b1. PowerRoster informs the user of the error.
-
-      Use case ends.
-
-* 1c. Trainer requests to clear a client's rate.
-    * 1c1. PowerRoster locates the client and clears the client's existing rate.
-    * 1c2. PowerRoster confirms the successful update to the Trainer.
+* 2b. The rate value is invalid.
+    * 2b1. PowerRoster informs the Trainer of the validation error and the accepted values.
 
       Use case ends.
 
-**Use case: UC10 \- Set/Clear a Client's Body Measurements**
-**Preconditions: Trainer has launched PowerRoster. At least one client exists in the displayed list.**
+**Use case: UC12 - Set or clear a client's body measurements**
+**Preconditions:** Trainer has launched PowerRoster. At least one client exists in the *roster*.
+**Guarantees:** The selected body measurement fields are updated.
 
 **MSS**
 
@@ -751,24 +657,23 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **Extensions**
 
+* 1a. Trainer requests to clear one or more measurement fields.
+    * 1a1. PowerRoster clears the corresponding measurement fields.
+    * 1a2. PowerRoster confirms the successful update to the Trainer.
+
+      Use case ends.
 * 2a. The specified identifier does not match any existing client.
     * 2a1. PowerRoster informs the Trainer that the identifier was invalid.
 
       Use case ends.
-
 * 2b. One or more measurement values are invalid.
-    * 2b1. PowerRoster informs the Trainer of the validation error.
+    * 2b1. PowerRoster informs the Trainer of the validation error and the accepted values.
 
       Use case ends.
 
-* 1c. Trainer requests to clear one or more measurement fields by passing empty prefixed values.
-    * 1c1. PowerRoster clears the corresponding measurement fields.
-    * 1c2. PowerRoster confirms the successful update to the Trainer.
-
-      Use case ends.
-
-**Use case: UC11 \- Assign/Clear a Client's Workout Programme**
-**Preconditions: Trainer has launched PowerRoster. At least one client exists in the displayed list.**
+**Use case: UC13 - Assign or clear a client's workout programme**
+**Preconditions:** Trainer has launched PowerRoster. At least one client exists in the *roster*.
+**Guarantees:** The selected client's workout programme is assigned or cleared.
 
 **MSS**
 
@@ -781,32 +686,99 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **Extensions**
 
+* 1a. Trainer requests to clear the client's workout programme.
+    * 1a1. PowerRoster clears the client's workout programme.
+    * 1a2. PowerRoster confirms the successful update to the Trainer.
+
+      Use case ends.
 * 2a. The specified identifier does not match any existing client.
     * 2a1. PowerRoster informs the Trainer that the identifier was invalid.
 
       Use case ends.
-
 * 2b. The programme category is invalid.
     * 2b1. PowerRoster informs the Trainer of the validation error.
 
       Use case ends.
 
-* 1c. Trainer requests to clear the client's workout programme by passing an empty prefixed value.
-    * 1c1. PowerRoster clears the client's workout programme.
-    * 1c2. PowerRoster confirms the successful update to the Trainer.
+**Use case: UC14 - Log a workout session**
+**Preconditions:** Trainer has launched PowerRoster. At least one client exists in the *roster*.
+**Guarantees:** A new workout session log is recorded for the selected client.
+
+**MSS**
+
+1. Trainer requests to log a workout session for a specific client.
+2. PowerRoster locates the client and validates the provided session details.
+3. PowerRoster records the workout session log entry.
+4. PowerRoster confirms the successful log creation.
+
+   Use case ends.
+
+**Extensions**
+
+* 2a. The specified identifier does not match any existing client.
+    * 2a1. PowerRoster informs the Trainer that the identifier was invalid.
+
+      Use case ends.
+* 2b. PowerRoster detects that the provided details contain invalid values.
+    * 2b1. PowerRoster informs the Trainer of the validation error and the accepted values.
+
+      Use case ends.
+* 3a. A duplicate workout log is detected.
+    * 3a1. PowerRoster informs the Trainer that an identical log already exists and no new log was created.
+
+      Use case ends.
+
+**Use case: UC15 - View most recent workout session**
+**Preconditions:** Trainer has launched PowerRoster. At least one client exists in the *roster*.
+**Guarantees:** The most recent workout session details for the selected client are displayed, when available.
+
+**MSS**
+
+1. Trainer requests to retrieve the most recent session of a specific client.
+2. PowerRoster locates the client.
+3. PowerRoster retrieves and displays the latest workout session details for that client.
+
+   Use case ends.
+
+**Extensions**
+
+* 2a. The specified identifier does not match any existing client.
+    * 2a1. PowerRoster informs the Trainer that the identifier was invalid.
+
+      Use case ends.
+* 3a. No workout session logs exist for the client.
+    * 3a1. PowerRoster informs the Trainer that no previous session exists.
+
+      Use case ends.
+
+**Use case: UC16 - Sort clients**
+**Preconditions:** Trainer has launched PowerRoster. At least one client exists in the displayed list.
+**Guarantees:** The client list is sorted according to the specified sorting criteria.
+
+**MSS**
+
+1. Trainer requests to sort the client list using a specified sorting criterion.
+2. PowerRoster validates the sorting request.
+3. PowerRoster sorts and displays the updated client list.
+
+   Use case ends.
+
+**Extensions**
+
+* 2a. The sorting request is incomplete or incorrect.
+    * 2a1. PowerRoster informs the Trainer that the request format is invalid and shows the expected format.
 
       Use case ends.
 
 ### Non-Functional Requirements
 
 1. Should work on any *mainstream OS* as long as it has Java `17` or above installed.
-2. Should be able to hold up to 1000 clients without a noticeable sluggishness at its peak performance, even though the typical trainer is expected to store 10-25 clients.  
+2. Should be able to hold up to 1000 clients without noticeable sluggishness for core operations (e.g., list/find/filter/sort), even though the typical trainer stores 10-25 clients.
 3. All functions provided in PowerRoster should be able to be carried out via the Command Line Interface (CLI) only.  
-4. Must automatically save data after every successful command that alters the data stored to prevent data loss if the device’s battery dies or the app is closed abruptly.  
-5. All client data should be stored in a single file to allow for easy backups and transfer to other devices if needed.
+4. All client data should be stored in a single file and automatically saved after every successful command that alters the data stored to allow for easy backups and transfer to other devices if needed.
 6. A user with above-average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
 7. Should provide a helpful error message every time an invalid command is entered.
-8. Should ensure basic data validation for all data entries to prevent logical impossibilities (e.g., negative *session rate*)
+8. Should ensure basic data validation for all user-entered fields to prevent logically invalid values (e.g., negative session rate).
 9. The application is not required to carry out any Internet communication for any of its functionality.
 
 ### Glossary
@@ -841,7 +813,8 @@ testers are expected to do more *exploratory* testing.
 
    1. Download the jar file and copy into an empty folder
 
-   1. Double-click the jar file Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
+   1. Double-click the jar file.<br>
+      Expected: Shows the GUI with a set of sample clients. The window size may not be optimum.
 
 1. Saving window preferences
 
@@ -850,7 +823,12 @@ testers are expected to do more *exploratory* testing.
    1. Re-launch the app by double-clicking the jar file.<br>
        Expected: The most recent window size and location is retained.
 
-1. _{ more test cases …​ }_
+1. Exiting from command line
+
+   1. Prerequisites: App is running.
+
+   1. Test case: `exit`<br>
+      Expected: App shuts down gracefully.
 
 ### Deleting a client
 
@@ -859,10 +837,10 @@ testers are expected to do more *exploratory* testing.
    1. Prerequisites: List all clients using the `list` command. Multiple clients in the list.
 
    1. Test case: `delete 1`<br>
-      Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
+      Expected: First client is deleted from the list. Details of the deleted client shown in the result message.
 
    1. Test case: `delete 0`<br>
-      Expected: No client is deleted. Error details shown in the status message. Status bar remains the same.
+      Expected: No client is deleted. Error details shown in the result message.
 
    1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
       Expected: Similar to previous.
@@ -889,12 +867,50 @@ testers are expected to do more *exploratory* testing.
    1. Test case: `delete 1`<br>
       Expected: Deleted client is removed from the list and the detail panel resets to placeholder if the deleted client was the one being viewed.
 
-1. _{ more test cases …​ }_
+### Logging and retrieving workout sessions
+
+1. Logging a session with defaults
+
+   1. Prerequisites: Multiple clients in list; at least one client has a location.
+
+   1. Test case: `log 1`<br>
+      Expected: A new log entry is created for client 1 using current time and the client's saved location (or `N/A` if none).
+
+1. Logging with explicit values
+
+   1. Test case: `log 1 time/26/03/2026 14:18 l/Sengkang ActiveSG Gym`<br>
+      Expected: A new log entry is created using the provided time and location.
+
+1. Invalid log input
+
+   1. Test case: `log 0`<br>
+      Expected: Invalid index error shown; no log added.
+
+   1. Test case: `log 1 time/26/03/2070 14:18`<br>
+      Expected: Validation error shown for invalid future time.
+
+1. Retrieving most recent session
+
+   1. Prerequisites: At least one `log` command has been executed successfully for client 1.
+
+   1. Test case: `last 1`<br>
+      Expected: Most recent session time and location for client 1 are shown.
+
+   1. Test case: `last 0`<br>
+      Expected: Invalid index error shown.
 
 ### Saving data
 
 1. Dealing with missing/corrupted data files
 
-   1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
+   1. Missing file test:
+      1. Close the app.
+      1. Delete `data/addressbook.json` (and optionally `data/workoutlogbook.json`).
+      1. Re-launch the app.
+      Expected: App starts with sample/empty data and recreates required data files.
 
-1. _{ more test cases …​ }_
+   1. Corrupted file test:
+      1. Close the app.
+      1. Edit `data/addressbook.json` and introduce invalid JSON (e.g., remove a closing bracket).
+      1. Re-launch the app.
+      Expected: App handles read failure gracefully and initializes fallback data; an error is logged.
