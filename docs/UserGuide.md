@@ -245,7 +245,7 @@ Format: `status INDEX s/STATUS`
 
 * Changes the status of the client at the specified `INDEX`, where `INDEX` is the index shown in the displayed client list and **must be a positive integer** 1, 2, 3, …​
 * `STATUS` must be either `active` or `inactive` (case-insensitive).
-* Provide only one status prefix (e.g., `s/active`). Providing it more than once (e.g. `status 1 s/active s/inactive`) will result in an error.
+* Repeated use of the same prefix is not allowed (e.g., `status 1 s/active s/inactive`) and will result in an error.
 * If the client's status is already set to the specified value, a message will be shown and no change will be made.
 * New clients are automatically set to `active` status when added.
 * Use this feature to mark clients as inactive while retaining their records for future reference.
@@ -309,6 +309,8 @@ Format: `sort ATTRIBUTE/ [o/ORDER]`
 * Only one sorting attribute (`n/`, `l/`, `dob/`, `p/`, `e/`, `a/`, `g/`, `s/`, `wp/`, or `r/`) can be specified at a time.
 * The sorting attribute prefix must be provided without a value (e.g., `sort n/` is valid, `sort n/Alex` is invalid).
 * The order parameter is optional and defaults to ascending (`asc`) if not specified.
+* Repeated use of the same prefix is not allowed (e.g., `sort n/ n/` or `sort n/ o/asc o/desc`) and will result in an error.
+* Once set, the sort order persists after `list`, `find`, and `filter` commands until replaced by another `sort` command.
 * Supported attributes:
   * `n/` - Sort by name
   * `l/` - Sort by location
@@ -323,7 +325,6 @@ Format: `sort ATTRIBUTE/ [o/ORDER]`
 * Order options:
   * `o/asc` - Ascending order (A to Z, earliest to latest, 0 to 9)
   * `o/desc` - Descending order (Z to A, latest to earliest, 9 to 0)
-* Repeated use of the same prefix is not allowed (e.g., `sort n/ n/` or `sort n/ o/asc o/desc`).
 * The attribute prefix and the order prefix must be separated by a space. For example, `sort n/ o/desc` is valid, but `sort n/o/desc` is not and will result in an error.
 * Clients with no location set are always sorted to the **end** of the list in ascending order, and to the **top** of the list in descending order, so they do not interleave with real location names.
 
