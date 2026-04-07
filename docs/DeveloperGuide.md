@@ -102,6 +102,10 @@ The sequence diagram below illustrates the interactions within the `Logic` compo
 
 <puml src="diagrams/DeleteSequenceDiagram.puml" alt="Interactions Inside the Logic Component for the `delete 1` Command" />
 
+The sequence diagram below shows an example of a profile field update command — `execute("status 1 s/inactive")`. Commands such as `note`, `rate`, `plan`, and `measure` follow the same flow.
+
+<puml src="diagrams/StatusSequenceDiagram.puml" alt="Interactions Inside the Logic Component for the `status 1 s/inactive` Command" />
+
 <box type="info" seamless>
 
 **Note:** The lifeline for `DeleteCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline continues till the end of diagram.
@@ -211,10 +215,6 @@ Several commands share a common implementation pattern:
 1. Persist the update through `Model#setPerson(...)`.
 
 This design keeps command behavior predictable and avoids hidden side effects between fields.
-
-The sequence diagram below illustrates interactions when the user executes `status 1 s/inactive`:
-
-<puml src="diagrams/StatusSequenceDiagram.puml" alt="Interactions Inside the Logic Component for the `status 1 s/inactive` Command" />
 
 The commands differ mainly in their field-level semantics:
 
@@ -668,7 +668,7 @@ testers are expected to do more *exploratory* testing.
 1. Showing help for all commands
 
    1. Test case: `help`<br>
-      Expected: Full help content is shown in the result display and the help window opens.
+      Expected: Full help content is shown.
 
 1. Showing help for a specific command
 
@@ -783,12 +783,6 @@ testers are expected to do more *exploratory* testing.
    1. Test case: `sort x/`<br>
       Expected: Invalid sorting-criterion error is shown.
 
-   1. Test case: `sort`<br>
-      Expected: Invalid format error is shown with the expected command format.
-
-   1. Test case: `sort n/ n/`<br>
-      Expected: Duplicate-prefix error is shown.
-
 ### Notes, plans, status, rate, and measurements
 
 1. Notes
@@ -826,21 +820,6 @@ testers are expected to do more *exploratory* testing.
 
    1. After the previous test case, test case: `status 1 s/inactive`<br>
       Expected: Message indicates no change because status is already inactive.
-
-   1. Test case: `status 1 s/active`<br>
-      Expected: Status is updated to active.
-
-   1. Test case: `status 1 s/pending`<br>
-      Expected: Error message indicating that the status value must be `active` or `inactive`.
-
-   1. Test case: `status 1 s/active s/inactive`<br>
-      Expected: Error message indicating that only one status value can be specified.
-
-   1. Test case: `status 0 s/inactive`<br>
-      Expected: Error message indicating that the index is invalid.
-
-   1. Test case: `status 9999 s/inactive` (assuming fewer than 9999 clients exist)<br>
-      Expected: Error message indicating that the index is out of range.
 
 1. Rate
 
