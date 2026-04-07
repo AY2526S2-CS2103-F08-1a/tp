@@ -6,7 +6,7 @@
 # PowerRoster
 
 [![CI Status](https://github.com/AY2526S2-CS2103-F08-1a/tp/actions/workflows/gradle.yml/badge.svg)](https://github.com/AY2526S2-CS2103-F08-1a/tp/actions/workflows/gradle.yml)
-[![codecov](https://codecov.io/gh/AY2526S2-CS2103-F08-01/tp/graph/badge.svg?token=MOIPGGTF31)](https://codecov.io/gh/AY2526S2-CS2103-F08-01/tp)
+[![codecov](https://codecov.io/gh/AY2526S2-CS2103-F08-1a/tp/graph/badge.svg?token=MOIPGGTF31)](https://codecov.io/gh/AY2526S2-CS2103-F08-1a/tp)
 
 ![Ui](images/Uiv2.png)
 
