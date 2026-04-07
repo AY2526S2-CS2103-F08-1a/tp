@@ -89,8 +89,7 @@ public class LogCommand extends Command {
             logger.warning("Log command failed due to invalid index: " + targetIndex.getOneBased());
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         }
-        Person targetPerson = lastShownList.get(targetIndex.getZeroBased());
-        return targetPerson;
+        return lastShownList.get(targetIndex.getZeroBased());
     }
 
     private WorkoutLog createWorkoutLog(Person person) {
