@@ -56,7 +56,7 @@ public class SortCommand extends Command {
         requireNonNull(model);
         assert PersonComparators.isValidAttribute(attribute) : "Attribute must be valid";
 
-        logger.info("Executing sort command for attribute: " + attribute + ", order: " + order);
+        logger.info(String.format("Executing sort command for attribute: %s, order: %s", attribute, order));
 
         // Reconstruct comparator from attribute and order
         boolean isDescending = order.equals(ORDER_DESC);
@@ -65,7 +65,7 @@ public class SortCommand extends Command {
         assert comparator != null : "Comparator should not be null for valid attribute";
 
         model.updatePersonListComparator(comparator);
-        logger.fine("Successfully sorted client list by " + attribute + " in " + order + " order");
+        logger.fine(String.format("Successfully sorted client list by %s in %s order", attribute, order));
         return new CommandResult(String.format(MESSAGE_SUCCESS, attribute, order));
     }
 
