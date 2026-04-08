@@ -30,28 +30,28 @@ public class MeasureCommandParser implements Parser<MeasureCommand> {
 
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_HEIGHT, PREFIX_WEIGHT, PREFIX_BODY_FAT);
 
-        Optional<String> heightInput = argMultimap.getValue(PREFIX_HEIGHT);
-        Optional<String> weightInput = argMultimap.getValue(PREFIX_WEIGHT);
-        Optional<String> bodyFatInput = argMultimap.getValue(PREFIX_BODY_FAT);
-
-        if (!hasAnyMeasurementPrefix(heightInput, weightInput, bodyFatInput)) {
+        ParsedMeasurements measurements = parseMeasurements(argMultimap);
+        if (!measurements.hasAnyValue()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MeasureCommand.MESSAGE_USAGE));
         }
+        return new MeasureCommand(index,
+                measurements.height(), measurements.weight(), measurements.bodyFatPercentage());
+    }
 
+    private ParsedMeasurements parseMeasurements(ArgumentMultimap argMultimap) throws ParseException {
+        requireNonNull(argMultimap);
         StringJoiner validationErrors = new StringJoiner("\n");
 
         // Parse each optional prefixed value and collect all validation failures in one pass.
-        Height height = parseOptionalValue(heightInput, ParserUtil::parseHeight, validationErrors);
-        Weight weight = parseOptionalValue(weightInput, ParserUtil::parseWeight, validationErrors);
-        BodyFatPercentage bodyFatPercentage =
-                parseOptionalValue(bodyFatInput, ParserUtil::parseBodyFatPercentage, validationErrors);
+        Optional<Height> height =
+                parseOptionalValue(argMultimap, PREFIX_HEIGHT, ParserUtil::parseHeight, validationErrors);
+        Optional<Weight> weight =
+                parseOptionalValue(argMultimap, PREFIX_WEIGHT, ParserUtil::parseWeight, validationErrors);
+        Optional<BodyFatPercentage> bodyFatPercentage =
+                parseOptionalValue(argMultimap, PREFIX_BODY_FAT, ParserUtil::parseBodyFatPercentage, validationErrors);
 
         throwIfAnyValidationErrors(validationErrors);
-
-        assert hasAnyParsedMeasurementValue(height, weight, bodyFatPercentage)
-                : "Invariant broken: successful parse must produce at least one measurement.";
-
-        return new MeasureCommand(index, height, weight, bodyFatPercentage);
+        return new ParsedMeasurements(height.orElse(null), weight.orElse(null), bodyFatPercentage.orElse(null));
     }
 
     private void throwIfAnyValidationErrors(StringJoiner validationErrors) throws ParseException {
@@ -61,22 +61,26 @@ public class MeasureCommandParser implements Parser<MeasureCommand> {
         }
     }
 
-    /** Parses one optional field and returns null when absent or invalid, while collecting parse errors. */
-    private <T> T parseOptionalValue(Optional<String> rawInput,
-                                     FieldParser<T> parser,
-                                     StringJoiner validationErrors) {
-        requireNonNull(rawInput);
+    /** Parses one optional field and returns Optional.empty when absent or invalid while collecting parse errors. */
+    private <T> Optional<T> parseOptionalValue(ArgumentMultimap argMultimap,
+                                               Prefix prefix,
+                                               FieldParser<T> parser,
+                                               StringJoiner validationErrors) {
+        requireNonNull(argMultimap);
+        requireNonNull(prefix);
         requireNonNull(parser);
         requireNonNull(validationErrors);
-        if (!rawInput.isPresent()) {
-            return null;
+
+        Optional<String> rawInput = argMultimap.getValue(prefix);
+        if (rawInput.isEmpty()) {
+            return Optional.empty();
         }
 
         try {
-            return parser.parse(rawInput.get());
+            return Optional.of(parser.parse(rawInput.get()));
         } catch (ParseException pe) {
             validationErrors.add(pe.getMessage());
-            return null;
+            return Optional.empty();
         }
     }
 
@@ -88,20 +92,37 @@ public class MeasureCommandParser implements Parser<MeasureCommand> {
         }
     }
 
-    private boolean hasAnyMeasurementPrefix(Optional<String> heightInput,
-                                            Optional<String> weightInput,
-                                            Optional<String> bodyFatInput) {
-        return heightInput.isPresent() || weightInput.isPresent() || bodyFatInput.isPresent();
-    }
-
-    private boolean hasAnyParsedMeasurementValue(Height height, Weight weight,
-                                                 BodyFatPercentage bodyFatPercentage) {
-        return height != null || weight != null || bodyFatPercentage != null;
-    }
-
     @FunctionalInterface
     private interface FieldParser<T> {
         T parse(String rawInput) throws ParseException;
+    }
+
+    private static final class ParsedMeasurements {
+        private final Height height;
+        private final Weight weight;
+        private final BodyFatPercentage bodyFatPercentage;
+
+        private ParsedMeasurements(Height height, Weight weight, BodyFatPercentage bodyFatPercentage) {
+            this.height = height;
+            this.weight = weight;
+            this.bodyFatPercentage = bodyFatPercentage;
+        }
+
+        private Height height() {
+            return height;
+        }
+
+        private Weight weight() {
+            return weight;
+        }
+
+        private BodyFatPercentage bodyFatPercentage() {
+            return bodyFatPercentage;
+        }
+
+        private boolean hasAnyValue() {
+            return height != null || weight != null || bodyFatPercentage != null;
+        }
     }
 
 }

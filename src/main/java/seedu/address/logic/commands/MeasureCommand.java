@@ -101,10 +101,10 @@ public class MeasureCommand extends Command {
     }
 
     private Person createEditedPerson(Person personToEdit) {
-        Height updatedHeight = height != null ? height : personToEdit.getHeight();
-        Weight updatedWeight = weight != null ? weight : personToEdit.getWeight();
-        BodyFatPercentage updatedBodyFatPercentage = bodyFatPercentage != null
-                ? bodyFatPercentage : personToEdit.getBodyFatPercentage();
+        Height updatedHeight = resolveUpdatedMeasurement(height, personToEdit.getHeight());
+        Weight updatedWeight = resolveUpdatedMeasurement(weight, personToEdit.getWeight());
+        BodyFatPercentage updatedBodyFatPercentage =
+                resolveUpdatedMeasurement(bodyFatPercentage, personToEdit.getBodyFatPercentage());
         return personToEdit.withMeasurements(updatedHeight, updatedWeight, updatedBodyFatPercentage);
     }
 
@@ -122,43 +122,34 @@ public class MeasureCommand extends Command {
     private String formatOutcomeMessages(Person personBeforeEdit, String clientName) {
         StringJoiner joiner = new StringJoiner("\n");
         if (height != null) {
-            joiner.add(formatHeightOutcome(clientName, personBeforeEdit.getHeight().value));
+            joiner.add(formatMeasurementOutcome(clientName, personBeforeEdit.getHeight().value, height.value,
+                    MESSAGE_HEIGHT_SET_SUCCESS, MESSAGE_HEIGHT_CLEAR_SUCCESS, MESSAGE_HEIGHT_ALREADY_CLEARED));
         }
         if (weight != null) {
-            joiner.add(formatWeightOutcome(clientName, personBeforeEdit.getWeight().value));
+            joiner.add(formatMeasurementOutcome(clientName, personBeforeEdit.getWeight().value, weight.value,
+                    MESSAGE_WEIGHT_SET_SUCCESS, MESSAGE_WEIGHT_CLEAR_SUCCESS, MESSAGE_WEIGHT_ALREADY_CLEARED));
         }
         if (bodyFatPercentage != null) {
-            joiner.add(formatBodyFatOutcome(clientName, personBeforeEdit.getBodyFatPercentage().value));
+            joiner.add(formatMeasurementOutcome(clientName, personBeforeEdit.getBodyFatPercentage().value,
+                    bodyFatPercentage.value, MESSAGE_BODY_FAT_SET_SUCCESS,
+                    MESSAGE_BODY_FAT_CLEAR_SUCCESS, MESSAGE_BODY_FAT_ALREADY_CLEARED));
         }
         return joiner.toString();
     }
 
-    private String formatHeightOutcome(String clientName, String oldValue) {
-        assert height != null : "Invariant broken: formatHeightOutcome should only be called when height is present.";
-        if (height.value.isEmpty()) {
-            String message = oldValue.isEmpty() ? MESSAGE_HEIGHT_ALREADY_CLEARED : MESSAGE_HEIGHT_CLEAR_SUCCESS;
+    private static String formatMeasurementOutcome(String clientName, String oldValue, String newValue,
+                                                   String setSuccessMessage, String clearSuccessMessage,
+                                                   String alreadyClearedMessage) {
+        if (newValue.isEmpty()) {
+            String message = oldValue.isEmpty() ? alreadyClearedMessage : clearSuccessMessage;
             return String.format(message, clientName);
         }
-        return String.format(MESSAGE_HEIGHT_SET_SUCCESS, clientName, height.value);
+        return String.format(setSuccessMessage, clientName, newValue);
     }
 
-    private String formatWeightOutcome(String clientName, String oldValue) {
-        assert weight != null : "Invariant broken: formatWeightOutcome should only be called when weight is present.";
-        if (weight.value.isEmpty()) {
-            String message = oldValue.isEmpty() ? MESSAGE_WEIGHT_ALREADY_CLEARED : MESSAGE_WEIGHT_CLEAR_SUCCESS;
-            return String.format(message, clientName);
-        }
-        return String.format(MESSAGE_WEIGHT_SET_SUCCESS, clientName, weight.value);
-    }
-
-    private String formatBodyFatOutcome(String clientName, String oldValue) {
-        assert bodyFatPercentage != null
-                : "Invariant broken: formatBodyFatOutcome should only be called when body fat is present.";
-        if (bodyFatPercentage.value.isEmpty()) {
-            String message = oldValue.isEmpty() ? MESSAGE_BODY_FAT_ALREADY_CLEARED : MESSAGE_BODY_FAT_CLEAR_SUCCESS;
-            return String.format(message, clientName);
-        }
-        return String.format(MESSAGE_BODY_FAT_SET_SUCCESS, clientName, bodyFatPercentage.value);
+    private static <T> T resolveUpdatedMeasurement(T newValue, T existingValue) {
+        requireNonNull(existingValue);
+        return newValue != null ? newValue : existingValue;
     }
 
     @Override

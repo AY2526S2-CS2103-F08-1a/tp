@@ -134,7 +134,6 @@ public class EditCommand extends Command {
     private static void assertInvariantFieldsUnchanged(Person personToEdit, Person editedPerson) {
         requireNonNull(personToEdit);
         requireNonNull(editedPerson);
-        assert editedPerson != null : "Edited client should not be null";
         assert editedPerson.getId().equals(personToEdit.getId()) : "Client ID must remain unchanged";
         assert editedPerson.getNote().equals(personToEdit.getNote()) : "Note should remain unchanged by edit";
         assert editedPerson.getPlan().equals(personToEdit.getPlan()) : "Plan should remain unchanged by edit";
@@ -152,44 +151,41 @@ public class EditCommand extends Command {
         String clientName = afterEdit.getName().toString();
         StringJoiner joiner = new StringJoiner("\n");
 
-        appendOutcome(joiner, descriptor.getName().isPresent(), beforeEdit.getName().equals(afterEdit.getName()),
-                String.format(MESSAGE_NAME_UNCHANGED, clientName),
-                String.format(MESSAGE_NAME_SET_SUCCESS, clientName, afterEdit.getName()));
-        appendOutcome(joiner, descriptor.getGender().isPresent(), beforeEdit.getGender().equals(afterEdit.getGender()),
-                String.format(MESSAGE_GENDER_UNCHANGED, clientName),
-                String.format(MESSAGE_GENDER_SET_SUCCESS, clientName, afterEdit.getGender()));
-        appendOutcome(joiner, descriptor.getDateOfBirth().isPresent(),
-                beforeEdit.getDateOfBirth().equals(afterEdit.getDateOfBirth()),
-                String.format(MESSAGE_DOB_UNCHANGED, clientName),
-                String.format(MESSAGE_DOB_SET_SUCCESS, clientName, afterEdit.getDateOfBirth()));
-        appendOutcome(joiner, descriptor.getPhone().isPresent(), beforeEdit.getPhone().equals(afterEdit.getPhone()),
-                String.format(MESSAGE_PHONE_UNCHANGED, clientName),
-                String.format(MESSAGE_PHONE_SET_SUCCESS, clientName, afterEdit.getPhone()));
-        appendOutcome(joiner, descriptor.getEmail().isPresent(), beforeEdit.getEmail().equals(afterEdit.getEmail()),
-                String.format(MESSAGE_EMAIL_UNCHANGED, clientName),
-                String.format(MESSAGE_EMAIL_SET_SUCCESS, clientName, afterEdit.getEmail()));
-        appendOutcome(joiner, descriptor.getAddress().isPresent(),
-                beforeEdit.getAddress().equals(afterEdit.getAddress()),
-                String.format(MESSAGE_ADDRESS_UNCHANGED, clientName),
-                String.format(MESSAGE_ADDRESS_SET_SUCCESS, clientName, afterEdit.getAddress()));
-        appendOutcome(joiner, descriptor.getLocation().isPresent(),
-                beforeEdit.getLocation().equals(afterEdit.getLocation()),
-                String.format(MESSAGE_LOCATION_UNCHANGED, clientName),
-                String.format(MESSAGE_LOCATION_SET_SUCCESS, clientName, displayLocation(afterEdit)));
-        appendOutcome(joiner, descriptor.getTags().isPresent(), beforeEdit.getTags().equals(afterEdit.getTags()),
-                String.format(MESSAGE_TAGS_UNCHANGED, clientName),
-                String.format(MESSAGE_TAGS_SET_SUCCESS, clientName, formatTags(afterEdit.getTags())));
+        appendFieldOutcome(joiner, descriptor.getName().isPresent(), beforeEdit.getName(), afterEdit.getName(),
+                MESSAGE_NAME_UNCHANGED, MESSAGE_NAME_SET_SUCCESS, clientName, afterEdit.getName());
+        appendFieldOutcome(joiner, descriptor.getGender().isPresent(), beforeEdit.getGender(), afterEdit.getGender(),
+                MESSAGE_GENDER_UNCHANGED, MESSAGE_GENDER_SET_SUCCESS, clientName, afterEdit.getGender());
+        appendFieldOutcome(joiner, descriptor.getDateOfBirth().isPresent(), beforeEdit.getDateOfBirth(),
+                afterEdit.getDateOfBirth(), MESSAGE_DOB_UNCHANGED, MESSAGE_DOB_SET_SUCCESS,
+                clientName, afterEdit.getDateOfBirth());
+        appendFieldOutcome(joiner, descriptor.getPhone().isPresent(), beforeEdit.getPhone(), afterEdit.getPhone(),
+                MESSAGE_PHONE_UNCHANGED, MESSAGE_PHONE_SET_SUCCESS, clientName, afterEdit.getPhone());
+        appendFieldOutcome(joiner, descriptor.getEmail().isPresent(), beforeEdit.getEmail(), afterEdit.getEmail(),
+                MESSAGE_EMAIL_UNCHANGED, MESSAGE_EMAIL_SET_SUCCESS, clientName, afterEdit.getEmail());
+        appendFieldOutcome(joiner, descriptor.getAddress().isPresent(), beforeEdit.getAddress(), afterEdit.getAddress(),
+                MESSAGE_ADDRESS_UNCHANGED, MESSAGE_ADDRESS_SET_SUCCESS, clientName, afterEdit.getAddress());
+        appendFieldOutcome(joiner, descriptor.getLocation().isPresent(), beforeEdit.getLocation(),
+                afterEdit.getLocation(), MESSAGE_LOCATION_UNCHANGED, MESSAGE_LOCATION_SET_SUCCESS,
+                clientName, displayLocation(afterEdit));
+        appendFieldOutcome(joiner, descriptor.getTags().isPresent(), beforeEdit.getTags(), afterEdit.getTags(),
+                MESSAGE_TAGS_UNCHANGED, MESSAGE_TAGS_SET_SUCCESS, clientName, formatTags(afterEdit.getTags()));
 
         String outcome = joiner.toString();
         return outcome.isEmpty() ? String.format(MESSAGE_NO_CHANGES, clientName) : outcome;
     }
 
-    private static void appendOutcome(StringJoiner joiner, boolean isSpecified, boolean isUnchanged,
-            String unchangedMessage, String changedMessage) {
+    private static void appendFieldOutcome(StringJoiner joiner, boolean isSpecified, Object beforeValue,
+            Object afterValue, String unchangedTemplate, String changedTemplate, String clientName,
+            Object changedDisplayValue) {
         if (!isSpecified) {
             return;
         }
-        joiner.add(isUnchanged ? unchangedMessage : changedMessage);
+
+        boolean isUnchanged = Objects.equals(beforeValue, afterValue);
+        String message = isUnchanged
+                ? String.format(unchangedTemplate, clientName)
+                : String.format(changedTemplate, clientName, changedDisplayValue);
+        joiner.add(message);
     }
 
     private static String displayLocation(Person person) {
@@ -218,26 +214,24 @@ public class EditCommand extends Command {
         ClientId fixedId = personToEdit.getId();
         Name updatedName = editPersonDescriptor.getName().orElse(personToEdit.getName());
         Gender updatedGender = editPersonDescriptor.getGender().orElse(personToEdit.getGender());
-        DateOfBirth updatedDob =
-                editPersonDescriptor.getDateOfBirth().orElse(personToEdit.getDateOfBirth());
+        DateOfBirth updatedDob = editPersonDescriptor.getDateOfBirth().orElse(personToEdit.getDateOfBirth());
         Phone updatedPhone = editPersonDescriptor.getPhone().orElse(personToEdit.getPhone());
         Email updatedEmail = editPersonDescriptor.getEmail().orElse(personToEdit.getEmail());
-        Address updatedAddress =
-                editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
-        Location updatedLocation =
-                editPersonDescriptor.getLocation().orElse(personToEdit.getLocation());
-        Note oldNote = personToEdit.getNote(); // Note is not editable through EditCommand
-        Plan oldPlan = personToEdit.getPlan(); // Plan is not editable through EditCommand
-        Height oldHeight = personToEdit.getHeight(); // Height is not editable through EditCommand
-        Weight oldWeight = personToEdit.getWeight(); // Weight is not editable through EditCommand
-        // Body fat percentage is not editable through EditCommand
+        Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
+        Location updatedLocation = editPersonDescriptor.getLocation().orElse(personToEdit.getLocation());
+        Note oldNote = personToEdit.getNote();
+        Plan oldPlan = personToEdit.getPlan();
+        Rate oldRate = personToEdit.getRate();
+        Status oldStatus = personToEdit.getStatus();
+        Height oldHeight = personToEdit.getHeight();
+        Weight oldWeight = personToEdit.getWeight();
         BodyFatPercentage oldBodyFatPercentage = personToEdit.getBodyFatPercentage();
-        Rate oldRate = personToEdit.getRate(); // Rate is not editable through EditCommand
-        Status oldStatus = personToEdit.getStatus(); // Status is not editable through EditCommand
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
 
+        // Fields not supported by EditCommand remain unchanged from the existing person.
         return new Person(fixedId, updatedName, updatedGender, updatedDob, updatedPhone, updatedEmail,
-                updatedAddress, updatedLocation, oldNote, oldPlan, oldRate, oldStatus,
+                updatedAddress, updatedLocation,
+                oldNote, oldPlan, oldRate, oldStatus,
                 oldHeight, oldWeight, oldBodyFatPercentage,
                 updatedTags);
     }

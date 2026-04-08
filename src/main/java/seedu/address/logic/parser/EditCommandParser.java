@@ -57,7 +57,7 @@ public class EditCommandParser implements Parser<EditCommand> {
                 PREFIX_ADDRESS,
                 PREFIX_LOCATION);
 
-        EditPersonDescriptor editPersonDescriptor = parseDescriptor(argMultimap);
+        EditPersonDescriptor editPersonDescriptor = parseEditedPersonDescriptor(argMultimap);
 
         if (!editPersonDescriptor.isAnyFieldEdited()) {
             throw new ParseException(EditCommand.MESSAGE_NOT_EDITED);
@@ -74,29 +74,12 @@ public class EditCommandParser implements Parser<EditCommand> {
         }
     }
 
-    private EditPersonDescriptor parseDescriptor(ArgumentMultimap argMultimap) throws ParseException {
+    private EditPersonDescriptor parseEditedPersonDescriptor(ArgumentMultimap argMultimap) throws ParseException {
         EditPersonDescriptor editPersonDescriptor = new EditPersonDescriptor();
         StringJoiner validationErrors = new StringJoiner("\n");
 
-        Optional<String> nameInput = argMultimap.getValue(PREFIX_NAME);
-        Optional<String> genderInput = argMultimap.getValue(PREFIX_GENDER);
-        Optional<String> dobInput = argMultimap.getValue(PREFIX_DOB);
-        Optional<String> phoneInput = argMultimap.getValue(PREFIX_PHONE);
-        Optional<String> emailInput = argMultimap.getValue(PREFIX_EMAIL);
-        Optional<String> addressInput = argMultimap.getValue(PREFIX_ADDRESS);
-        Optional<String> locationInput = argMultimap.getValue(PREFIX_LOCATION);
-
-        // Parse each optional prefixed value and collect all validation failures in one pass.
-        parseOptionalField(nameInput, ParserUtil::parseName, editPersonDescriptor::setName, validationErrors);
-        parseOptionalField(genderInput, ParserUtil::parseGender, editPersonDescriptor::setGender, validationErrors);
-        parseOptionalField(dobInput, ParserUtil::parseDateOfBirth,
-                editPersonDescriptor::setDateOfBirth, validationErrors);
-        parseOptionalField(phoneInput, ParserUtil::parsePhone, editPersonDescriptor::setPhone, validationErrors);
-        parseOptionalField(emailInput, ParserUtil::parseEmail, editPersonDescriptor::setEmail, validationErrors);
-        parseOptionalField(addressInput, ParserUtil::parseAddress,
-                editPersonDescriptor::setAddress, validationErrors);
-        parseOptionalField(locationInput, ParserUtil::parseLocation,
-                editPersonDescriptor::setLocation, validationErrors);
+        // Parse standard single-value fields and collect all validation failures in one pass.
+        parseStandardFields(argMultimap, editPersonDescriptor, validationErrors);
 
         // Tags have special semantics (e.g., a lone empty value means "clear tags"), so keep this path explicit.
         parseTagsIntoDescriptor(argMultimap, editPersonDescriptor, validationErrors);
@@ -105,6 +88,29 @@ public class EditCommandParser implements Parser<EditCommand> {
         throwIfAnyValidationErrors(validationErrors);
 
         return editPersonDescriptor;
+    }
+
+    private void parseStandardFields(ArgumentMultimap argMultimap,
+                                     EditPersonDescriptor editPersonDescriptor,
+                                     StringJoiner validationErrors) {
+        requireNonNull(argMultimap);
+        requireNonNull(editPersonDescriptor);
+        requireNonNull(validationErrors);
+
+        parseOptionalField(argMultimap, PREFIX_NAME, ParserUtil::parseName,
+                editPersonDescriptor::setName, validationErrors);
+        parseOptionalField(argMultimap, PREFIX_GENDER, ParserUtil::parseGender,
+                editPersonDescriptor::setGender, validationErrors);
+        parseOptionalField(argMultimap, PREFIX_DOB, ParserUtil::parseDateOfBirth,
+                editPersonDescriptor::setDateOfBirth, validationErrors);
+        parseOptionalField(argMultimap, PREFIX_PHONE, ParserUtil::parsePhone,
+                editPersonDescriptor::setPhone, validationErrors);
+        parseOptionalField(argMultimap, PREFIX_EMAIL, ParserUtil::parseEmail,
+                editPersonDescriptor::setEmail, validationErrors);
+        parseOptionalField(argMultimap, PREFIX_ADDRESS, ParserUtil::parseAddress,
+                editPersonDescriptor::setAddress, validationErrors);
+        parseOptionalField(argMultimap, PREFIX_LOCATION, ParserUtil::parseLocation,
+                editPersonDescriptor::setLocation, validationErrors);
     }
 
     /** Parses tag inputs and appends tag-related validation errors without short-circuiting. */
@@ -133,15 +139,19 @@ public class EditCommandParser implements Parser<EditCommand> {
      * Parses one optional field and applies it to the descriptor if present.
      * Any parse failure is appended to {@code validationErrors} so callers can surface all errors at once.
      */
-    private <T> void parseOptionalField(Optional<String> rawInput,
+    private <T> void parseOptionalField(ArgumentMultimap argMultimap,
+                                        Prefix prefix,
                                         FieldParser<T> parser,
                                         Consumer<T> setter,
                                         StringJoiner validationErrors) {
-        requireNonNull(rawInput);
+        requireNonNull(argMultimap);
+        requireNonNull(prefix);
         requireNonNull(parser);
         requireNonNull(setter);
         requireNonNull(validationErrors);
-        if (!rawInput.isPresent()) {
+
+        Optional<String> rawInput = argMultimap.getValue(prefix);
+        if (rawInput.isEmpty()) {
             return;
         }
 
