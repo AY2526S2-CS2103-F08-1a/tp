@@ -1,21 +1,29 @@
 ---
   layout: default.md
-  title: ""
+  title: "PowerRoster"
 ---
 
 # PowerRoster
 
 [![CI Status](https://github.com/AY2526S2-CS2103-F08-1a/tp/actions/workflows/gradle.yml/badge.svg)](https://github.com/AY2526S2-CS2103-F08-1a/tp/actions/workflows/gradle.yml)
-[![codecov](https://codecov.io/gh/AY2526S2-CS2103-F08-01/tp/graph/badge.svg?token=MOIPGGTF31)](https://codecov.io/gh/AY2526S2-CS2103-F08-01/tp)
+[![codecov](https://codecov.io/gh/AY2526S2-CS2103-F08-1a/tp/graph/badge.svg?token=MOIPGGTF31)](https://codecov.io/gh/AY2526S2-CS2103-F08-1a/tp)
 
-![Ui](images/Ui.png)
+![Ui](images/Uiv2.png)
 
-**PowerRoster is a desktop application for managing the details of your clients.** PowerRoster aims to simplify the management of clients for Freelance Fitness Trainers, so that they can focus on what really matters.
+**PowerRoster is a desktop client management app for Freelance Personal Fitness Trainers.**
+It helps you keep client profiles, contact details, training locations, and coaching notes in one place so you can spend less time on admin and more time coaching.
 
-While it has a GUI, most of the user interactions happen using a CLI (Command Line Interface).
+PowerRoster combines a clean GUI with a fast command workflow: you can execute actions quickly through a CLI while still viewing structured client information at a glance.
 
-* If you are interested in using PowerRoster, head over to the [_Quick Start_ section of the **User Guide**](UserGuide.html#quick-start).
-* If you are interested about developing PowerRoster, the [**Developer Guide**](DeveloperGuide.html) is a good place to start.
+## Why trainers use PowerRoster
+
+* Manage your full client roster in a single desktop app.
+* Retrieve important details quickly with command-driven workflows.
+* Keep coaching context organized with locations, tags, plans, and notes.
+* Stay efficient with an interface built for day-to-day operations.
+
+* Want to start tracking your clients with PowerRoster? Head to the [_Quick Start_ section of the **User Guide**](UserGuide.html#quick-start) to get started.
+* Interested to develop PowerRoster further? Check out the [**Developer Guide**](DeveloperGuide.html).
 
 
 **Acknowledgements**
