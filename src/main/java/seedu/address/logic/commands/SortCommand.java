@@ -30,6 +30,7 @@ public class SortCommand extends Command {
             + "Example: " + COMMAND_WORD + " n/ o/asc";
 
     public static final String MESSAGE_SUCCESS = "Sorted clients by %s in %s order";
+    public static final String MESSAGE_MULTIPLE_ATTRIBUTES = "Please specify only one attribute to sort by.";
 
     private static final Logger logger = LogsCenter.getLogger(SortCommand.class);
 

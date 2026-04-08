@@ -103,8 +103,7 @@ public class SortCommandParser implements Parser<SortCommand> {
         if (attributeCount > 1) {
             logger.finer("Multiple attributes specified in sort command");
             throw new ParseException(
-                    "Please specify only one attribute to sort by.\n"
-                    + SortCommand.MESSAGE_USAGE);
+                    SortCommand.MESSAGE_MULTIPLE_ATTRIBUTES + "\n" + SortCommand.MESSAGE_USAGE);
         }
 
         // Determine sort order
