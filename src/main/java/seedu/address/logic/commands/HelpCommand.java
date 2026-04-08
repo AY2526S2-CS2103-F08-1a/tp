@@ -30,7 +30,7 @@ public class HelpCommand extends Command {
      */
     public HelpCommand(String targetCommand) {
         requireNonNull(targetCommand);
-        this.targetCommand = targetCommand;
+        this.targetCommand = targetCommand.toLowerCase();
     }
 
     @Override
@@ -50,7 +50,7 @@ public class HelpCommand extends Command {
 
     private static String getCommandUsage(String targetCommand) {
         return CommandRegistry.getUsageMap().getOrDefault(
-                targetCommand.toLowerCase(),
+                targetCommand,
                 "Unknown command: " + targetCommand + "\n\nType 'help' to see all available commands.");
     }
 
