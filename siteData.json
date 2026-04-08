@@ -157,9 +157,10 @@
     },
     {
       "src": "index.md",
-      "title": "",
+      "title": "PowerRoster",
       "headings": {
-        "powerroster": "PowerRoster"
+        "powerroster": "PowerRoster",
+        "why-trainers-use-powerroster": "Why trainers use PowerRoster"
       },
       "headingKeywords": {}
     },
