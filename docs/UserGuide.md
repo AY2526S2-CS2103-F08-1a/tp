@@ -29,8 +29,6 @@ PowerRoster is a **desktop app built to help Freelance Personal Fitness Trainers
 1. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the help window.<br>
    Some example commands you can try:
    * `list` : Lists all clients.
-   * `add n/John Tan g/M dob/24/12/1999 p/98765432 e/johnt@example.com a/123 Sengkang East, #01-01 l/ActiveSG @ Fernvale Square t/beginner` : Adds a client named `John Tan` to PowerRoster.
-   * `plan 1 wp/PUSH` : Assigns the 1st client a workout programme.
 
    * `add n/John Tan g/M dob/24/12/1999 p/98765432 e/johnt@example.com a/123 Sengkang East, #01-01 l/ActiveSG @ Fernvale Square t/beginner` : Adds a client named `John Tan` to PowerRoster.
 
@@ -74,8 +72,6 @@ PowerRoster is a **desktop app built to help Freelance Personal Fitness Trainers
 
 Shows program usage instructions for all commands or a specific command.
 
-![help message](images/helpMessage.png)
-
 Format: `help [COMMAND_WORD]`
 
 * `help` shows usage instructions for all available commands.
@@ -86,6 +82,8 @@ Examples:
 * `help` shows all available commands and their usage
 * `help add` shows only the usage instructions for the add command
 * `help filter` shows only the usage instructions for the filter command
+
+![help message](images/helpMessage.png)
 
 
 ### Adding a client: `add`
@@ -328,8 +326,8 @@ Format: `sort ATTRIBUTE/ [o/ORDER]`
   * `e/` - Sort by email address
   * `a/` - Sort by address
   * `g/` - Sort by gender
-  * `s/` - Sort by status (active before inactive)
-  * `wp/` - Sort by workout plan
+  * `s/` - Sort by status
+  * `wp/` - Sort by workout plan (unassigned plans sort last in asc, first in desc)
   * `r/` - Sort by session rate (clients with no rates sort first in asc, last in desc)
 * Order options:
   * `o/asc` - Ascending order (A to Z, earliest to latest, 0 to 9)
