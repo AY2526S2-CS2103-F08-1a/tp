@@ -614,8 +614,9 @@ To keep this section focused on non-trivial interactions, only unique interactio
 
 ### Glossary
 
-* **Mainstream OS**: Windows, Linux, Unix, MacOS  
 * **Centralised application:** A single application consolidating all client-related information into one place, eliminating the need for the Trainer to switch between multiple applications (e.g. notes apps, spreadsheets, messaging apps) to retrieve or add client data.  
+* **Mainstream OS**: Windows, Linux, Unix, MacOS  
+* **MSS (Main Success Scenario)**: The primary flow of a use case where all steps proceed as intended without encountering error conditions or extensions.
 * **Roster:** The complete list of all clients stored in PowerRoster.  
 * **Client Profile:** A record within PowerRoster storing all information associated with a specific client (e.g. contact details, gym location, workout history, dietary needs).  
 * **Workout Session Log:** A recorded entry of a completed training session for a client, including details such as date, time and location of the workout.
