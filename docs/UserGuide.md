@@ -114,6 +114,8 @@ Format: `add n/NAME g/GENDER dob/DATE_OF_BIRTH p/PHONE_NUMBER e/EMAIL_ADDRESS a/
 * `DATE_OF_BIRTH` must be a valid date, not in the future, and not more than 100 years in the past.
 * `LOCATION` can contain any value.
 * If `LOCATION` is omitted, the client is treated as having no specified location and the UI displays `N/A`.
+* `TAG` can contain only alphanumeric characters, spaces, and hyphens.
+* `TAG` cannot start with a hyphen. Leading/trailing spaces will be automatically removed.
 * Repeated use of the same non-tag prefix is not allowed (e.g., `n/Alex n/Jordan`). Repeating `t/` is allowed for multiple tags.
 
 <box type="tip" seamless>
@@ -162,6 +164,7 @@ Format: `edit INDEX [n/NAME] [g/GENDER] [dob/DATE_OF_BIRTH] [p/PHONE] [e/EMAIL] 
 * Feedback (e.g. `added/updated` or `unchanged`) is shown per specified field.
 * If multiple provided field values are invalid in one command, all related validation errors are shown together.
 * Repeated use of the same non-tag prefix is not allowed (e.g., `p/91234567 p/98765432`). Repeating `t/` is allowed for multiple tags.
+* Each provided `TAG` follows the same format rules as in `add` (letters/numbers, spaces, and hyphens only; Cannot start with hyphens and leading/trailing spaces will be automatically removed).
 * You can clear a client's location by typing `l/` without specifying a value after it.
 * When editing tags, the existing tags of the client will be removed i.e adding of tags is not cumulative.
 * You can remove all the client’s tags by typing `t/` without specifying any tags after it.
