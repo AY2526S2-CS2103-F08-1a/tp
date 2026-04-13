@@ -27,7 +27,7 @@ PowerRoster is a **desktop app built to help Freelance Personal Fitness Trainers
    **Image/icon assets reused from [Icons8](https://icons8.com/icons/set/muscle-arm), used under the [Icons8 License](https://icons8.com/license).*
    ![Ui](images/Ui.png)<br>
 
-5. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the help window.<br>
+5. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will show usage instructions and the User Guide link in the Result Display.<br>
    Some example commands you can try:
    * `list` : Lists all clients.
 
@@ -75,12 +75,13 @@ Shows program usage instructions for all commands or a specific command.
 
 Format: `help [COMMAND_WORD]`
 
-* `help` shows usage instructions for all available commands.
+* `help` shows usage instructions for all available commands in the Result Display and also includes the User Guide URL for quick access.
 * `help COMMAND_WORD` shows usage instructions for the specified command only.
+* Use `F1` (or the Help menu) to open the popup Help window.
 * The command word is case-insensitive. e.g. `help ADD` works the same as `help add`
 
 Examples:
-* `help` shows all available commands and their usage
+* `help` shows all available commands, their usage and also the User Guide URL at the end
 * `help add` shows only the usage instructions for the add command
 * `help filter` shows only the usage instructions for the filter command
 
