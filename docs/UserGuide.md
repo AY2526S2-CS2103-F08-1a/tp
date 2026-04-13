@@ -98,6 +98,7 @@ Adds a client to PowerRoster.
 Format: `add n/NAME g/GENDER dob/DATE_OF_BIRTH p/PHONE_NUMBER e/EMAIL_ADDRESS a/ADDRESS [l/LOCATION] [t/TAG]…​​`
 
 * Names with forward slashes (e.g., "s/o" for "son of") are not supported due to the "/" being used as a command delimiter. You can replace the slashes with spaces (e.g., "Muthu s/o Rajan" can be entered as "Muthu s o Rajan".)
+* `NAME` must start with an alphanumeric character and end with an alphanumeric character or period (`.`).
 * `NAME` can contain alphanumeric characters, spaces, apostrophes (`'`), periods (`.`), and hyphens (`-`).
 * Other names with characters not supported like José Muñoz or 小明 should be replaced with suitable characters.
 * `NAME` is case-insensitive for duplicate detection (e.g. "John Doe" and "john doe" are treated as the same client)

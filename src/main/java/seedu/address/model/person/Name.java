@@ -17,8 +17,8 @@ public class Name {
     public static final String VALIDATION_REGEX = "[\\p{Alnum}](?:[\\p{Alnum}' .-]*[\\p{Alnum}.])?";
     private static final String SPECIAL_CHARACTERS = ".'-";
     public static final String MESSAGE_CONSTRAINTS =
-            "Names should only contain alphanumeric characters, spaces and " + SPECIAL_CHARACTERS
-                    + " while not being blank.";
+            "Names may contain alphanumeric characters, spaces and " + SPECIAL_CHARACTERS + "\n"
+            + "Names must start with an alphanumeric character, and end with an alphanumeric character or a period.";
     public final String fullName;
 
     /**
