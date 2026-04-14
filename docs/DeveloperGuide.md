@@ -960,3 +960,6 @@ Team size: 5
 4. **Expand workout log and workout plan detail granularity:** Current workout logs and assigned plans are intentionally compact. We plan to support richer structured details (e.g., exercise type, set count, repetition count) to improve training traceability and give the trainer access to more information for planning, tracking, etc. while keeping input constraints clear.
 
 5. **Add explicit currency support for client session rates:** The current rate field stores numeric values without an explicit currency label and it is up to the user to be aware of the currency type of the values they are storing. We plan to allow trainers to specify a currency code for rate values and display it consistently in command feedback and UI.
+
+6. **Visual feedback for active find constraints:** The current find command searches within the currently displayed list, but does not show the user which search terms or filters are currently active. It is up to the user to remember which names have been applied to narrow the list or use the list command to reset the state. We plan to update the command feedback and the UI header to display the active find terms and provide a hint to use the list command when the narrowed list returns no results.
+
