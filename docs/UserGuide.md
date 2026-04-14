@@ -435,6 +435,21 @@ PowerRoster data are saved in the hard disk automatically after any command that
 
 PowerRoster data are saved automatically as JSON files at `[JAR file location]/data/addressbook.json` and `[JAR file location]/data/workoutlogbook.json`. Advanced users are welcome to update data directly by editing these data files.
 
+<box type="info" seamless>
+
+**`addressbook.json` Loading Behaviour:**
+- If `addressbook.json` is absent, sample client data will be used.
+- If `addressbook.json` is present and valid, the provided data will be used.
+- If `addressbook.json` is corrupted/invalid, an empty client list will be initiated in memory.
+
+**`workoutlogbook.json` Loading Behaviour:**
+- If both `workoutlogbook.json` and `addressbook.json` are absent, sample workout log data will be used.
+- If `addressbook.json` is present but `workoutlogbook.json` is absent, the provided `addressbook.json` data will be used and an empty `workoutlogbook.json` will be loaded in memory.
+- If `workoutlogbook.json` is present, the provided data will be used.
+- In the unlikely event that `addressbook.json` is absent but `workoutlogbook.json` is present, data from `workoutlogbook.json` will be loaded as normal while sample data will be used for `addressbook.json`. This is because this is a scenario that **should not happen**. 
+- The user would be unable to add clients and have them link to an existing `workoutlogbook.json` as they are linked by an automatically generated `ClientId` which the user has no control over. Original data for `workoutlogbook.json` is retained in case the user made a mistake including it and would like to keep its contents.
+</box>
+
 <box type="warning" seamless>
 
 **Caution:**
